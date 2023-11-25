@@ -1,4 +1,4 @@
-namespace Hermes.Api
+namespace UserService.Api
 {
     public class WeatherForecast
     {

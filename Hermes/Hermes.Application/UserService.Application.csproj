@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hermes.Domain\Hermes.Domain.csproj" />
+    <ProjectReference Include="..\Hermes.Domain\UserService.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

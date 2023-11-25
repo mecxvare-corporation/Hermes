@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hermes.Application\Hermes.Application.csproj" />
+    <ProjectReference Include="..\Hermes.Application\UserService.Application.csproj" />
   </ItemGroup>
 
 </Project>
