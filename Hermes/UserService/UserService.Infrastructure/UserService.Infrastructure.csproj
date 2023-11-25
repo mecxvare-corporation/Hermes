@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hermes.Domain\UserService.Domain.csproj" />
+    <Folder Include="Configurations\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\" />
+    <ProjectReference Include="..\UserService\UserService.Domain.csproj" />
   </ItemGroup>
 
 </Project>
