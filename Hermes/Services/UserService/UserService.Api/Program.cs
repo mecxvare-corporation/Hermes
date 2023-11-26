@@ -1,7 +1,10 @@
 using Hermes.Common;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Database;
+using UserService.Infrastructure.Repositories;
+using UserService.Infrastructure.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<HermesDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("HermesDbConnection")));
+
+builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+builder.Services.AddScoped(typeof(IHermesRepository<>), typeof(HermesRepository<>));
 
 var app = builder.Build();
 
