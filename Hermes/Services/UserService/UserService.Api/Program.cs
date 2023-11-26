@@ -1,5 +1,7 @@
 using Hermes.Common;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using UserService.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<HermesDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("HermesDbConnection")));
 
 var app = builder.Build();
 
