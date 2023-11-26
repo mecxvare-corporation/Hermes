@@ -7,5 +7,9 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.2
 
+  userServiceDb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
 volumes:
+  sql_data:
   elasticsearch-data:
