@@ -4,55 +4,20 @@ using UserService.Infrastructure.Database;
 
 namespace UserService.Infrastructure.UnitOfWork
 {
-    public class UnitOfWork<T> : IUnitOfWork<T>, IDisposable where T : class
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly HermesDbContext _context;
-        private readonly IHermesRepository<T> _hermesRepository;
-        private IDbContextTransaction? _transaction;
+        private readonly UserDbContext _context;
+        public IUserRepository UserRepository { get; init; }
 
-        public UnitOfWork(HermesDbContext context, IHermesRepository<T> hermesRepository, IDbContextTransaction dbContextTransaction)
+        public UnitOfWork(UserDbContext context, IUserRepository userRepository, IDbContextTransaction dbContextTransaction)
         {
             _context = context;
-            _hermesRepository = hermesRepository;
-            _transaction = dbContextTransaction;
-        }
-
-        public void Complete()
-        {
-            try
-            {
-                _context.SaveChanges();
-                _transaction?.CommitAsync();
-            }
-            catch
-            {
-                _transaction?.RollbackAsync();
-                throw;
-            }
-            finally
-            {
-                _transaction?.Dispose();
-                _transaction = null;
-            }
+            UserRepository = userRepository;
         }
 
         public async Task CompleteAsync()
         {
-            try
-            {
-                await _context.SaveChangesAsync();
-                _transaction?.CommitAsync();
-            }
-            catch
-            {
-                _transaction?.RollbackAsync();
-                throw;
-            }
-            finally
-            {
-                _transaction?.Dispose();
-                _transaction = null;
-            }
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

@@ -1,8 +1,7 @@
 ﻿namespace UserService.Domain.Interfaces
 {
-    public interface IUnitOfWork<T>
+    public interface IUnitOfWork
     {
-        void Complete();
         Task CompleteAsync();
     }
 }
