@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using UserService.Domain.Interfaces;
+﻿using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Database;
 
 namespace UserService.Infrastructure.UnitOfWork
@@ -9,7 +8,7 @@ namespace UserService.Infrastructure.UnitOfWork
         private readonly UserDbContext _context;
         public IUserRepository UserRepository { get; init; }
 
-        public UnitOfWork(UserDbContext context, IUserRepository userRepository, IDbContextTransaction dbContextTransaction)
+        public UnitOfWork(UserDbContext context, IUserRepository userRepository)
         {
             _context = context;
             UserRepository = userRepository;
