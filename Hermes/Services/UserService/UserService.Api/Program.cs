@@ -1,6 +1,8 @@
 using Hermes.Common;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Reflection;
+using UserService.Application.Users.Commands;
 using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Database;
 using UserService.Infrastructure.Repositories;
@@ -22,6 +24,10 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//builder.Services.AddMediatR(Assembly.GetAssembly(typeof(CreateUserCommand)));
+//builder.Services.AddAutoMapper();  // Fix this (Asembly)
+
 
 var app = builder.Build();
 

@@ -20,13 +20,13 @@ namespace UserService.Application.Users.Commands
         }
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var lector = _mapper.Map<User>(request);
+            var user = _mapper.Map<User>(request);
 
-            _unitOfWork.UserRepository.Create(lector);
+            _unitOfWork.UserRepository.Create(user);
 
             await _unitOfWork.CompleteAsync();
 
-            return lector.Id;
+            return user.Id;
         }
     }
 

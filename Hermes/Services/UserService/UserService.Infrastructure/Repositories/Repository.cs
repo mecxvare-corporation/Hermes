@@ -110,7 +110,12 @@ namespace UserService.Infrastructure.Repositories
 
         public async Task DeleteAsync(Guid id) 
         {
-            var entity = await GetFirstOrDefaultAsync(u => u.Id == id) ?? throw new InvalidOperationException($"{typeof(TEntity).Name} With Id: {id}, Does not exists!");
+            var entity = await GetFirstOrDefaultAsync(u => u.Id == id);
+
+            if (entity == null) 
+            {
+                throw new InvalidOperationException($"{typeof(TEntity).Name} With Id: {id}, Does not exists!");
+            }
 
             _dbContext.Set<TEntity>().Remove(entity);
         }

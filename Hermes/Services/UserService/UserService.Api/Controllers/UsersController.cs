@@ -25,13 +25,13 @@ namespace UserService.Api.Controllers
             return Ok(usersDtos);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = nameof(GetUserAsync))]
         public async Task<ActionResult<UserDto>> GetUserAsync(Guid id)
         {
             return Ok(await _mediator.Send(new GetUserQuery(id)));
         }
 
-        [HttpPost(Name = "CreateUser")]
+        [HttpPost(Name = nameof(Create))]
         public async Task<ActionResult> Create([FromBody] CreateUserCommand command)
         {
             var newUserId = await _mediator.Send(command);
@@ -39,14 +39,14 @@ namespace UserService.Api.Controllers
             return Ok(newUserId);
         }
 
-        [HttpPut(Name = "UpdateUser")]
+        [HttpPut(Name = nameof(Update))]
         public async Task<ActionResult> Update([FromBody] UpdateUserCommand command)
         {
             await _mediator.Send(command);
             return NoContent();
         }
 
-        [HttpDelete("{id}", Name = "RemoveUser")]
+        [HttpDelete("{id}", Name = nameof(Delete))]
         public async Task<ActionResult> Delete(Guid id)
         {
             await _mediator.Send(new DeleteUserCommand(id));
