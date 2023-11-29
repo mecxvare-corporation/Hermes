@@ -14,10 +14,7 @@ namespace UserService.Infrastructure.UnitOfWork
             UserRepository = userRepository;
         }
 
-        public async Task CompleteAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
+        public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
 
         public void Dispose()
         {

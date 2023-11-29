@@ -30,6 +30,8 @@ namespace UserService.Domain.Interfaces
 
         public Task CreateRangeAsync(List<TEntity> entities);
 
+        public Task DeleteAsync(Guid id);
+
         public void Dispose();
     }
 }

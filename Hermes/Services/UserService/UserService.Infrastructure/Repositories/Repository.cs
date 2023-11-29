@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.Repositories
 {
-    public abstract class Repository<TEntity> where TEntity : class
+    public abstract class Repository<TEntity> where TEntity : Entity
     {
         private readonly DbContext _dbContext;
 
@@ -105,6 +106,13 @@ namespace UserService.Infrastructure.Repositories
         public async Task CreateRangeAsync(List<TEntity> entities)
         {
             await _dbContext.AddRangeAsync(entities);
+        }
+
+        public async Task DeleteAsync(Guid id) 
+        {
+            var entity = await GetFirstOrDefaultAsync(u => u.Id == id) ?? throw new InvalidOperationException($"{typeof(TEntity).Name} With Id: {id}, Does not exists!");
+
+            _dbContext.Set<TEntity>().Remove(entity);
         }
 
         public virtual void Dispose()

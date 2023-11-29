@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork
     {
-        Task CompleteAsync();
+        IUserRepository UserRepository { get; }
+        Task<int> CompleteAsync();
     }
 }
