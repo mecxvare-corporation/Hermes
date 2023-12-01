@@ -5,9 +5,9 @@ using System.Reflection;
 using UserService.Application.Mappers;
 using UserService.Application.Users.Commands;
 using UserService.Domain.Interfaces;
+using UserService.Infrastructure;
 using UserService.Infrastructure.Database;
 using UserService.Infrastructure.Repositories;
-using UserService.Infrastructure.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +21,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<UserDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("UserServiceConnectionString"))); //scade aba aa is unda gaaketo imis implementacia daushvi
+            options.UseNpgsql(builder.Configuration.GetConnectionString("UserServiceConnectionString")));
 
+
+builder.Services.AddScoped<UserServiceDbContextInitialiser>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -37,6 +39,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<UserServiceDbContextInitialiser>();
+
+        await initialiser.InitialiseAsync();
+        //await initialiser.SeedAsync(); TODO seed if needed
+    }
 }
 
 app.UseHttpsRedirection();

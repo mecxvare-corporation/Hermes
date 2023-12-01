@@ -1,14 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using UserService.Domain.Entities;
+using UserService.Domain.Interfaces;
+using UserService.Infrastructure.Database;
 
 namespace UserService.Infrastructure.Repositories
 {
-    public abstract class Repository<TEntity> where TEntity : Entity
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        private readonly DbContext _dbContext;
+        private readonly UserDbContext _dbContext;
 
-        public Repository(DbContext dbContext)
+        public Repository(UserDbContext dbContext)
         {
             _dbContext = dbContext;
         }

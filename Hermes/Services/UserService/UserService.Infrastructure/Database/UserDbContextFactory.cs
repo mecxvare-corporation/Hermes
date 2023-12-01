@@ -16,7 +16,7 @@ namespace UserService.Infrastructure.Database
             var connectionString = config.GetConnectionString("UserServiceConnectionString");
 
             var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>()
-                .UseSqlServer(connectionString);
+                .UseNpgsql(connectionString);
 
             return new UserDbContext(optionsBuilder.Options); //srvers ver ukavshirdeba vnaxot mere ra xdeba
         }
