@@ -13,6 +13,12 @@ services:
   pgadmin:
     image: dpage/pgadmin4 
 
+  hermes.webstatus:
+    image: ${DOCKER_REGISTRY-}hermeswebstatus
+    build:
+      context: .
+      dockerfile: WebApps/Hermes.WebStatus/Dockerfile
+
 volumes:
   postgres_data:
   pgadmin_data:
