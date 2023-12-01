@@ -1,7 +1,7 @@
 ﻿using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Database;
 
-namespace UserService.Infrastructure.UnitOfWork
+namespace UserService.Infrastructure
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

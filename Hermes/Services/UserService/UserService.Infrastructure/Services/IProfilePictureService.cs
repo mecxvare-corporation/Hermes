@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserService.Infrastructure.Services.ProfilePictureService
+namespace UserService.Infrastructure.Services
 {
     public interface IProfilePictureService
     {
