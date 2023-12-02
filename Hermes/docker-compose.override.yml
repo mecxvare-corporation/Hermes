@@ -38,6 +38,8 @@ services:
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@hermes.com
       - PGADMIN_DEFAULT_PASSWORD=admin1234
+    depends_on:
+      - userServiceDb
     restart: always
     ports:
         - "5050:80"

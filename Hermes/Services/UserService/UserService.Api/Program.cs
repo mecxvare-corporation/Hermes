@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
+using UserService.Api.Infrastructure.Middlewares;
 using UserService.Application.Mappers;
 using UserService.Application.Users.Commands;
 using UserService.Domain.Interfaces;
@@ -12,6 +13,7 @@ using UserService.Infrastructure.Database;
 using UserService.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Host.UseSerilog(SeriLogger.Configure);
 
@@ -56,6 +58,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.MapControllers();
 
