@@ -43,3 +43,11 @@ services:
         - "5050:80"
     volumes:
       - pgadmin_data:/root/.pgadmin
+
+  hermes.webstatus:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - HealthChecksUI__HealthChecks__0__Name=User Service Health Check
+      - HealthChecksUI__HealthChecks__0__Uri=http://localhost:5157/hc 
+    ports:
+      - "8007:80"
