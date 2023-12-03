@@ -20,8 +20,9 @@ jobs:
     - name: Install dependencies
       run: npm install --prefix Hermes/ClientApp/hermes-web
 
-    - name: Run tests
-      run: npm run test --prefix Hermes/ClientApp/hermes-web --no-watch --no-progress --browsers ChromeHeadless
+    - name: Configure Karma
+      run: |
+        echo "browsers: ['ChromeHeadless']" >> Hermes/ClientApp/hermes-web/karma.conf.js
 
-    - name: Build
-      run: npm run build --prefix Hermes/ClientApp/hermes-web 
+    - name: Run tests
+      run: npm run test --prefix Hermes/ClientApp/hermes-web --no-watch --no-progress
