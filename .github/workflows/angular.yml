@@ -21,7 +21,7 @@ jobs:
       run: npm install --prefix Hermes/ClientApp/hermes-web
 
     - name: Run tests
-      run: npm run test --prefix Hermes/ClientApp/hermes-web
+      run: npm run test -- --watch=false --browsers=ChromeHeadless --prefix Hermes/ClientApp/hermes-web
 
     - name: Build
       run: npm run build --prefix Hermes/ClientApp/hermes-web 
