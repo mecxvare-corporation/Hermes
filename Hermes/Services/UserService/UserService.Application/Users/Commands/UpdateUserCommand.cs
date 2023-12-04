@@ -25,7 +25,7 @@ namespace UserService.Application.Users.Commands
 
             if(user == null)
             {
-                return Guid.Empty; // thow some error here 
+                throw new InvalidOperationException("User was not found!");
             }
 
             user.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.DateOfBirth);

@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{FC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{1DA68B5B-397A-4CCD-B3B6-8E841C72FEB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.WebStatus", "WebApps\Hermes.WebStatus\Hermes.WebStatus.csproj", "{EED9D318-4AD1-480B-9BA3-56EF6635788A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hermes.WebStatus", "WebApps\Hermes.WebStatus\Hermes.WebStatus.csproj", "{EED9D318-4AD1-480B-9BA3-56EF6635788A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
