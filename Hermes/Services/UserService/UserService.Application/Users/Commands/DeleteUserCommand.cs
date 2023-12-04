@@ -19,6 +19,11 @@ namespace UserService.Application.Users.Commands
            
             var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u=>u.Id == request.Id);
 
+            if (user == null)
+            {
+                throw new InvalidOperationException("User was not found!");
+            }
+
             await _unitOfWork.UserRepository.DeleteAsync(user.Id);
 
             await _unitOfWork.CompleteAsync();

@@ -20,7 +20,7 @@ namespace UserService.Application.Users.Commands
         }
         public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = _mapper.Map<User>(request);
+            var user = _mapper.Map<User>(request.Dto);
 
             _unitOfWork.UserRepository.Create(user);
 

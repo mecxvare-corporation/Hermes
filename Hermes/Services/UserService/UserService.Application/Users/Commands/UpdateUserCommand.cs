@@ -21,11 +21,11 @@ namespace UserService.Application.Users.Commands
         public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             
-            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u=>u.Id == request.Dto.Id);
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.Dto.Id, true);
 
             if(user == null)
             {
-                return Guid.Empty;
+                throw new InvalidOperationException("User was not found!");
             }
 
             user.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.DateOfBirth);
