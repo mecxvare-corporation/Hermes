@@ -29,7 +29,7 @@ namespace UserService.Tests.Unit
         }
 
         [Fact]
-        public void UpdateItselfById()
+        public void UpdateItself()
         {
             //Arrange
             string name = "test1";
