@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build Hermes/Services/UserService/UserService.Api/UserService.Api.csproj --no-restore
     - name: Build
-      run: dotnet test
+      run: dotnet test Hermes/Services/UserService/UserService.Api/UserService.Tests.Unit.csproj --no-restore
