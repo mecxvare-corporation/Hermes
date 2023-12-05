@@ -19,10 +19,10 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
     - name: Restore dependencies
       run: dotnet restore Hermes/Hermes.sln
     - name: Build
       run: dotnet build Hermes/Services/UserService/UserService.Api/UserService.Api.csproj --no-restore
-    - name: Build
-      run: dotnet test Hermes/Services/UserService/UserService.Api/UserService.Tests.Unit.csproj --no-restore
+    - name: Test
+      run: dotnet test Hermes/Services/UserService/UserService.Tests.Unit/UserService.Tests.Unit.csproj --no-restore
