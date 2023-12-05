@@ -5,7 +5,7 @@ using UserService.Application.Users.Commands;
 
 namespace UserService.Tests.Unit
 {
-    public class TestStartUp
+    public class TestStartup
     {
         public static IServiceProvider ConfigureServices()
         {
@@ -13,7 +13,6 @@ namespace UserService.Tests.Unit
 
             services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(CreateUserCommand))!));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
-
 
             return services.BuildServiceProvider();
         }

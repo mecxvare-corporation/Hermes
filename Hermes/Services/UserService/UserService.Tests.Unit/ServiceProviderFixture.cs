@@ -1,7 +1,7 @@
 ﻿namespace UserService.Tests.Unit
 {
 
-    [Collection("MyCollection")]
+    [CollectionDefinition("MyCollection")]
     public class TestCollectionFixture : ICollectionFixture<ServiceProviderFixture>
     {
 
@@ -12,7 +12,7 @@
         public IServiceProvider ServiceProvider { get; }
         public ServiceProviderFixture() 
         {
-            ServiceProvider = TestStartUp.ConfigureServices();
+            ServiceProvider = TestStartup.ConfigureServices();
         }
     }
 }
