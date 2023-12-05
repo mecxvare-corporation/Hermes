@@ -24,3 +24,5 @@ jobs:
       run: dotnet restore Hermes/Hermes.sln
     - name: Build
       run: dotnet build Hermes/Services/UserService/UserService.Api/UserService.Api.csproj --no-restore
+    - name: Build
+      run: dotnet test
