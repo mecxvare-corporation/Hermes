@@ -26,3 +26,9 @@ jobs:
       run: dotnet build Hermes/Services/UserService/UserService.Api/UserService.Api.csproj --no-restore
     - name: Test
       run: dotnet test Hermes/Services/UserService/UserService.Tests.Unit/UserService.Tests.Unit.csproj --no-restore
+    - name: Scan
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /k:${{ secrets.PROJECT_KEY }} /o:${{ secrets.ORGANIZATION_KEY }} /d:sonar.token=${{ secrets.SONAR_TOKEN }}
+        dotnet build Hermes/Hermes.sln
+        dotnet sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}
