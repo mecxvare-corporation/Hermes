@@ -20,6 +20,11 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+
     - name: Restore dependencies
       run: dotnet restore Hermes/Hermes.sln
     - name: Build
