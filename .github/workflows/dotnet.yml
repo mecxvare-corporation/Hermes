@@ -26,13 +26,9 @@ jobs:
       run: dotnet build Hermes/Services/UserService/UserService.Api/UserService.Api.csproj --no-restore
     - name: Test
       run: dotnet test Hermes/Services/UserService/UserService.Tests.Unit/UserService.Tests.Unit.csproj --no-restore
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      with:
-          projectBaseDir: './Hermes/'
-          args: >
-            -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
-            -Dsonar.organization=${{ secrets.ORGANIZATION_KEY }}
+    - name: Scan
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet sonarscanner begin /k:${{ secrets.PROJECT_KEY }} /o:${{ secrets.ORGANIZATION_KEY }} /d:sonar.token=${{ secrets.SONAR_TOKEN }} /d:sonar.host.url="https://sonarcloud.io/dashboard?id=your_${{ secrets.PROJECT_KEY }}"
+        dotnet build Hermes/Hermes.sln
+        dotnet sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}
