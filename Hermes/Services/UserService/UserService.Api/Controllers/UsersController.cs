@@ -17,6 +17,8 @@ namespace UserService.Api.Controllers
             _mediator = mediator;
         }
 
+        #region Users
+
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetUsersAsync()
         {
@@ -43,6 +45,7 @@ namespace UserService.Api.Controllers
         public async Task<ActionResult> Update([FromBody] UpdateUserCommand command)
         {
             await _mediator.Send(command);
+
             return NoContent();
         }
 
@@ -53,5 +56,19 @@ namespace UserService.Api.Controllers
 
             return NoContent();
         }
+
+        #endregion
+
+        #region Interests
+
+        [HttpPut("/UpdateUserInterests", Name = nameof(UpdateUserInterests))]
+        public async Task<ActionResult> UpdateUserInterests([FromBody] UpdateUserInterestCommand command)
+        {
+            var userId = await _mediator.Send(command);
+
+            return Ok(userId);
+        }
+
+        #endregion
     }
 }

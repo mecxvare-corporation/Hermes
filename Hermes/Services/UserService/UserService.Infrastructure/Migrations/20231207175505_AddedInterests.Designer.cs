@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UserService.Infrastructure.Database;
@@ -11,9 +12,11 @@ using UserService.Infrastructure.Database;
 namespace UserService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207175505_AddedInterests")]
+    partial class AddedInterests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace UserService.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("InterestUser", b =>
-                {
-                    b.Property<Guid>("InterestsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("InterestsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("InterestUser");
-                });
 
             modelBuilder.Entity("UserService.Domain.Entities.Interest", b =>
                 {
@@ -47,7 +35,12 @@ namespace UserService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Interests");
                 });
@@ -74,19 +67,20 @@ namespace UserService.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("InterestUser", b =>
+            modelBuilder.Entity("UserService.Domain.Entities.Interest", b =>
                 {
-                    b.HasOne("UserService.Domain.Entities.Interest", null)
-                        .WithMany()
-                        .HasForeignKey("InterestsId")
+                    b.HasOne("UserService.Domain.Entities.User", "User")
+                        .WithMany("Interests")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UserService.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("UserService.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Interests");
                 });
 #pragma warning restore 612, 618
         }

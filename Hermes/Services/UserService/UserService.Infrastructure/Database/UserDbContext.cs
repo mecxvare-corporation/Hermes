@@ -10,5 +10,6 @@ namespace UserService.Infrastructure.Database
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Interest> Interests { get; set; }
     }
 }

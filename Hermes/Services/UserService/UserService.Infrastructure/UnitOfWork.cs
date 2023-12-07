@@ -7,11 +7,13 @@ namespace UserService.Infrastructure
     {
         private readonly UserDbContext _context;
         public IUserRepository UserRepository { get; init; }
+        public IInterestRepository InterestRepository { get; init; }
 
-        public UnitOfWork(UserDbContext context, IUserRepository userRepository)
+        public UnitOfWork(UserDbContext context, IUserRepository userRepository, IInterestRepository interestRepository)
         {
             _context = context;
             UserRepository = userRepository;
+            InterestRepository = interestRepository;
         }
 
         public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
