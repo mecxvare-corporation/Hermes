@@ -4,6 +4,8 @@
     {
         public string Name { get; private set; }
 
+        public List<User> Users { get; private set; } = new List<User>();
+
         private Interest()
         {
 
@@ -15,6 +17,16 @@
             Name = name;
         }
 
-        public List<User> Users { get; private set; } = new List<User>();//hmm moica
+        public void AddUser(User user)
+        {
+            if (!Users.Any(x => x.Id == user.Id))
+            {
+                Users.Add(user);
+            }
+            else
+            {
+                throw new InvalidOperationException("User already has the interest associated");
+            }
+        }
     }
 }

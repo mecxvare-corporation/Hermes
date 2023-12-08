@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UserService.Application.Dtos;
 using UserService.Domain.Interfaces;
@@ -11,24 +10,22 @@ namespace UserService.Application.Users.Commands
     public class UpdateUserInterestCommandHandler : IRequestHandler<UpdateUserInterestCommand, Guid>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public UpdateUserInterestCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public UpdateUserInterestCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<Guid> Handle(UpdateUserInterestCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.Id, true);
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.Id, true, x => x.Interests);
 
             if (user is null)
             {
                 throw new InvalidOperationException("User not found");
             }
 
-            var interests = await _unitOfWork.InterestRepository.GetQueryable(x => request.Dto.InterestIds.Contains(x.Id)).ToListAsync();
+            var interests = await _unitOfWork.InterestRepository.GetRowsQueryable(x => request.Dto.InterestIds.Contains(x.Id), true, x => x.Users).ToListAsync();
 
             if (interests.Count == 0)
             {
@@ -37,7 +34,8 @@ namespace UserService.Application.Users.Commands
 
             foreach (var interest in interests)
             {
-                user.AddInterest(interest);//ragaca nito xdeba es sakmarisi unda iyos imdenixania ar gamomiyenebia es relacia maica aba
+                user.AddInterest(interest);
+                interest.AddUser(user);
             }
 
             await _unitOfWork.CompleteAsync();

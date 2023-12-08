@@ -6,7 +6,7 @@
         public string LastName { get; private set; }
         public DateTime DateOfBirth { get; private set; }
 
-        public List<Interest> Interests { get; set; } = new List<Interest>(); //es mravlobitshi erqva adrec?ki
+        public List<Interest> Interests { get; set; } = new List<Interest>();
 
         private User()
         {
@@ -30,13 +30,13 @@
 
         public void AddInterest(Interest interest)
         {
-            if (Interests is null)
+            if (!Interests.Any(x => x.Id == interest.Id))
             {
-                Interests = new List<Interest>();
+                Interests.Add(interest);
             }
-            else if (!Interests.Any(x => x == interest))
+            else
             {
-                Interests.Add(new Interest(interest.Name));
+                throw new InvalidOperationException("Interest already has an user associated");
             }
         }
     }

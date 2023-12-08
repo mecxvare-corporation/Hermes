@@ -49,18 +49,6 @@ namespace UserService.Infrastructure.Repositories
             return GetRowsQueryable(where, false, includes);
         }
 
-        public async Task<List<TEntity>> GetRowsAsync(Expression<Func<TEntity, bool>> where, bool tracking, params Expression<Func<TEntity, object>>[] includes)
-        {
-            var queryable = GetRowsQueryable(where, tracking, includes);
-
-            return await queryable.ToListAsync();
-        }
-
-        public virtual async Task<List<TEntity>> GetRowsAsync(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes)
-        {
-            return await GetRowsAsync(where, false, includes);
-        }
-
         public virtual async Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes)
         {
             var queryable = GetAllQueryable();
