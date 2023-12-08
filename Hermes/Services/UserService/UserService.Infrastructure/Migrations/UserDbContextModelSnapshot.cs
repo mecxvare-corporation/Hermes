@@ -34,7 +34,7 @@ namespace UserService.Infrastructure.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("InterestUser");
+                    b.ToTable("InterestUser", (string)null);
                 });
 
             modelBuilder.Entity("UserService.Domain.Entities.Interest", b =>
@@ -49,7 +49,7 @@ namespace UserService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Interests");
+                    b.ToTable("Interests", (string)null);
                 });
 
             modelBuilder.Entity("UserService.Domain.Entities.User", b =>
@@ -71,7 +71,7 @@ namespace UserService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("InterestUser", b =>

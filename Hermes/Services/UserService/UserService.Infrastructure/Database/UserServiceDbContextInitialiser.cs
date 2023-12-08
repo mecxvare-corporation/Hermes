@@ -46,7 +46,9 @@ namespace UserService.Infrastructure.Database
 
         public async Task TrySeedAsync()
         {
-            var interestsList = new List<Interest>
+            if (!_context.Interests.Any())
+            {
+                var interestsList = new List<Interest>
             {
                 new Interest("Travel"),
                 new Interest("Food and Cooking"),
@@ -60,9 +62,10 @@ namespace UserService.Infrastructure.Database
                 new Interest("Art and Creativity")
             };
 
-            await _context.AddRangeAsync(interestsList);
+                await _context.AddRangeAsync(interestsList);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -36,7 +36,19 @@
             }
             else
             {
-                throw new InvalidOperationException("Interest already has an user associated");
+                throw new InvalidOperationException("Interest already has been associated to current user.");
+            }
+        }
+
+        public void RemoveInterest(Interest interest)
+        {
+            if (Interests.Any(x => x.Id == interest.Id))
+            {
+                Interests.Remove(interest);
+            }
+            else
+            {
+                throw new InvalidOperationException("Interest is not associated with current user.");
             }
         }
     }

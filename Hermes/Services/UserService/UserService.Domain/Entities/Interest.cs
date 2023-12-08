@@ -25,7 +25,7 @@
             }
             else
             {
-                throw new InvalidOperationException("User already has the interest associated");
+                throw new InvalidOperationException("Interest already has already been associated to current user.");
             }
         }
     }

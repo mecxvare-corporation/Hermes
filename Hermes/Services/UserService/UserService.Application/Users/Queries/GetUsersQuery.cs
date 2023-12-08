@@ -5,7 +5,7 @@ using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Queries
 {
-    public record GetUsersQuery: IRequest<IEnumerable<UserDto>>;
+    public record GetUsersQuery : IRequest<IEnumerable<UserDto>>;
 
     public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, IEnumerable<UserDto>>
     {
@@ -22,7 +22,7 @@ namespace UserService.Application.Users.Queries
         {
             var users = await _uow.UserRepository.GetAllAsync();
 
-            var userDtos = users.Select(u => _mapper.Map<UserDto>(u)); // .ToList() unda?
+            var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
 
             return userDtos;
         }

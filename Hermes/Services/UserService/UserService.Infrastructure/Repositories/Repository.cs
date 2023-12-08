@@ -98,11 +98,11 @@ namespace UserService.Infrastructure.Repositories
             await _dbContext.AddRangeAsync(entities);
         }
 
-        public async Task DeleteAsync(Guid id) 
+        public async Task DeleteAsync(Guid id)
         {
             var entity = await GetFirstOrDefaultAsync(u => u.Id == id);
 
-            if (entity == null) 
+            if (entity == null)
             {
                 throw new InvalidOperationException($"{typeof(TEntity).Name} With Id: {id}, Does not exists!");
             }
