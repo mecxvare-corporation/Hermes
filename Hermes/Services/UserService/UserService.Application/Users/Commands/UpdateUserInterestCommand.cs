@@ -18,12 +18,9 @@ namespace UserService.Application.Users.Commands
 
         public async Task<Guid> Handle(UpdateUserInterestCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.Id, true, x => x.Interests);
-
-            if (user is null)
-            {
-                throw new InvalidOperationException("User not found");
-            }
+            var user = await _unitOfWork
+                .UserRepository
+                .GetFirstOrDefaultAsync(x => x.Id == request.Dto.Id, true, x => x.Interests) ?? throw new InvalidOperationException("User not found");
 
             var interests = await _unitOfWork.InterestRepository.GetRowsQueryable(x => request.Dto.InterestIds.Contains(x.Id), true, x => x.Users).ToListAsync();
 
