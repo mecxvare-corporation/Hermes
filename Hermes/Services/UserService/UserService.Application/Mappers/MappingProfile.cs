@@ -13,6 +13,7 @@ namespace UserService.Application.Mappers
             CreateMap<UpdateUserDto, User>();
 
             CreateMap<Interest, InterestDto>().ReverseMap();
+            CreateMap<CreateInterestDto, Interest>();
         }
     }
 }

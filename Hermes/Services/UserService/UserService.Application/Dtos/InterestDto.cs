@@ -1,5 +1,6 @@
 ﻿namespace UserService.Application.Dtos
 {
     public record InterestDto(Guid Id, string Name);
-    public record DeleteUserInterestDto(Guid userId, Guid interestId);
+    public record CreateInterestDto(string Name);
+    public record DeleteInterestDto(Guid Id);
 }

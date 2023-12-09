@@ -63,20 +63,18 @@ namespace UserService.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("interests")]
-        public async Task<ActionResult> GetAllInterests()
-        {
-            var interests = await _mediator.Send(new GetInterestsQuery());
-
-            return Ok(interests);
-        }
-
         [HttpDelete("interests")]
         public async Task<ActionResult> RemoveUserInterests([FromBody] DeleteUserInterestCommand command)
         {
             await _mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet("interests/{id}", Name = nameof(GetUserInterests))]
+        public async Task<ActionResult<GetUserInterestsDto>> GetUserInterests(Guid id)
+        {
+            return Ok(await _mediator.Send(new GetUserInterestsCommand(id)));
         }
     }
 }
