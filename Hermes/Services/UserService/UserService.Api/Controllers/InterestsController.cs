@@ -44,7 +44,7 @@ namespace UserService.Api.Controllers
 
             if (result)
             {
-                return RedirectToAction(nameof(GetAllInterests));
+                return NoContent();
             }
             else
                 return BadRequest();
