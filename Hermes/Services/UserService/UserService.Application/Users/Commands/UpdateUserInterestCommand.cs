@@ -25,7 +25,7 @@ namespace UserService.Application.Users.Commands
                 throw new InvalidOperationException("User not found");
             }
 
-            var interests = await _unitOfWork.InterestRepository.GetRowsQueryable(x => request.Dto.InterestIds.Contains(x.Id), true, x => x.Users).ToListAsync();
+            var interests = await _unitOfWork.InterestRepository.GetRowsQueryable(x => request.Dto.InterestIds.Contains(x.Id), true, x => x.Users).ToListAsync(cancellationToken);
 
             if (interests.Count == 0)
             {

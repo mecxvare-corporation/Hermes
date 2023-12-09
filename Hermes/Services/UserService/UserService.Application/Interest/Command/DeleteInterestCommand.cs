@@ -1,23 +1,22 @@
 ﻿using MediatR;
-using UserService.Application.Dtos;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Interests.Command
 {
-    public record DeleteInterestCommand(DeleteInterestDto Dto) : IRequest<bool>;
+    public record DeleteInterestCommand(Guid Id) : IRequest<bool>;
 
-    public class DeleteInterestCommandHanlder : IRequestHandler<DeleteInterestCommand, bool>
+    public class DeleteInterestCommandHandler : IRequestHandler<DeleteInterestCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteInterestCommandHanlder(IUnitOfWork unitOfWork)
+        public DeleteInterestCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> Handle(DeleteInterestCommand request, CancellationToken cancellationToken)
         {
-            var interest = await _unitOfWork.InterestRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.Id);
+            var interest = await _unitOfWork.InterestRepository.GetFirstOrDefaultAsync(x => x.Id == request.Id);
 
             if (interest is null)
             {

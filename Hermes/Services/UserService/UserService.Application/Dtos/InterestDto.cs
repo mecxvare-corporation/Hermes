@@ -2,5 +2,4 @@
 {
     public record InterestDto(Guid Id, string Name);
     public record CreateInterestDto(string Name);
-    public record DeleteInterestDto(Guid Id);
 }

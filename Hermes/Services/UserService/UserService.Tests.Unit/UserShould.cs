@@ -6,11 +6,12 @@ namespace UserService.Tests.Unit
     public class UserShould
     {
         private readonly IServiceProvider _serviceProvider;
+
         public UserShould(ServiceProviderFixture fixture)
         {
             _serviceProvider = fixture.ServiceProvider;
         }
-            
+
         [Fact]
         public void ConstructedWithValidData()
         {
@@ -50,5 +51,7 @@ namespace UserService.Tests.Unit
             Assert.Equal(updatedLastName, newUser.LastName);
             Assert.Equal(updatedBirthDay.ToString(), newUser.DateOfBirth.ToString());
         }
+
+
     }
 }

@@ -13,7 +13,7 @@ namespace UserService.Tests.Unit
     public class UserCommandShould
     {
         private readonly IServiceProvider _serviceProvider;
-        public UserCommandShould(ServiceProviderFixture fixture) 
+        public UserCommandShould(ServiceProviderFixture fixture)
         {
             _serviceProvider = fixture.ServiceProvider;
         }
@@ -21,7 +21,7 @@ namespace UserService.Tests.Unit
         [Fact]
         public async Task CreateNewUser()
         {
-            //Arrange
+            // Arrange
             var newUserDto = new CreateUserDto("test1", "test1", DateTime.Now);
 
             // Mock IUserRepository
@@ -34,18 +34,18 @@ namespace UserService.Tests.Unit
             var handler = new CreateUserCommandHandler(uofMcok.Object, _serviceProvider.GetRequiredService<IMapper>());
             var query = new CreateUserCommand(newUserDto);
 
-            //Act
+            // Act
             var result = await handler.Handle(query, CancellationToken.None);
 
-            //Assert
-            userRepoMock.Verify(repo=>repo.Create(It.IsAny<User>()), Times.Once);
+            // Assert
+            userRepoMock.Verify(repo => repo.Create(It.IsAny<User>()), Times.Once);
         }
 
 
         [Fact]
-        public async void DeleteExistingUserById() 
+        public async void DeleteExistingUserById()
         {
-            //Arrange
+            // Arrange
             string userName = "User";
             string userLastName = "Testadze";
             DateTime birthDay = DateTime.Now;
@@ -62,11 +62,11 @@ namespace UserService.Tests.Unit
             var handler = new DeleteUserCommandHandler(uofMcok.Object);
             var query = new DeleteUserCommand(userEntity.Id);
 
-            //Act
+            // Act
             await handler.Handle(query, CancellationToken.None);
 
-            //Assert
-            userRepoMock.Verify(repo=>repo.DeleteAsync(It.IsAny<Guid>()), Times.Once);
+            // Assert
+            userRepoMock.Verify(repo => repo.DeleteAsync(It.IsAny<Guid>()), Times.Once);
         }
     }
 }

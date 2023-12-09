@@ -6,6 +6,7 @@ using UserService.Domain.Interfaces;
 namespace UserService.Application.Interests.Command
 {
     public record CreateInterestCommand(CreateInterestDto Dto) : IRequest<bool>;
+
     public class CreateInterestCommandHandler : IRequestHandler<CreateInterestCommand, bool>
     {
         private readonly IUnitOfWork _unitOfWork;
