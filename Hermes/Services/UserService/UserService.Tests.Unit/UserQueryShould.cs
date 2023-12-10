@@ -10,11 +10,11 @@ using UserService.Domain.Interfaces;
 namespace UserService.Tests.Unit
 {
     [Collection("MyCollection")]
-    public class UserQueryShould 
+    public class UserQueryShould
     {
         private readonly IServiceProvider _serviceProvider;
- 
-        public UserQueryShould(ServiceProviderFixture fixture) 
+
+        public UserQueryShould(ServiceProviderFixture fixture)
         {
             _serviceProvider = fixture.ServiceProvider;
         }
@@ -37,10 +37,10 @@ namespace UserService.Tests.Unit
             userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(userEntity);
 
             // Mock IUnitOfWork
-            var uofMcok = new Mock<IUnitOfWork>();
-            uofMcok.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-            var handler = new GetUserQueryHandler(uofMcok.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var handler = new GetUserQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
 
             var query = new GetUserQuery(userId);
 
@@ -50,6 +50,25 @@ namespace UserService.Tests.Unit
             //Assert
             Assert.NotNull(result);
             Assert.IsType<UserDto>(result);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfNoUserWasFound()
+        {
+            // Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync((User)null);
+
+            // Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+
+            var query = new GetUserQuery(Guid.NewGuid());
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(query, CancellationToken.None));
         }
 
         [Fact]
@@ -75,10 +94,10 @@ namespace UserService.Tests.Unit
             userRepoMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
             //Mock IUnitOfWork
-            var uofMock = new Mock<IUnitOfWork>();
-            uofMock.Setup(uow=>uow.UserRepository).Returns(userRepoMock.Object);
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-            var handler = new GetUsersQueryHandler(uofMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var handler = new GetUsersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
             var query = new GetUsersQuery();
 
             //Act
@@ -88,6 +107,81 @@ namespace UserService.Tests.Unit
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<UserDto>>(result);
             Assert.Equal(users.Count, result.ToList().Count);
+        }
+
+        [Fact]
+        public async Task GetAllUserInterests()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            user.AddInterest(new Interest("Interest1"));
+            user.AddInterest(new Interest("Interest2"));
+
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserInterestsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserInterestsQuery(user.Id);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<GetUserInterestsDto>(result);
+            Assert.Equal(user.Interests.Count, result.Interests.Count);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfUserHasNoInterests()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserInterestsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserInterestsQuery(user.Id);
+
+            // Act
+            async Task result() => await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(result);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfUserWasNotFound()
+        {
+            // Arrange
+
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>())).ReturnsAsync((User)null);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserInterestsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserInterestsQuery(Guid.NewGuid());
+
+            // Act
+            async Task result() => await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(result);
         }
     }
 }

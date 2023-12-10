@@ -19,7 +19,7 @@
 
         public void AddUser(User user)
         {
-            if (!Users.Any(x => x.Id == user.Id))
+            if (!Users.Exists(x => x.Id == user.Id))
             {
                 Users.Add(user);
             }

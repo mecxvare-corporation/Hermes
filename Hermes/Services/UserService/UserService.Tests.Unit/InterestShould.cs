@@ -35,14 +35,29 @@ namespace UserService.Tests.Unit
             string lastName = "testTest";
             DateTime birthDay = DateTime.Now;
 
+            var newInterest = new Interest(interestName);
             var newUser = new User(name, lastName, birthDay);
 
             //Act
-            var newInterest = new Interest(interestName);
             newInterest.AddUser(newUser);
 
             //Assert
             Assert.Contains(newUser, newInterest.Users);
+        }
+
+        [Fact]
+        public void NotAddSameUserIntoItself()
+        {
+            // Arrange
+            var interest = new Interest("Interest");
+
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            // Act
+            interest.AddUser(user);
+
+            // Assert
+            Assert.Throws<InvalidOperationException>(() => interest.AddUser(user));
         }
     }
 }

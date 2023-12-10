@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.Database
 {
+    [ExcludeFromCodeCoverage]
     public class UserServiceDbContextInitialiser
     {
         private readonly ILogger<UserDbContext> _logger;

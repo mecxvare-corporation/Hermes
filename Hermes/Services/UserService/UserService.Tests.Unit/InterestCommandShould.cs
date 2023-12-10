@@ -42,6 +42,34 @@ namespace UserService.Tests.Unit
         }
 
         [Fact]
+        public async Task NotCreateAlreadyExistingInterest()
+        {
+            // Arrange
+            var existingInterest = new Interest("testInterest");
+
+            // Mock IInterestRepository
+            var interestRepoMock = new Mock<IInterestRepository>();
+            interestRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Interest, bool>>>(), It.IsAny<bool>())).ReturnsAsync(existingInterest);
+
+            // Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.InterestRepository).Returns(interestRepoMock.Object);
+
+            var handler = new CreateInterestCommandHandler(uowMock.Object);
+            var command = new CreateInterestCommand(new CreateInterestDto(existingInterest.Name));
+
+            // Act & Assert
+            async Task Execute() => await handler.Handle(command, CancellationToken.None);
+
+            // Verify that Create and CompleteAsync are not called
+            interestRepoMock.Verify(repo => repo.Create(It.IsAny<Interest>()), Times.Never);
+            uowMock.Verify(uow => uow.CompleteAsync(), Times.Never);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Execute);
+        }
+
+        [Fact]
         public async void DeleteExistingInterestById()
         {
             // Arrange

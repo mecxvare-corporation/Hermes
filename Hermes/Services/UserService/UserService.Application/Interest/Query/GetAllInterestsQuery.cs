@@ -22,7 +22,7 @@ namespace UserService.Application.Interests.Query
         {
             var interests = await _uow.InterestRepository.GetAllAsync();
 
-            if (interests.Count == 0)
+            if (interests is null || (interests is not null && interests.Count == 0))
             {
                 throw new InvalidOperationException("Interests were not found!");
             }

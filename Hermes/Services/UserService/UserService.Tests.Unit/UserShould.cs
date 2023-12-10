@@ -15,15 +15,15 @@ namespace UserService.Tests.Unit
         [Fact]
         public void ConstructedWithValidData()
         {
-            //Arrange
+            // Arrange
             string name = "test1";
             string lastName = "testTest";
             DateTime birthDay = DateTime.Now;
 
-            //Act
+            // Act
             var newUser = new User(name, lastName, birthDay);
 
-            //Assert
+            // Assert
             Assert.Equal(name, newUser.FirstName);
             Assert.Equal(lastName, newUser.LastName);
             Assert.Equal(birthDay.ToString(), newUser.DateOfBirth.ToString());
@@ -32,7 +32,7 @@ namespace UserService.Tests.Unit
         [Fact]
         public void UpdateItself()
         {
-            //Arrange
+            // Arrange
             string name = "test1";
             string lastName = "testTest";
             DateTime birthDay = DateTime.Now;
@@ -43,15 +43,75 @@ namespace UserService.Tests.Unit
             string updatedLastName = "testTest";
             DateTime updatedBirthDay = DateTime.Now;
 
-            //Act
+            // Act
             newUser.Update(updatedName, updatedLastName, updatedBirthDay);
 
-            //Assert
+            // Assert
             Assert.Equal(updatedName, newUser.FirstName);
             Assert.Equal(updatedLastName, newUser.LastName);
             Assert.Equal(updatedBirthDay.ToString(), newUser.DateOfBirth.ToString());
         }
 
+        [Fact]
+        public void AddInterestIntoItself()
+        {
+            // Arrange
+            string name = "test1";
+            string lastName = "testTest";
+            DateTime birthDay = DateTime.Now;
 
+            var newUser = new User(name, lastName, birthDay);
+            var newInterest = new Interest("Test");
+
+            // Act
+            newUser.AddInterest(newInterest);
+
+            // Assert
+            Assert.Contains(newInterest, newUser.Interests);
+        }
+
+        [Fact]
+        public void NotAddSameInterestIntoItself()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var existingInterest = new Interest("Existing Interest");
+
+            // Act
+            user.AddInterest(existingInterest);
+
+            // Assert
+            Assert.Throws<InvalidOperationException>(() => user.AddInterest(existingInterest));
+        }
+
+        [Fact]
+        public void RemoveInterestFromItself()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var existingInterest = new Interest("Existing Interest");
+
+            user.AddInterest(existingInterest);
+
+            // Act
+            user.RemoveInterest(existingInterest);
+
+            // Assert
+            Assert.DoesNotContain(existingInterest, user.Interests);
+        }
+
+        [Fact]
+        public void NotRemoveAbsentInterestFromItself()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var nonExistingInterest = new Interest("Nonexisting Interest");
+
+            // Act & Assert
+            Assert.Throws<InvalidOperationException>(() => user.RemoveInterest(nonExistingInterest));
+        }
     }
 }

@@ -30,7 +30,7 @@
 
         public void AddInterest(Interest interest)
         {
-            if (!Interests.Any(x => x.Id == interest.Id))
+            if (!Interests.Exists(x => x.Id == interest.Id))
             {
                 Interests.Add(interest);
             }
@@ -42,7 +42,7 @@
 
         public void RemoveInterest(Interest interest)
         {
-            if (Interests.Any(x => x.Id == interest.Id))
+            if (Interests.Exists(x => x.Id == interest.Id))
             {
                 Interests.Remove(interest);
             }

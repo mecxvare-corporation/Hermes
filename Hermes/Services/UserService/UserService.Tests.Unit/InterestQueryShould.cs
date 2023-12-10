@@ -53,5 +53,23 @@ namespace UserService.Tests.Unit
             Assert.IsAssignableFrom<IEnumerable<InterestDto>>(result);
             Assert.Equal(interests.Count, result.ToList().Count);
         }
+
+        [Fact]
+        public void ThrowExceptionIfNoInterestIsPresent()
+        {
+            // Mock IInterestRepository
+            var interestRepoMock = new Mock<IInterestRepository>();
+            interestRepoMock.Setup(repo => repo.GetAllAsync());
+
+            // Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.InterestRepository).Returns(interestRepoMock.Object);
+
+            var handler = new GetAllInterestsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetAllInterestsQuery();
+
+            // Assert
+            Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(query, CancellationToken.None));
+        }
     }
 }

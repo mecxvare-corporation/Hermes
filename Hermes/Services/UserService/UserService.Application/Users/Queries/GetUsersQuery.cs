@@ -25,6 +25,8 @@ namespace UserService.Application.Users.Queries
             var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
 
             return userDtos;
+
+            // ToDo Throw exception if no user if found in Db
         }
 
     }

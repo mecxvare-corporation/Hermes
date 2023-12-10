@@ -5,19 +5,19 @@ using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Queries
 {
-    public record GetUserInterestsCommand(Guid Id) : IRequest<GetUserInterestsDto>;
-    public class GetUserInterestsCommandHandler : IRequestHandler<GetUserInterestsCommand, GetUserInterestsDto>
+    public record GetUserInterestsQuery(Guid Id) : IRequest<GetUserInterestsDto>;
+    public class GetUserInterestsQueryHandler : IRequestHandler<GetUserInterestsQuery, GetUserInterestsDto>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetUserInterestsCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetUserInterestsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<GetUserInterestsDto> Handle(GetUserInterestsCommand request, CancellationToken cancellationToken)
+        public async Task<GetUserInterestsDto> Handle(GetUserInterestsQuery request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Id, true, x => x.Interests);
 

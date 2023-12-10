@@ -1,7 +1,8 @@
-﻿using Serilog;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace UserService.Api.Infrastructure.Middlewares;
 
+[ExcludeFromCodeCoverage]
 public class ErrorHandlingMiddleware
 {
     static readonly Serilog.ILogger Log = Serilog.Log.ForContext<ErrorHandlingMiddleware>();

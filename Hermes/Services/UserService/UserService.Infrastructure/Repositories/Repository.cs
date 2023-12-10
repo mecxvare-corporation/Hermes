@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
@@ -6,6 +7,7 @@ using UserService.Infrastructure.Database;
 
 namespace UserService.Infrastructure.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         private readonly UserDbContext _dbContext;

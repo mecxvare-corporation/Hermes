@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Hermes.Common;
 
+[ExcludeFromCodeCoverage]
 public class LoggingDelegatingHandler : DelegatingHandler
 {
     private readonly ILogger<LoggingDelegatingHandler> logger;

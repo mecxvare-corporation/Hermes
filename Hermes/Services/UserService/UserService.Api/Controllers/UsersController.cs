@@ -74,7 +74,7 @@ namespace UserService.Api.Controllers
         [HttpGet("interests/{id}", Name = nameof(GetUserInterests))]
         public async Task<ActionResult<GetUserInterestsDto>> GetUserInterests(Guid id)
         {
-            return Ok(await _mediator.Send(new GetUserInterestsCommand(id)));
+            return Ok(await _mediator.Send(new GetUserInterestsQuery(id)));
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using UserService.Domain.Interfaces;
+﻿using System.Diagnostics.CodeAnalysis;
+using UserService.Domain.Interfaces;
 using UserService.Infrastructure.Database;
 
 namespace UserService.Infrastructure
 {
+    [ExcludeFromCodeCoverage]
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly UserDbContext _context;

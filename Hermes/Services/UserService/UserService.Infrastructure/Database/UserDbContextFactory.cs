@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UserService.Infrastructure.Database
 {
+    [ExcludeFromCodeCoverage]
     public class UserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
     {
         public UserDbContext CreateDbContext(string[] args)
