@@ -16,8 +16,8 @@ namespace UserService.Application.Users.Commands
 
         public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-           
-            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u=>u.Id == request.Id);
+
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.Id);
 
             if (user == null)
             {
@@ -27,7 +27,6 @@ namespace UserService.Application.Users.Commands
             await _unitOfWork.UserRepository.DeleteAsync(user.Id);
 
             await _unitOfWork.CompleteAsync();
-
         }
     }
 }

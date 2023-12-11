@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Hermes.Common;
 
+[ExcludeFromCodeCoverage]
 public static class SeriLogger
 {
     public static Action<HostBuilderContext, LoggerConfiguration> Configure =>

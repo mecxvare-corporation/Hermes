@@ -6,9 +6,9 @@ using UserService.Infrastructure.Database;
 namespace UserService.Infrastructure.Repositories
 {
     [ExcludeFromCodeCoverage]
-    public class UserRepository : Repository<User>, IUserRepository
+    public class InterestRepository : Repository<Interest>, IInterestRepository
     {
-        public UserRepository(UserDbContext dbContext) : base(dbContext)
+        public InterestRepository(UserDbContext dbContext) : base(dbContext)
         {
         }
     }

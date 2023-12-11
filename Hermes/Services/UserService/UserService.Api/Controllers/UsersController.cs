@@ -17,7 +17,7 @@ namespace UserService.Api.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetUsers")]
         public async Task<ActionResult<List<UserDto>>> GetUsersAsync()
         {
             var usersDtos = await _mediator.Send(new GetUsersQuery());
@@ -25,7 +25,7 @@ namespace UserService.Api.Controllers
             return Ok(usersDtos);
         }
 
-        [HttpGet("{id}", Name = nameof(GetUserAsync))]
+        [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUserAsync(Guid id)
         {
             return Ok(await _mediator.Send(new GetUserQuery(id)));
@@ -43,6 +43,7 @@ namespace UserService.Api.Controllers
         public async Task<ActionResult> Update([FromBody] UpdateUserCommand command)
         {
             await _mediator.Send(command);
+
             return NoContent();
         }
 
@@ -52,6 +53,28 @@ namespace UserService.Api.Controllers
             await _mediator.Send(new DeleteUserCommand(id));
 
             return NoContent();
+        }
+
+        [HttpPut("interests")]
+        public async Task<ActionResult> UpdateUserInterests([FromBody] UpdateUserInterestCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpDelete("interests")]
+        public async Task<ActionResult> RemoveUserInterests([FromBody] DeleteUserInterestCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpGet("interests/{id}", Name = nameof(GetUserInterests))]
+        public async Task<ActionResult<GetUserInterestsDto>> GetUserInterests(Guid id)
+        {
+            return Ok(await _mediator.Send(new GetUserInterestsQuery(id)));
         }
     }
 }

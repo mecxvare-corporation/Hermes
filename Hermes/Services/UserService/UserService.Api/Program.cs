@@ -31,6 +31,7 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddScoped<UserServiceDbContextInitialiser>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(CreateUserCommand))!));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
@@ -51,7 +52,7 @@ if (app.Environment.IsDevelopment())
         var initialiser = scope.ServiceProvider.GetRequiredService<UserServiceDbContextInitialiser>();
 
         await initialiser.InitialiseAsync();
-        //await initialiser.SeedAsync(); TODO seed if needed
+        await initialiser.SeedAsync();
     }
 }
 

@@ -6,11 +6,14 @@ namespace UserService.Application.Mappers
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile() 
+        public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<CreateUserDto, User>();
             CreateMap<UpdateUserDto, User>();
+
+            CreateMap<Interest, InterestDto>().ReverseMap();
+            CreateMap<CreateInterestDto, Interest>();
         }
     }
 }

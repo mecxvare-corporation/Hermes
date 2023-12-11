@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
@@ -6,6 +7,7 @@ using UserService.Infrastructure.Database;
 
 namespace UserService.Infrastructure.Repositories
 {
+    [ExcludeFromCodeCoverage]
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         private readonly UserDbContext _dbContext;
@@ -47,18 +49,6 @@ namespace UserService.Infrastructure.Repositories
         public IQueryable<TEntity> GetRowsQueryable(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes)
         {
             return GetRowsQueryable(where, false, includes);
-        }
-
-        public async Task<List<TEntity>> GetRowsAsync(Expression<Func<TEntity, bool>> where, bool tracking, params Expression<Func<TEntity, object>>[] includes)
-        {
-            var queryable = GetRowsQueryable(where, tracking, includes);
-
-            return await queryable.ToListAsync();
-        }
-
-        public virtual async Task<List<TEntity>> GetRowsAsync(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes)
-        {
-            return await GetRowsAsync(where, false, includes);
         }
 
         public virtual async Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes)
@@ -110,11 +100,11 @@ namespace UserService.Infrastructure.Repositories
             await _dbContext.AddRangeAsync(entities);
         }
 
-        public async Task DeleteAsync(Guid id) 
+        public async Task DeleteAsync(Guid id)
         {
             var entity = await GetFirstOrDefaultAsync(u => u.Id == id);
 
-            if (entity == null) 
+            if (entity == null)
             {
                 throw new InvalidOperationException($"{typeof(TEntity).Name} With Id: {id}, Does not exists!");
             }

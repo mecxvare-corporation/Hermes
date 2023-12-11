@@ -44,7 +44,7 @@ services:
     ports:
         - "5050:80"
     volumes:
-      - pgadmin_data:/root/.pgadmin
+      - ./data/pgadmin:/var/lib/pgadmin
 
   hermes.webstatus:
     environment:

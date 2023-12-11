@@ -20,10 +20,10 @@ namespace UserService.Application.Users.Commands
 
         public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            
+
             var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.Dto.Id, true);
 
-            if(user == null)
+            if (user == null)
             {
                 throw new InvalidOperationException("User was not found!");
             }

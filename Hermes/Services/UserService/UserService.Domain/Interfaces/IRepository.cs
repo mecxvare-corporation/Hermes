@@ -1,8 +1,9 @@
 ﻿using System.Linq.Expressions;
+using UserService.Domain.Entities;
 
 namespace UserService.Domain.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : Entity
     {
         public Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> where, bool tracking, params Expression<Func<TEntity, object>>[] includes);
 
@@ -11,10 +12,6 @@ namespace UserService.Domain.Interfaces
         public IQueryable<TEntity> GetRowsQueryable(Expression<Func<TEntity, bool>> where, bool tracking, params Expression<Func<TEntity, object>>[] includes);
 
         public IQueryable<TEntity> GetRowsQueryable(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes);
-
-        public Task<List<TEntity>> GetRowsAsync(Expression<Func<TEntity, bool>> where, bool tracking, params Expression<Func<TEntity, object>>[] includes);
-
-        public Task<List<TEntity>> GetRowsAsync(Expression<Func<TEntity, bool>> where, params Expression<Func<TEntity, object>>[] includes);
 
         public Task<List<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includes);
 

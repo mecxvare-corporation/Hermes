@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UserService.Infrastructure.Database
 {
+    [ExcludeFromCodeCoverage]
     public class UserDbContextFactory : IDesignTimeDbContextFactory<UserDbContext>
     {
         public UserDbContext CreateDbContext(string[] args)
@@ -18,7 +20,7 @@ namespace UserService.Infrastructure.Database
             var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>()
                 .UseNpgsql(connectionString);
 
-            return new UserDbContext(optionsBuilder.Options); //srvers ver ukavshirdeba vnaxot mere ra xdeba
+            return new UserDbContext(optionsBuilder.Options);
         }
     }
 }

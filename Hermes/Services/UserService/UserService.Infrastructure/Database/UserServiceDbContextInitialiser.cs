@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
+using UserService.Domain.Entities;
 
 namespace UserService.Infrastructure.Database
 {
+    [ExcludeFromCodeCoverage]
     public class UserServiceDbContextInitialiser
     {
         private readonly ILogger<UserDbContext> _logger;
@@ -45,7 +48,26 @@ namespace UserService.Infrastructure.Database
 
         public async Task TrySeedAsync()
         {
-            //TODO seeding if needed
+            if (!_context.Interests.Any())
+            {
+                var interestsList = new List<Interest>
+            {
+                new Interest("Travel"),
+                new Interest("Food and Cooking"),
+                new Interest("Fitness and Wellness"),
+                new Interest("Fashion"),
+                new Interest("Technology"),
+                new Interest("Books and Literature"),
+                new Interest("Movies and TV Shows"),
+                new Interest("Music"),
+                new Interest("Gaming"),
+                new Interest("Art and Creativity")
+            };
+
+                await _context.AddRangeAsync(interestsList);
+
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
