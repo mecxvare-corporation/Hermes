@@ -6,8 +6,9 @@ using UserService.Application.Dtos;
 using UserService.Application.Users.Commands;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
+using UserService.Tests.Unit.Helpers;
 
-namespace UserService.Tests.Unit
+namespace UserService.Tests.Unit.Commands
 {
     [Collection("MyCollection")]
     public class UserCommandShould
@@ -82,13 +83,15 @@ namespace UserService.Tests.Unit
 
             var interestIds = interestList.Select(i => i.Id).ToList();
 
+            var interestsQueryable = interestList.AsAsyncQueryable();
+
             // Mock IUserRepository
             var userRepoMock = new Mock<IUserRepository>();
             userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
 
             // Mock IInterestRepository
             var interestRepoMock = new Mock<IInterestRepository>();
-            interestRepoMock.Setup(repo => repo.GetRowsQueryable(It.IsAny<Expression<Func<Interest, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<Interest, object>>[]>())).Returns(interestList.AsQueryable());
+            interestRepoMock.Setup(repo => repo.GetRowsQueryable(It.IsAny<Expression<Func<Interest, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<Interest, object>>[]>())).Returns(interestsQueryable);
 
             // Mock IUnitOfWork
             var uowMock = new Mock<IUnitOfWork>();
@@ -191,9 +194,13 @@ namespace UserService.Tests.Unit
             var userRepoMock = new Mock<IUserRepository>();
             userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
 
+            var interestRepositoryMock = new Mock<IInterestRepository>();
+            interestRepositoryMock.Setup(repository => repository.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<Interest, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<Interest, object>>[]>())).ReturnsAsync(interest);
+
             // Mock IUnitOfWork
             var uowMock = new Mock<IUnitOfWork>();
             uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+            uowMock.Setup(uow => uow.InterestRepository).Returns(interestRepositoryMock.Object);
 
             var handler = new DeleteUserInterestCommandHandler(uowMock.Object);
             var command = new DeleteUserInterestCommand(new DeleteUserInterestDto(user.Id, interest.Id));

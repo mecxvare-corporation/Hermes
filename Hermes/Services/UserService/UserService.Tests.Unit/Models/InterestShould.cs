@@ -1,6 +1,6 @@
 ﻿using UserService.Domain.Entities;
 
-namespace UserService.Tests.Unit
+namespace UserService.Tests.Unit.Models
 {
     [Collection("MyCollection")]
     public class InterestShould

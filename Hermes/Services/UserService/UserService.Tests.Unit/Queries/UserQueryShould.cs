@@ -7,7 +7,7 @@ using UserService.Application.Users.Queries;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 
-namespace UserService.Tests.Unit
+namespace UserService.Tests.Unit.Queries
 {
     [Collection("MyCollection")]
     public class UserQueryShould

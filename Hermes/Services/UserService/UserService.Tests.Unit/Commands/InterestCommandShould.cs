@@ -5,7 +5,7 @@ using UserService.Application.Interests.Command;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 
-namespace UserService.Tests.Unit
+namespace UserService.Tests.Unit.Commands
 {
     [Collection("MyCollection")]
     public class InterestCommandShould

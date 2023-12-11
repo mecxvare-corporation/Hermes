@@ -6,7 +6,7 @@ using UserService.Application.Interests.Query;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 
-namespace UserService.Tests.Unit
+namespace UserService.Tests.Unit.Queries
 {
     [Collection("MyCollection")]
     public class InterestQueryShould
