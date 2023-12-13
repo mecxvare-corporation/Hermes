@@ -133,7 +133,7 @@ namespace UserService.Tests.Unit.Queries
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<GetUserInterestsDto>(result);
+            Assert.IsAssignableFrom<UserInterestsDto>(result);
             Assert.Equal(user.Interests.Count, result.Interests.Count);
         }
 

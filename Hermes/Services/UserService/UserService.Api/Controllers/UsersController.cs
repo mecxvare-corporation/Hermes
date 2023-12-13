@@ -72,9 +72,29 @@ namespace UserService.Api.Controllers
         }
 
         [HttpGet("interests/{id}", Name = nameof(GetUserInterests))]
-        public async Task<ActionResult<GetUserInterestsDto>> GetUserInterests(Guid id)
+        public async Task<ActionResult<UserInterestsDto>> GetUserInterests(Guid id)
         {
             return Ok(await _mediator.Send(new GetUserInterestsQuery(id)));
+        }
+
+        [HttpPost("{userId}", Name =nameof(UploadImage))]
+        public async Task<IActionResult> UploadImage([FromRoute] Guid userId, [FromForm] IFormFile imageFile)
+        {
+            // Convert the uploaded image file to a byte array
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.CopyToAsync(memoryStream);
+                byte[] imageData = memoryStream.ToArray();
+
+                // Get the content type of the image
+                string imageContentType = imageFile.ContentType;
+
+                // Send the image upload command to the MediatR pipeline
+                var imageUrl = await _mediator.Send(new UploadUserProfilePictureCommand(userId, imageData, imageContentType));
+
+                // Return the image URL in the response
+                return Ok(new { ImageUrl = imageUrl });
+            }
         }
     }
 }
