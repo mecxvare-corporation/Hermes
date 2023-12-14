@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using UserService.Api.Extensions;
 using UserService.Application.Dtos;
 using UserService.Application.Users.Commands;
 using UserService.Application.Users.Queries;
@@ -80,21 +81,15 @@ namespace UserService.Api.Controllers
         [HttpPost("image/{userId}", Name =nameof(UploadImage))]
         public async Task<IActionResult> UploadImage([FromRoute] Guid userId, [FromForm] IFormFile imageFile)
         {
-            // Convert the uploaded image file to a byte array
-            using (var memoryStream = new MemoryStream())
+            using (Stream fileStream = imageFile.ConvertToStream())
             {
-                await imageFile.CopyToAsync(memoryStream);
-                byte[] imageData = memoryStream.ToArray();
+                string fileName = imageFile.FileName;
 
-                // Get the content type of the image
-                string imageContentType = imageFile.ContentType;
+                await _mediator.Send(new UploadUserProfilePictureCommand(userId, fileStream ,fileName));
 
-                // Send the image upload command to the MediatR pipeline
-                var imageUrl = await _mediator.Send(new UploadUserProfilePictureCommand(userId, imageData, imageContentType));
-
-                // Return the image URL in the response
-                return Ok(new { ImageUrl = imageUrl });
             }
+
+            return Ok();
         }
 
         [HttpDelete("image/{userId}", Name = nameof(DeleteImage))]

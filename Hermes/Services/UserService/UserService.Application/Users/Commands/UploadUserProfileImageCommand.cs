@@ -4,7 +4,7 @@ using UserService.Infrastructure.Services.ProfilePicture;
 
 namespace UserService.Application.Users.Commands
 {
-    public record UploadUserProfilePictureCommand(Guid userId, byte[] imageData, string imageContentType) : IRequest<string>;
+    public record UploadUserProfilePictureCommand(Guid userId, Stream fileStream, string fileName) : IRequest<string>;
 
     public class UploadUserPictureCommandHandler : IRequestHandler<UploadUserProfilePictureCommand, string>
     {
@@ -19,7 +19,29 @@ namespace UserService.Application.Users.Commands
 
         public async Task<string> Handle(UploadUserProfilePictureCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.userId);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User was not found!");
+            }
+
+            var imageName = await _profilePictureService.UploadImageAsync(request.fileStream, request.fileName);
+
+            if (imageName == null) 
+            {
+                throw new InvalidOperationException("Image was not uploaded!");
+            }
+
+            Guid r = Guid.NewGuid();
+            string userImageName = (imageName +r.ToString()).ToLower();
+
+            user.SetImageUri(userImageName);
+
+            await _unitOfWork.CompleteAsync();
+
+            return userImageName;
+
         }
     }
 }

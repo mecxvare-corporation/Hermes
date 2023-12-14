@@ -2,7 +2,7 @@
 {
     public interface IProfilePictureService
     {
-        public Task<string> UploadImageAsync(Guid userId, byte[] imageData, string fileName, string fileExtension);
-        public Task DeleteImageAsync(Guid userId);
+        public Task<string> UploadImageAsync(Stream fileStream, string fileName);
+        public Task DeleteImageAsync(string fileName);
     }
 }

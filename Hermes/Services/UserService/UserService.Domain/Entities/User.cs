@@ -53,9 +53,9 @@
             }
         }
 
-        public void SetImageUri(string imangeName, string imageExtension)
+        public void SetImageUri(string imangeName)
         {
-            ProfileImage = (imangeName + imageExtension).ToLower();
+            ProfileImage = imangeName;
         }
 
         public void RemoveImageUri()

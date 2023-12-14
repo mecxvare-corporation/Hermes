@@ -4,7 +4,7 @@ using UserService.Infrastructure.Services.ProfilePicture;
 
 namespace UserService.Application.Users.Commands
 {
-    public record DeleteUserProfileImageCommand(Guid id) : IRequest;
+    public record DeleteUserProfileImageCommand(Guid userId) : IRequest;
 
     public class DeleteUserProfileImageCommandHandler : IRequestHandler<DeleteUserProfileImageCommand>
     {
@@ -17,9 +17,20 @@ namespace UserService.Application.Users.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public Task Handle(DeleteUserProfileImageCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteUserProfileImageCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.userId);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("User was not found!");
+            }
+
+            await _profilePictureService.DeleteImageAsync(user.ProfileImage);
+
+            user.RemoveImageUri();
+
+            await _unitOfWork.CompleteAsync();
         }
     }
 }
