@@ -5,7 +5,7 @@
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public DateTime DateOfBirth { get; private set; }
-        public string ProfileImageUri { get; private set; } = string.Empty;
+        public string ProfileImage { get; private set; } = string.Empty;
 
         public List<Interest> Interests { get; set; } = new List<Interest>();
 
@@ -14,13 +14,12 @@
 
         }
 
-        public User(string firstName, string lastName, DateTime dateOfBirth, string imageUri)
+        public User(string firstName, string lastName, DateTime dateOfBirth)
         {
             Id = Guid.NewGuid();
             FirstName = firstName;
             LastName = lastName;
             DateOfBirth = dateOfBirth;
-            ProfileImageUri = imageUri;
         }
 
         public void Update(string firstName, string lastName, DateTime dateOfBirth)
@@ -54,9 +53,14 @@
             }
         }
 
-        public void SetImageUri(string imageUri)
+        public void SetImageUri(string imangeName, string imageExtension)
         {
-            ProfileImageUri = imageUri;
+            ProfileImage = (imangeName + imageExtension).ToLower();
+        }
+
+        public void RemoveImageUri()
+        {
+            ProfileImage = string.Empty;
         }
     }
 }

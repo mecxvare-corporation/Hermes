@@ -77,7 +77,7 @@ namespace UserService.Api.Controllers
             return Ok(await _mediator.Send(new GetUserInterestsQuery(id)));
         }
 
-        [HttpPost("{userId}", Name =nameof(UploadImage))]
+        [HttpPost("image/{userId}", Name =nameof(UploadImage))]
         public async Task<IActionResult> UploadImage([FromRoute] Guid userId, [FromForm] IFormFile imageFile)
         {
             // Convert the uploaded image file to a byte array
@@ -95,6 +95,13 @@ namespace UserService.Api.Controllers
                 // Return the image URL in the response
                 return Ok(new { ImageUrl = imageUrl });
             }
+        }
+
+        [HttpDelete("image/{userId}", Name = nameof(DeleteImage))]
+        public async Task<IActionResult> DeleteImage(Guid userId)
+        {
+            await _mediator.Send(new DeleteUserProfileImageCommand(userId));
+            return Ok();
         }
     }
 }
