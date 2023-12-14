@@ -79,7 +79,7 @@ namespace UserService.Api.Controllers
         }
 
         [HttpPost("image/{userId}", Name =nameof(UploadImage))]
-        public async Task<IActionResult> UploadImage([FromRoute] Guid userId, [FromForm] IFormFile imageFile)
+        public async Task<IActionResult> UploadImage([FromRoute] Guid userId, IFormFile imageFile)
         {
             using (Stream fileStream = imageFile.ConvertToStream())
             {

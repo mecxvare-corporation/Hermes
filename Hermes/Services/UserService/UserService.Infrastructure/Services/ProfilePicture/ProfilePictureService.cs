@@ -1,21 +1,22 @@
 ﻿using Azure.Storage;
 using Azure.Storage.Blobs;
+using Microsoft.Extensions.Configuration;
 
 namespace UserService.Infrastructure.Services.ProfilePicture
 {
     public class ProfilePictureService : IProfilePictureService
     {
-        private readonly string _storageAcc = string.Empty;
-        private readonly string _key = string.Empty;
-        private readonly string _containerName = string.Empty;
+        private readonly IConfiguration _configuration;
         private readonly BlobContainerClient _containerClient;
 
-        public ProfilePictureService()
+        public ProfilePictureService(IConfiguration configuration)
         {
-            var credentials = new StorageSharedKeyCredential(_key, _storageAcc);
-            var blobUri = $"https://{_storageAcc}.blob.core.windows.net";
+            _configuration = configuration;
+
+            var credentials = new StorageSharedKeyCredential(_configuration["AzureStorage Key"], _configuration["AzureStorage Accaunt"]);
+            var blobUri = $"https://{_configuration["AzureStorage Accaunt"]}.blob.core.windows.net";
             var blobServiceClient = new BlobServiceClient(new Uri(blobUri), credentials);
-            _containerClient = blobServiceClient.GetBlobContainerClient(_containerName);
+            _containerClient = blobServiceClient.GetBlobContainerClient(_configuration["AzureStorage ContainerName"]);
 
         }
         public async Task DeleteImageAsync(string fileName)

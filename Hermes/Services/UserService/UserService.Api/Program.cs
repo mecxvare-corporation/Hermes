@@ -11,6 +11,7 @@ using UserService.Domain.Interfaces;
 using UserService.Infrastructure;
 using UserService.Infrastructure.Database;
 using UserService.Infrastructure.Repositories;
+using UserService.Infrastructure.Services.ProfilePicture;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,9 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
 builder.Services.AddHealthChecks()
                 .AddNpgSql(builder.Configuration.GetConnectionString("UserServiceConnectionString")!);
+
+
+builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
 
 var app = builder.Build();
 
