@@ -53,9 +53,9 @@
             }
         }
 
-        public void SetImageUri(string imangeName)
+        public void SetImageUri(string imageName)
         {
-            ProfileImage = imangeName;
+            ProfileImage = imageName;
         }
 
         public void RemoveImageUri()

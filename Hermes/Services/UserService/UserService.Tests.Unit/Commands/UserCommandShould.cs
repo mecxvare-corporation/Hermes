@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Storage.Blobs;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Linq.Expressions;
@@ -6,6 +7,7 @@ using UserService.Application.Dtos;
 using UserService.Application.Users.Commands;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
+using UserService.Infrastructure.Services.ProfilePicture;
 using UserService.Tests.Unit.Helpers;
 
 namespace UserService.Tests.Unit.Commands
@@ -211,5 +213,7 @@ namespace UserService.Tests.Unit.Commands
             // Assert
             Assert.DoesNotContain(interest, user.Interests);
         }
+
+
     }
 }
