@@ -19,7 +19,7 @@ namespace UserService.Application.Users.Commands
 
         public async Task<string> Handle(UploadUserProfilePictureCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.userId);
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == request.userId, true);
 
             if (user == null)
             {
