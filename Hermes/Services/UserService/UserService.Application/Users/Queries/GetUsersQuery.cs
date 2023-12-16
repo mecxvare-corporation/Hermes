@@ -22,11 +22,14 @@ namespace UserService.Application.Users.Queries
         {
             var users = await _uow.UserRepository.GetAllAsync();
 
+            if (users.Count == 0 || users is null)
+            {
+                throw new InvalidOperationException("No users were found!");
+            }
+
             var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
 
             return userDtos;
-
-            // ToDo Throw exception if no user if found in Db
         }
 
     }
