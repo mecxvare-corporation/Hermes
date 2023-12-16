@@ -22,7 +22,7 @@ namespace UserService.Application.Users.Queries
         {
             var users = await _uow.UserRepository.GetAllAsync();
 
-            if (users.Count == 0 || users is null)
+            if (users.Count == 0)
             {
                 throw new InvalidOperationException("No users were found!");
             }
