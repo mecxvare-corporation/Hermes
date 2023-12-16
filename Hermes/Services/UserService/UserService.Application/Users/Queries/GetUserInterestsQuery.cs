@@ -6,6 +6,7 @@ using UserService.Domain.Interfaces;
 namespace UserService.Application.Users.Queries
 {
     public record GetUserInterestsQuery(Guid Id) : IRequest<GetUserInterestsDto>;
+
     public class GetUserInterestsQueryHandler : IRequestHandler<GetUserInterestsQuery, GetUserInterestsDto>
     {
         private readonly IUnitOfWork _unitOfWork;

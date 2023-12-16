@@ -17,7 +17,6 @@ namespace UserService.Tests.Unit.Commands
             _serviceProvider = fixture.ServiceProvider;
         }
 
-
         [Fact]
         public async Task CreateNewInterest()
         {

@@ -17,11 +17,19 @@ namespace UserService.Application.Users.Commands
 
         public async Task Handle(DeleteUserInterestCommand request, CancellationToken cancellationToken)
         {
-            var user = await _uow.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.UserId, true, x => x.Interests)
-                ?? throw new InvalidOperationException($"User with Id {request.Dto.UserId} not found");
+            var user = await _uow.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.UserId, true, x => x.Interests);
 
-            var interest = await _uow.InterestRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.InterestId, true, x => x.Users)
-                ?? throw new InvalidOperationException($"Interest with Id {request.Dto.InterestId} not found");
+            if (user is null)
+            {
+                throw new InvalidOperationException($"User with Id {request.Dto.UserId} not found");
+            }
+
+            var interest = await _uow.InterestRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.InterestId, true, x => x.Users);
+
+            if (interest is null)
+            {
+                throw new InvalidOperationException($"Interest with Id {request.Dto.InterestId} not found");
+            }
 
             user.RemoveInterest(interest);
 

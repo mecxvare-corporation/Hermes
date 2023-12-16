@@ -19,7 +19,6 @@ namespace UserService.Tests.Unit.Queries
             _serviceProvider = fixture.ServiceProvider;
         }
 
-
         [Fact]
         public async Task GetSingleUserById()
         {
@@ -182,6 +181,27 @@ namespace UserService.Tests.Unit.Queries
 
             // Assert
             await Assert.ThrowsAsync<InvalidOperationException>(result);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfNoUserWasFoundDuringGetAllUsers()
+        {
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(new List<User>());
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUsersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUsersQuery();
+
+            // Act
+            async Task Result() => await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Result);
         }
     }
 }
