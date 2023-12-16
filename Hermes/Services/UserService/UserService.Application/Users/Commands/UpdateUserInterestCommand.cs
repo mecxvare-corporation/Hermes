@@ -27,7 +27,7 @@ namespace UserService.Application.Users.Commands
 
             var interests = await _unitOfWork.InterestRepository.GetRowsQueryable(x => request.Dto.InterestIds.Contains(x.Id), true, x => x.Users).ToListAsync(cancellationToken);
 
-            if (interests.Count == 0 || interests is null)
+            if (interests.Count == 0)
             {
                 throw new InvalidOperationException("Interests not found");
             }
