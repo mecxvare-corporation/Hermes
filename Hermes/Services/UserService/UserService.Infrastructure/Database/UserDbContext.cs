@@ -13,36 +13,5 @@ namespace UserService.Infrastructure.Database
 
         public DbSet<User> Users { get; set; }
         public DbSet<Interest> Interests { get; set; }
-        public DbSet<UserFriend> UserFriend { get; set; }
-        public DbSet<UserFollower> UserFollower { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserFollower>()
-                .HasOne(uf => uf.User)
-                .WithMany(u => u.Followers)
-                .HasForeignKey(uf => uf.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserFollower>()
-                .HasOne(uf => uf.Follower)
-                .WithMany()
-                .HasForeignKey(uf => uf.FollowerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<UserFriend>()
-                .HasOne(uf => uf.User)
-                .WithMany(u => u.Friends)
-                .HasForeignKey(uf => uf.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserFriend>()
-                .HasOne(uf => uf.Friend)
-                .WithMany()
-                .HasForeignKey(uf => uf.FriendId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
