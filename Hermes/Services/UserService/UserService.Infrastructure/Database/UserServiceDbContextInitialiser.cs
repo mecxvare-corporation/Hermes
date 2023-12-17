@@ -48,23 +48,59 @@ namespace UserService.Infrastructure.Database
 
         public async Task TrySeedAsync()
         {
+            await SeedInterests();
+            await SeedUsers();
+        }
+
+        public async Task SeedInterests()
+        {
             if (!_context.Interests.Any())
             {
                 var interestsList = new List<Interest>
-            {
-                new Interest("Travel"),
-                new Interest("Food and Cooking"),
-                new Interest("Fitness and Wellness"),
-                new Interest("Fashion"),
-                new Interest("Technology"),
-                new Interest("Books and Literature"),
-                new Interest("Movies and TV Shows"),
-                new Interest("Music"),
-                new Interest("Gaming"),
-                new Interest("Art and Creativity")
-            };
+                {
+                    new Interest("Travel"),
+                    new Interest("Food and Cooking"),
+                    new Interest("Fitness and Wellness"),
+                    new Interest("Fashion"),
+                    new Interest("Technology"),
+                    new Interest("Books and Literature"),
+                    new Interest("Movies and TV Shows"),
+                    new Interest("Music"),
+                    new Interest("Gaming"),
+                    new Interest("Art and Creativity")
+                };
 
                 await _context.AddRangeAsync(interestsList);
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task SeedUsers()
+        {
+            if (!_context.Users.Any())
+            {
+                var esgeso = new User("Esgeso", "Namoradze", DateTime.UtcNow);
+                var takhmaGido = new User("Takhma", "Gido", DateTime.UtcNow);
+                var zoro = new User("Zoro", "", DateTime.UtcNow);
+                var madona = new User("Madona", "", DateTime.UtcNow);
+                var mchedeliVano = new User("Mchedeli", "Vano", DateTime.UtcNow);
+
+                var userList = new List<User>
+                {
+                    esgeso,
+                    takhmaGido,
+                    zoro,
+                    madona,
+                    mchedeliVano
+                };
+
+                zoro.AddFriend(madona);
+
+                esgeso.AddFriend(mchedeliVano);
+                esgeso.AddFriend(takhmaGido);
+
+                await _context.AddRangeAsync(userList);
 
                 await _context.SaveChangesAsync();
             }

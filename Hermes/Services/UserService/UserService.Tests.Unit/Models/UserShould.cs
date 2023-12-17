@@ -1,4 +1,5 @@
 ﻿using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 
 namespace UserService.Tests.Unit.Models
 {
@@ -82,7 +83,7 @@ namespace UserService.Tests.Unit.Models
             user.AddInterest(existingInterest);
 
             // Assert
-            Assert.Throws<InvalidOperationException>(() => user.AddInterest(existingInterest));
+            Assert.Throws<AlreadyExistsException>(() => user.AddInterest(existingInterest));
         }
 
         [Fact]
@@ -111,7 +112,7 @@ namespace UserService.Tests.Unit.Models
             var nonExistingInterest = new Interest("Nonexisting Interest");
 
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => user.RemoveInterest(nonExistingInterest));
+            Assert.Throws<AlreadyExistsException>(() => user.RemoveInterest(nonExistingInterest));
         }
     }
 }
