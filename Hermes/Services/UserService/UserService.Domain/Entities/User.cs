@@ -9,8 +9,8 @@ namespace UserService.Domain.Entities
         public DateTime DateOfBirth { get; private set; }
 
         public List<Interest> Interests { get; set; } = new List<Interest>();
-        public List<UserFriend> Friends { get; set; } = new List<UserFriend>();
-        public List<UserFollower> Followers { get; set; } = new List<UserFollower>();
+        public List<User> Friends { get; set; } = new List<User>();
+        public List<User> Followers { get; set; } = new List<User>();
 
         private User()
         {
@@ -58,74 +58,40 @@ namespace UserService.Domain.Entities
 
         public void AddFriend(User friend)
         {
-            if (!Friends.Exists(x => x.FriendId == friend.Id))
-            {
-                // ამ იუზერისთვის ახალი მეგობრის დამატება.
-                UserFriend newFriend = new(this, friend);
-
-                Friends.Add(newFriend);
-
-                // მეგობრისთვის ამ იუზერის მეგობრებში ჩამატება
-                UserFriend thisUser = new(friend, this);
-
-                friend.Friends.Add(thisUser);
-
-                AddFollower(friend);
-            }
-            else
-            {
+            if (Friends.Exists(x => x.Id == friend.Id))
                 throw new AlreadyExistsException("This user is already a friend!");
-            }
+
+            Friends.Add(friend);
+            friend.Friends.Add(this);
+
+            AddFollower(friend);
+            friend.AddFollower(this);
         }
 
-        public void RemoveFriend(User friend)
+        public void RemoveFriend(Guid friendId)
         {
-            if (Friends.Exists(x => x.FriendId == friend.Id))
-            {
-                //ამ იუზერის მეგობრებიდან მეგობრის ამოშლა
-                var friendToRemove = Friends.FirstOrDefault(z => z.FriendId == friend.Id);
+            var friend = Friends.FirstOrDefault(x => x.Id == friendId) ?? throw new NotFoundException("Friend was not found!");
 
-                Friends.Remove(friendToRemove);
+            Friends.Remove(friend);
+            friend.Friends.Remove(this);
 
-                // მეგობრის სიიდან ამ იუზერის წაშლა
-                var thisUser = friend.Friends.FirstOrDefault(z => z.UserId == this.Id);
-
-                friend.Friends.Remove(thisUser);
-
-                RemoveFollower(friend);
-            }
-            else
-            {
-                throw new NotFoundException("Friend was not found!");
-            }
+            RemoveFollower(friend.Id);
+            friend.RemoveFollower(Id);
         }
 
         public void AddFollower(User follower)
         {
-            if (!Followers.Exists(x => x.FollowerId == follower.Id))
-            {
-                var newFollower = new UserFollower(this, follower);
-
-                Followers.Add(newFollower);
-            }
-            else
-            {
+            if (Followers.Exists(x => x.Id == follower.Id))
                 throw new AlreadyExistsException("This user is already a follower!");
-            }
+
+            Followers.Add(follower);
         }
 
-        public void RemoveFollower(User follower)
+        public void RemoveFollower(Guid followerId)
         {
-            if (Followers.Exists(x => x.FollowerId == follower.Id))
-            {
-                var followerToRemove = Followers.FirstOrDefault(x => x.FollowerId == follower.Id);
+            var follower = Followers.FirstOrDefault(x => x.Id == followerId) ?? throw new NotFoundException("Follower was not found!");
 
-                Followers.Remove(followerToRemove);
-            }
-            else
-            {
-                throw new NotFoundException("Follower was not found!");
-            }
+            Followers.Remove(follower);
         }
     }
 }
