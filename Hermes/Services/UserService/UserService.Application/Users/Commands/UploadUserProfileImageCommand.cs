@@ -26,21 +26,27 @@ namespace UserService.Application.Users.Commands
                 throw new InvalidOperationException("User was not found!");
             }
 
-            var imageName = await _profilePictureService.UploadImageAsync(request.fileStream, request.fileName);
+            if (user.ProfileImage != string.Empty)
+            {
+                await _profilePictureService.DeleteImageAsync(user.ProfileImage);
+                user.RemoveImageUri();
+            }
+
+            Guid imageIdentifer = Guid.NewGuid();
+            string imageNameToSave = (imageIdentifer.ToString() + "_" + request.fileName).ToLower();
+
+            var imageName = await _profilePictureService.UploadImageAsync(request.fileStream, imageNameToSave);
 
             if (imageName == null) 
             {
                 throw new InvalidOperationException("Image was not uploaded!");
             }
 
-            Guid r = Guid.NewGuid();
-            string userImageName = (imageName +r.ToString()).ToLower();
-
-            user.SetImageUri(userImageName);
+            user.SetImageUri(imageName);
 
             await _unitOfWork.CompleteAsync();
 
-            return userImageName;
+            return imageName;
 
         }
     }

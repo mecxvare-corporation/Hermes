@@ -276,7 +276,6 @@ namespace UserService.Tests.Unit.Commands
 
             //Assert
             Assert.Equal(string.Empty, user.ProfileImage);
-
         }
 
     }
