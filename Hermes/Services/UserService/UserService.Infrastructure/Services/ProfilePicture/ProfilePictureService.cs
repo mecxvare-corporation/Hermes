@@ -43,6 +43,10 @@ namespace UserService.Infrastructure.Services.ProfilePicture
 
         public string GetImageUrl(string fileName)
         {
+            if (fileName == string.Empty)
+            {
+                return string.Empty;
+            }
             var blob = _containerClient.GetBlobClient(fileName);
 
             return blob.Uri.ToString();

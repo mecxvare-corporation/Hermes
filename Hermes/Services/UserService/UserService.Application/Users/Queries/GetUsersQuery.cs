@@ -30,11 +30,23 @@ namespace UserService.Application.Users.Queries
                 throw new ArgumentNullException("There are no users in db");
             }
 
-            var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
-            userDtos.Select(userDto =>
+            //var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
+            //userDtos.Select(userDto =>
+            //{
+            //    return new UserDto(userDto.Id, userDto.FirstName, userDto.LastName, userDto.DateOfBirth,
+            //    _profilePictureService.GetImageUrl(userDto.ProfileImage));
+            //}).ToList();
+
+            var userDtos = users.Select(u =>
             {
-                return new UserDto(userDto.Id, userDto.FirstName, userDto.LastName, userDto.DateOfBirth,
-                _profilePictureService.GetImageUrl(userDto.ProfileImage));
+                var userDto = _mapper.Map<UserDto>(u);
+                return new UserDto(
+                    userDto.Id,
+                    userDto.FirstName,
+                    userDto.LastName,
+                    userDto.DateOfBirth,
+                    _profilePictureService.GetImageUrl(userDto.ProfileImage)
+                );
             }).ToList();
 
             return userDtos;
