@@ -4,5 +4,7 @@
     {
         public Task<string> UploadImageAsync(Stream fileStream, string fileName);
         public Task DeleteImageAsync(string fileName);
+        public string GetImageUrl(string fileName);
+
     }
 }

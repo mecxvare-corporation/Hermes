@@ -2,6 +2,7 @@
 using MediatR;
 using UserService.Application.Dtos;
 using UserService.Domain.Interfaces;
+using UserService.Infrastructure.Services.ProfilePicture;
 
 namespace UserService.Application.Users.Queries
 {
@@ -11,11 +12,13 @@ namespace UserService.Application.Users.Queries
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly IProfilePictureService _profilePictureService;
 
-        public GetUserQueryHandler(IUnitOfWork uow, IMapper mapper)
+        public GetUserQueryHandler(IUnitOfWork uow, IMapper mapper, IProfilePictureService profilePictureService)
         {
             _mapper = mapper;
             _uow = uow;
+            _profilePictureService = profilePictureService;
         }
 
         public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
@@ -27,7 +30,11 @@ namespace UserService.Application.Users.Queries
                 throw new InvalidOperationException("User not found!");
             }
 
-            return _mapper.Map<UserDto>(user);
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto = new UserDto(userDto.Id, userDto.FirstName, userDto.LastName, userDto.DateOfBirth,
+                _profilePictureService.GetImageUrl(userDto.ProfileImage));
+
+            return userDto;
         }
     }
 }

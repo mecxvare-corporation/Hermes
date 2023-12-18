@@ -40,5 +40,12 @@ namespace UserService.Infrastructure.Services.ProfilePicture
 
             return fileName;
         }
+
+        public string GetImageUrl(string fileName)
+        {
+            var blob = _containerClient.GetBlobClient(fileName);
+
+            return blob.Uri.ToString();
+        }
     }
 }
