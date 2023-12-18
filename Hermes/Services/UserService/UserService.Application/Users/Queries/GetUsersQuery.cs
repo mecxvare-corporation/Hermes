@@ -31,13 +31,8 @@ namespace UserService.Application.Users.Queries
             }
 
             //var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
-            //userDtos.Select(userDto =>
-            //{
-            //    return new UserDto(userDto.Id, userDto.FirstName, userDto.LastName, userDto.DateOfBirth,
-            //    _profilePictureService.GetImageUrl(userDto.ProfileImage));
-            //}).ToList();
 
-            var userDtos = users.Select(u =>
+            var userDtos = users.Select(async u =>
             {
                 var userDto = _mapper.Map<UserDto>(u);
                 return new UserDto(
@@ -45,11 +40,11 @@ namespace UserService.Application.Users.Queries
                     userDto.FirstName,
                     userDto.LastName,
                     userDto.DateOfBirth,
-                    _profilePictureService.GetImageUrl(userDto.ProfileImage)
+                    await _profilePictureService.GetImageUrl(userDto.ProfileImage)
                 );
-            }).ToList();
+            });
 
-            return userDtos;
+            return await Task.WhenAll(userDtos);
         }
 
     }

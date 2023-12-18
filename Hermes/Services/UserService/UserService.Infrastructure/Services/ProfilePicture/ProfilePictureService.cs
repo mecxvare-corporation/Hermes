@@ -1,5 +1,7 @@
 ﻿using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Sas;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
@@ -41,15 +43,53 @@ namespace UserService.Infrastructure.Services.ProfilePicture
             return fileName;
         }
 
-        public string GetImageUrl(string fileName)
+        public async Task<string> GetImageUrl(string fileName)
         {
             if (fileName == string.Empty)
             {
                 return string.Empty;
             }
             var blob = _containerClient.GetBlobClient(fileName);
+            var blobSasUri = await CreateServiceSASBlob(blob);
 
-            return blob.Uri.ToString();
+            var blobClientSAS = new BlobClient(blobSasUri);
+            return blobClientSAS.Uri.ToString();
+        }
+
+        private async Task<Uri> CreateServiceSASBlob(BlobClient blobClient, string storedPolicyName = null)
+        {
+            // Check if BlobContainerClient object has been authorized with Shared Key
+            if (blobClient.CanGenerateSasUri)
+            {
+                // Create a SAS token that's valid for one hour
+                BlobSasBuilder sasBuilder = new BlobSasBuilder()
+                {
+                    BlobContainerName = blobClient.GetParentBlobContainerClient().Name,
+                    BlobName = blobClient.Name,
+                    Resource = "b",
+                    ContentDisposition = "inline"
+
+                };
+
+                if (storedPolicyName == null)
+                {
+                    sasBuilder.ExpiresOn = DateTimeOffset.UtcNow.AddDays(1);
+                    sasBuilder.SetPermissions(BlobContainerSasPermissions.Read);
+                }
+                else
+                {
+                    sasBuilder.Identifier = storedPolicyName;
+                }
+
+                Uri sasURI = blobClient.GenerateSasUri(sasBuilder);
+
+                return sasURI;
+            }
+            else
+            {
+                // Client object is not authorized via Shared Key
+                return null;
+            }
         }
     }
 }

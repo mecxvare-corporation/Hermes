@@ -32,7 +32,7 @@ namespace UserService.Application.Users.Queries
 
             var userDto = _mapper.Map<UserDto>(user);
             userDto = new UserDto(userDto.Id, userDto.FirstName, userDto.LastName, userDto.DateOfBirth,
-                _profilePictureService.GetImageUrl(userDto.ProfileImage));
+                 await _profilePictureService.GetImageUrl(userDto.ProfileImage));
 
             return userDto;
         }
