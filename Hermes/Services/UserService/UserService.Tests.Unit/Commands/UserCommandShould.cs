@@ -115,6 +115,58 @@ namespace UserService.Tests.Unit.Commands
         }
 
         [Fact]
+        public async Task ThrowExceptionIfNoUserWasFoundDuringInterestAddition()
+        {
+            // Arrange
+            // Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>())).ReturnsAsync((User)null);
+
+
+            // Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new UpdateUserInterestCommandHandler(uowMock.Object);
+            var command = new UpdateUserInterestCommand(new UpdateUserInterestsDto(Guid.NewGuid(), null));
+
+            // Act
+            async Task result() => await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(result);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfNoInterestWereRetrievedFromDb()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            // Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            // Mock IInterestRepository
+            var interestRepoMock = new Mock<IInterestRepository>();
+            interestRepoMock.Setup(repo => repo.GetRowsQueryable(It.IsAny<Expression<Func<Interest, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<Interest, object>>[]>())).Returns(new List<Interest>().AsAsyncQueryable());
+
+            // Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+            uowMock.Setup(uow => uow.InterestRepository).Returns(interestRepoMock.Object);
+
+            var handler = new UpdateUserInterestCommandHandler(uowMock.Object);
+            var command = new UpdateUserInterestCommand(new UpdateUserInterestsDto(user.Id, new List<Guid>()));
+
+            // Act
+            async Task Result() => await handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Result);
+        }
+
+        [Fact]
         public async Task UpdateItself()
         {
             // Arrange
@@ -155,10 +207,10 @@ namespace UserService.Tests.Unit.Commands
             var command = new UpdateUserCommand(newUserDto);
 
             // Act
-            async Task result() => await handler.Handle(command, CancellationToken.None);
+            async Task Result() => await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(result);
+            await Assert.ThrowsAsync<InvalidOperationException>(Result);
         }
 
         [Fact]
@@ -176,10 +228,10 @@ namespace UserService.Tests.Unit.Commands
             var command = new DeleteUserCommand(Guid.NewGuid());
 
             // Act
-            async Task result() => await handler.Handle(command, CancellationToken.None);
+            async Task Result() => await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(result);
+            await Assert.ThrowsAsync<InvalidOperationException>(Result);
         }
 
         [Fact]

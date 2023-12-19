@@ -26,15 +26,12 @@ namespace UserService.Application.Users.Queries
             var users = await _uow.UserRepository.GetAllAsync();
 
             if (users == null) 
-            {
                 throw new ArgumentNullException("There are no users in db");
-            }
-
-            //var userDtos = users.Select(u => _mapper.Map<UserDto>(u));
 
             var userDtos = users.Select(async u =>
             {
                 var userDto = _mapper.Map<UserDto>(u);
+
                 return new UserDto(
                     userDto.Id,
                     userDto.FirstName,
