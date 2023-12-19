@@ -42,6 +42,9 @@ builder.Services.AddHealthChecks()
 
 builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
 
+builder.Configuration.AddEnvironmentVariables()
+    .AddUserSecrets(Assembly.GetAssembly(typeof(ProfilePictureService)), true);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Core;
-using Azure.Storage.Blobs;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Linq.Expressions;
@@ -215,38 +213,39 @@ namespace UserService.Tests.Unit.Commands
             Assert.DoesNotContain(interest, user.Interests);
         }
 
-        //[Fact]
-        //public async Task AddProfileImage()
-        //{
-        //    //Arrange
-        //    Stream stream = new MemoryStream(new byte[5]);
-        //    var fileName = "test.jpeg";
+        [Fact]
+        public async Task AddProfileImage()
+        {
+            //Arrange
+            Stream stream = new MemoryStream(new byte[5]);
+            var fileName = "test.jpeg";
 
-        //    var user = new User("dunda", "DUndaDUnda", DateTime.Now);
+            var user = new User("dunda", "DUndaDUnda", DateTime.Now);
 
-        //    var userRepoMock = new Mock<IUserRepository>();
-        //    userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
 
-        //    var uowMock = new Mock<IUnitOfWork>();
-        //    uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-        //    var profileServiceMock = new Mock<IProfilePictureService>();
-        //    var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
-        //    profileServiceMock.Setup(f => f.UploadImageAsync(stream, imgNameMock)).ReturnsAsync(imgNameMock);
+  
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
+            profileServiceMock.Setup(f => f.UploadImageAsync(stream, imgNameMock)).ReturnsAsync(imgNameMock);
 
-        //    var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
-        //    var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
+            var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
+            var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
 
-        //    //Act
-        //    var response = await handler.Handle(command, CancellationToken.None);
-        //    var returnedString = response.Split("_");
-        //    Guid returnedGuid;
-        //    Guid.TryParse(returnedString[0], out returnedGuid);
+            //Act
+            var response = await handler.Handle(command, CancellationToken.None);
+            var returnedString = response.Split("_");
+            Guid returnedGuid;
+            Guid.TryParse(returnedString[0], out returnedGuid);
 
-        //    //Assert
-        //    Assert.Equal(fileName, returnedString[1]);
-        //    Assert.Equal(returnedGuid.ToString(), returnedString[0]);
-        //}
+            //Assert
+            Assert.Equal(fileName, returnedString[1]);
+            Assert.Equal(returnedGuid.ToString(), returnedString[0]);
+        }
 
 
         [Fact]

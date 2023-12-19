@@ -14,11 +14,9 @@ namespace UserService.Infrastructure.Services.ProfilePicture
         private readonly IConfiguration _configuration;
         private readonly BlobContainerClient _containerClient;
 
-        public ProfilePictureService()
+        public ProfilePictureService(IConfiguration configuration)
         {
-            _configuration = new ConfigurationBuilder()
-            .AddUserSecrets<ProfilePictureService>()
-            .Build();
+            _configuration = configuration;
 
             var credentials = new StorageSharedKeyCredential(_configuration["AzureStorageAccount"], _configuration["AzureStorageKey"]);
             var blobUri = $"https://{_configuration["AzureStorageAccount"]}.blob.core.windows.net";
