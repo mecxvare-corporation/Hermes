@@ -62,7 +62,7 @@ namespace UserService.Infrastructure.Services.ProfilePicture
             // Create a blob client object representing 'image' with SAS authorization
             var blobClientSAS = new BlobClient(blobSasUri);
 
-            return blobSasUri.AbsoluteUri.ToString();
+            return blobClientSAS.Uri.ToString();
         }
 
         private async Task<Uri> CreateServiceSASBlob(BlobClient blobClient, string storedPolicyName = null)

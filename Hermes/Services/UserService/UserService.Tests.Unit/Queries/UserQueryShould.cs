@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System.Linq.Expressions;
@@ -6,6 +7,7 @@ using UserService.Application.Dtos;
 using UserService.Application.Users.Queries;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
+using UserService.Infrastructure.Services.ProfilePicture;
 
 namespace UserService.Tests.Unit.Queries
 {
@@ -30,7 +32,7 @@ namespace UserService.Tests.Unit.Queries
             var userEntity = new User(userName, userLastName, birthDay);
             Guid userId = userEntity.Id;
 
-            var userDto = new UserDto(userId, userName, userLastName, birthDay);
+            var userDto = new UserDto(userId, userName, userLastName, birthDay, "image.jpg");
 
             // Mock IUserRepository
             var userRepoMock = new Mock<IUserRepository>();
@@ -40,7 +42,11 @@ namespace UserService.Tests.Unit.Queries
             var uowMock = new Mock<IUnitOfWork>();
             uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-            var handler = new GetUserQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            // Mock IProfileService
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            profileServiceMock.Setup(img => img.GetImageUrl(userDto.ProfileImage)).ReturnsAsync("guid+name");
+
+            var handler = new GetUserQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>(), profileServiceMock.Object);
 
             var query = new GetUserQuery(userId);
 
@@ -63,7 +69,10 @@ namespace UserService.Tests.Unit.Queries
             var uowMock = new Mock<IUnitOfWork>();
             uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-            var handler = new GetUserQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            // Mock IProfileService
+            var profileServiceMock = new Mock<IProfilePictureService>();
+
+            var handler = new GetUserQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>(), profileServiceMock.Object);
 
             var query = new GetUserQuery(Guid.NewGuid());
 
@@ -84,9 +93,9 @@ namespace UserService.Tests.Unit.Queries
 
             List<UserDto> usersDto = new List<UserDto>()
             {
-                new UserDto(users[0].Id, users[0].FirstName, users[0].LastName, users[0].DateOfBirth),
-                new UserDto(users[1].Id, users[1].FirstName, users[1].LastName, users[1].DateOfBirth),
-                new UserDto(users[2].Id, users[2].FirstName, users[2].LastName, users[2].DateOfBirth),
+                new UserDto(users[0].Id, users[0].FirstName, users[0].LastName, users[0].DateOfBirth, "image.jpg"),
+                new UserDto(users[1].Id, users[1].FirstName, users[1].LastName, users[1].DateOfBirth, "image.jpg"),
+                new UserDto(users[2].Id, users[2].FirstName, users[2].LastName, users[2].DateOfBirth, "image.jpg"),
             };
 
             //Mock IUserRepository
@@ -97,7 +106,11 @@ namespace UserService.Tests.Unit.Queries
             var uowMock = new Mock<IUnitOfWork>();
             uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-            var handler = new GetUsersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            //Mock IProfileService
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            //profileServiceMock.Setup(img => img.GetImageUrl(userDto.ProfileImage)).ReturnsAsync("guid+name");
+
+            var handler = new GetUsersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>(), profileServiceMock.Object);
             var query = new GetUsersQuery();
 
             //Act

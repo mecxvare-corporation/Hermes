@@ -40,7 +40,6 @@ builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 builder.Services.AddHealthChecks()
                 .AddNpgSql(builder.Configuration.GetConnectionString("UserServiceConnectionString")!);
 
-
 builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
 
 var app = builder.Build();
