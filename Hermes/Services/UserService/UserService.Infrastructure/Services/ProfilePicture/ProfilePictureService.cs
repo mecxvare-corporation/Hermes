@@ -1,5 +1,6 @@
 ﻿using Azure.Storage;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Sas;
 using Microsoft.Extensions.Configuration;
@@ -38,7 +39,12 @@ namespace UserService.Infrastructure.Services.ProfilePicture
         {
             var blob = _containerClient.GetBlobClient(fileName);
 
-            await blob.UploadAsync(fileStream);
+            BlobUploadOptions options = new BlobUploadOptions
+            {
+                HttpHeaders = new BlobHttpHeaders { ContentType = "image/jpeg" }
+            };
+
+            await blob.UploadAsync(fileStream, options);
 
             return fileName;
         }
@@ -50,10 +56,13 @@ namespace UserService.Infrastructure.Services.ProfilePicture
                 return string.Empty;
             }
             var blob = _containerClient.GetBlobClient(fileName);
+
             var blobSasUri = await CreateServiceSASBlob(blob);
 
+            // Create a blob client object representing 'image' with SAS authorization
             var blobClientSAS = new BlobClient(blobSasUri);
-            return blobClientSAS.Uri.ToString();
+
+            return blobSasUri.AbsoluteUri.ToString();
         }
 
         private async Task<Uri> CreateServiceSASBlob(BlobClient blobClient, string storedPolicyName = null)
@@ -61,7 +70,7 @@ namespace UserService.Infrastructure.Services.ProfilePicture
             // Check if BlobContainerClient object has been authorized with Shared Key
             if (blobClient.CanGenerateSasUri)
             {
-                // Create a SAS token that's valid for one hour
+                // Create a SAS token that's valid for one day
                 BlobSasBuilder sasBuilder = new BlobSasBuilder()
                 {
                     BlobContainerName = blobClient.GetParentBlobContainerClient().Name,
