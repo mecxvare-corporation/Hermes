@@ -55,7 +55,7 @@ namespace UserService.Infrastructure.Services.ProfilePicture
             }
             var blob = _containerClient.GetBlobClient(fileName);
 
-            var blobSasUri = await CreateServiceSASBlob(blob);
+            var blobSasUri = CreateServiceSASBlob(blob);
 
             // Create a blob client object representing 'image' with SAS authorization
             var blobClientSAS = new BlobClient(blobSasUri);
@@ -63,7 +63,7 @@ namespace UserService.Infrastructure.Services.ProfilePicture
             return blobClientSAS.Uri.ToString();
         }
 
-        private async Task<Uri> CreateServiceSASBlob(BlobClient blobClient, string storedPolicyName = null)
+        private Uri CreateServiceSASBlob(BlobClient blobClient, string storedPolicyName = null)
         {
             // Check if BlobContainerClient object has been authorized with Shared Key
             if (blobClient.CanGenerateSasUri)
