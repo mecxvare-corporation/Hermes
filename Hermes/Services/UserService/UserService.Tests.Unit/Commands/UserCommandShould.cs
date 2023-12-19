@@ -231,7 +231,7 @@ namespace UserService.Tests.Unit.Commands
   
             var profileServiceMock = new Mock<IProfilePictureService>();
             var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
-            profileServiceMock.Setup(f => f.UploadImageAsync(stream, imgNameMock)).ReturnsAsync(imgNameMock);
+            profileServiceMock.Setup(f => f.UploadImageAsync(It.IsAny<MemoryStream>(), It.IsAny<string>())).ReturnsAsync(imgNameMock);
 
             var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
             var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
