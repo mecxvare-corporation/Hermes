@@ -266,7 +266,7 @@ namespace UserService.Tests.Unit.Commands
         }
 
         [Fact]
-        public async Task AddProfileImage()
+        public async Task AddUserProfileImage()
         {
             //Arrange
             Stream stream = new MemoryStream(new byte[5]);
@@ -280,7 +280,6 @@ namespace UserService.Tests.Unit.Commands
             var uowMock = new Mock<IUnitOfWork>();
             uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
 
-  
             var profileServiceMock = new Mock<IProfilePictureService>();
             var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
             profileServiceMock.Setup(f => f.UploadImageAsync(It.IsAny<MemoryStream>(), It.IsAny<string>())).ReturnsAsync(imgNameMock);
@@ -299,9 +298,8 @@ namespace UserService.Tests.Unit.Commands
             Assert.Equal(returnedGuid.ToString(), returnedString[0]);
         }
 
-
         [Fact]
-        public async Task DeleteUserImage()
+        public async Task DeleteUserProfileImage()
         {
             //Arrange
             var fileName = "test";
@@ -327,5 +325,122 @@ namespace UserService.Tests.Unit.Commands
             Assert.Equal(string.Empty, user.ProfileImage);
         }
 
+        [Fact]
+        public async Task ThrowExceptionIfUserWasNotFoundDuringImageDelete()
+        {
+            //Arrange
+            var fileName = "test";
+
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync((User)null);
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var imageServiceMock = new Mock<IProfilePictureService>();
+
+            var handler = new DeleteUserProfileImageCommandHandler(uowMock.Object, imageServiceMock.Object);
+            var command = new DeleteUserProfileImageCommand(Guid.NewGuid());
+
+            //Act
+            async Task Response() => await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Response);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfUserWasNotFoundDuringImageUpload()
+        {
+            //Arrange
+            Stream stream = new MemoryStream(new byte[5]);
+            var fileName = "test.jpeg";
+
+            var user = new User("dunda", "DUndaDUnda", DateTime.Now);
+
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync((User)null);
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
+            profileServiceMock.Setup(f => f.UploadImageAsync(It.IsAny<MemoryStream>(), It.IsAny<string>())).ReturnsAsync(imgNameMock);
+
+            var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
+            var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
+
+            //Act
+            async Task Response() => await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Response);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfImageWasNotUploaded()
+        {
+            //Arrange
+            Stream stream = new MemoryStream(new byte[5]);
+            var fileName = "test.jpeg";
+
+            var user = new User("dunda", "DUndaDUnda", DateTime.Now);
+
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
+            profileServiceMock.Setup(f => f.UploadImageAsync(It.IsAny<MemoryStream>(), It.IsAny<string>())).ReturnsAsync((string)null);
+
+            var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
+            var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
+
+            //Act
+            async Task Response() => await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Response);
+        }
+
+        [Fact]
+        public async Task DeleteUserImageDuringUploadIfItAlreadyHaveOne()
+        {
+            //Arrange
+            Stream stream = new MemoryStream(new byte[5]);
+            var fileName = "test.jpeg";
+
+            var user = new User("dunda", "DUndaDUnda", DateTime.Now);
+            user.SetImageUri("someImageName.jpg");
+
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            var imgNameMock = $"{Guid.NewGuid()}_{fileName}";
+            profileServiceMock.Setup(f => f.UploadImageAsync(It.IsAny<MemoryStream>(), It.IsAny<string>())).ReturnsAsync(imgNameMock);
+            profileServiceMock.Setup(d=>d.DeleteImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
+
+            var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
+            var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
+
+            //Act
+            var response = await handler.Handle(command, CancellationToken.None);
+            var returnedString = response.Split("_");
+            Guid returnedGuid;
+            Guid.TryParse(returnedString[0], out returnedGuid);
+
+            //Assert
+            Assert.Equal(fileName, returnedString[1]);
+            Assert.Equal(returnedGuid.ToString(), returnedString[0]);
+        }
     }
 }

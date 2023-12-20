@@ -47,7 +47,6 @@ namespace UserService.Application.Users.Commands
             await _unitOfWork.CompleteAsync();
 
             return imageName;
-
         }
     }
 }

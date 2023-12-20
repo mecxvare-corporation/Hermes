@@ -1,5 +1,8 @@
-﻿namespace UserService.Api.Extensions
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace UserService.Api.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class FormFileExtensions
     {
         public static Stream ConvertToStream(this IFormFile formFile)
