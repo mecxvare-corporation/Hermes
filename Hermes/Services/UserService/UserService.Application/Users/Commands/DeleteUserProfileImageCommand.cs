@@ -26,6 +26,11 @@ namespace UserService.Application.Users.Commands
                 throw new InvalidOperationException("User was not found!");
             }
 
+            if (user.ProfileImage == string.Empty)
+            {
+                throw new InvalidOperationException("User don`t have an image!");
+            }
+
             await _profilePictureService.DeleteImageAsync(user.ProfileImage);
 
             user.RemoveImageUri();
