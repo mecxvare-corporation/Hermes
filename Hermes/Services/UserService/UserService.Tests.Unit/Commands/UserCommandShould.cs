@@ -319,7 +319,7 @@ namespace UserService.Tests.Unit.Commands
             var handler = new DeleteUserProfileImageCommandHandler(uowMock.Object, imageServiceMock.Object);
             var command = new DeleteUserProfileImageCommand(user.Id);
 
-            //Act
+            //Ac
             await handler.Handle(command, CancellationToken.None);
 
             //Assert
