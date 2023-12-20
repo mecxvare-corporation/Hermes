@@ -305,6 +305,7 @@ namespace UserService.Tests.Unit.Commands
             var fileName = "test";
 
             var user = new User("dunda", "DUndaDUnda", DateTime.Now);
+            user.SetImageUri("someRandomName.jpg");
 
             var userRepoMock = new Mock<IUserRepository>();
             userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
@@ -399,6 +400,30 @@ namespace UserService.Tests.Unit.Commands
 
             var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
             var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
+
+            //Act
+            async Task Response() => await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(Response);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfUserDontHaveImageDuringImageDeletion()
+        {
+            //Arrange
+            var user = new User("dunda", "DUndaDUnda", DateTime.Now);
+
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var imageServiceMock = new Mock<IProfilePictureService>();
+
+            var handler = new DeleteUserProfileImageCommandHandler(uowMock.Object, imageServiceMock.Object);
+            var command = new DeleteUserProfileImageCommand(user.Id);
 
             //Act
             async Task Response() => await handler.Handle(command, CancellationToken.None);
