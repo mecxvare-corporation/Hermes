@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using UserService.Api.Extensions;
 using UserService.Application.Dtos;
 using UserService.Application.Users.Commands;
 using UserService.Application.Users.Queries;
@@ -72,9 +73,30 @@ namespace UserService.Api.Controllers
         }
 
         [HttpGet("interests/{id}", Name = nameof(GetUserInterests))]
-        public async Task<ActionResult<GetUserInterestsDto>> GetUserInterests(Guid id)
+        public async Task<ActionResult<UserInterestsDto>> GetUserInterests(Guid id)
         {
             return Ok(await _mediator.Send(new GetUserInterestsQuery(id)));
+        }
+
+        [HttpPost("image/{userId}", Name =nameof(UploadImage))]
+        public async Task<IActionResult> UploadImage([FromRoute] Guid userId, IFormFile imageFile)
+        {
+            using (Stream fileStream = imageFile.ConvertToStream())
+            {
+                string fileName = imageFile.FileName;
+
+                await _mediator.Send(new UploadUserProfilePictureCommand(userId, fileStream ,fileName));
+
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("image/{userId}", Name = nameof(DeleteImage))]
+        public async Task<IActionResult> DeleteImage(Guid userId)
+        {
+            await _mediator.Send(new DeleteUserProfileImageCommand(userId));
+            return Ok();
         }
     }
 }

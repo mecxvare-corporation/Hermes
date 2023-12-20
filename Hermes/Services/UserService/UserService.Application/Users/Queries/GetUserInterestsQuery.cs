@@ -5,9 +5,8 @@ using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Queries
 {
-    public record GetUserInterestsQuery(Guid Id) : IRequest<GetUserInterestsDto>;
-
-    public class GetUserInterestsQueryHandler : IRequestHandler<GetUserInterestsQuery, GetUserInterestsDto>
+    public record GetUserInterestsQuery(Guid Id) : IRequest<UserInterestsDto>;
+    public class GetUserInterestsQueryHandler : IRequestHandler<GetUserInterestsQuery, UserInterestsDto>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,7 +17,7 @@ namespace UserService.Application.Users.Queries
             _mapper = mapper;
         }
 
-        public async Task<GetUserInterestsDto> Handle(GetUserInterestsQuery request, CancellationToken cancellationToken)
+        public async Task<UserInterestsDto> Handle(GetUserInterestsQuery request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.Id, true, x => x.Interests);
 
@@ -32,7 +31,7 @@ namespace UserService.Application.Users.Queries
                 throw new InvalidOperationException("User does not have interests associated.");
             }
 
-            var result = new GetUserInterestsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<InterestDto>>(user.Interests));
+            var result = new UserInterestsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<InterestDto>>(user.Interests));
 
             return result;
         }

@@ -9,6 +9,7 @@ namespace UserService.Application.Mappers
         public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
+
             CreateMap<CreateUserDto, User>();
             CreateMap<UpdateUserDto, User>();
 

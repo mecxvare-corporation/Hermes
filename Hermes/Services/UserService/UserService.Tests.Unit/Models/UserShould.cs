@@ -113,5 +113,34 @@ namespace UserService.Tests.Unit.Models
             // Act & Assert
             Assert.Throws<InvalidOperationException>(() => user.RemoveInterest(nonExistingInterest));
         }
+
+        [Fact]
+        public void SetImage()
+        {
+            //Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            string imageName = "ram dam dam";
+
+            //Act
+            user.SetImageUri(imageName);
+
+            //Assert
+            Assert.Equal(imageName, user.ProfileImage);
+        }
+
+        [Fact]
+        public void RemoveImage()
+        {
+            //Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            string imageName = "ram dam dam";
+
+            //Act
+            user.SetImageUri(imageName);
+            user.RemoveImageUri();
+
+            //Assert
+            Assert.Equal(string.Empty, user.ProfileImage);
+        }
     }
 }
