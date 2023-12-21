@@ -68,6 +68,17 @@ namespace UserService.Infrastructure.Database
 
                 await _context.SaveChangesAsync();
             }
+
+            if (!_context.Users.Any())
+            {
+                var defaultImage = "8A16EDA0-C093-4346-B313-335F83C0B02E_default.jpg";
+
+                var user = new User("John", "Doe", DateTime.UtcNow.AddYears(-25));
+                user.SetImageUri(defaultImage);
+
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

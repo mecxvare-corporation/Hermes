@@ -15,6 +15,9 @@ namespace UserService.Application.Mappers
 
             CreateMap<Interest, InterestDto>().ReverseMap();
             CreateMap<CreateInterestDto, Interest>();
+
+            CreateMap<User, UserMinimalInfoDto>()
+                .ConstructUsing((source, context) => new UserMinimalInfoDto(source.Id, $"{source.FirstName}, {source.LastName}", source.ProfileImage));
         }
     }
 }
