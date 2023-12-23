@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using UserService.Application.Dtos;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands
@@ -25,7 +26,7 @@ namespace UserService.Application.Users.Commands
 
             if (user == null)
             {
-                throw new InvalidOperationException("User was not found!");
+                throw new NotFoundException("User was not found!");
             }
 
             user.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.DateOfBirth);

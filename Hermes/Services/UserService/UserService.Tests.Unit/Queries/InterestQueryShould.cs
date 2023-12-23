@@ -4,6 +4,7 @@ using Moq;
 using UserService.Application.Dtos;
 using UserService.Application.Interests.Query;
 using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Tests.Unit.Queries
@@ -69,7 +70,7 @@ namespace UserService.Tests.Unit.Queries
             var query = new GetAllInterestsQuery();
 
             // Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(query, CancellationToken.None));
+            Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(query, CancellationToken.None));
         }
     }
 }

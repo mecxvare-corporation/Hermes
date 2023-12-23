@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using UserService.Application.Dtos;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Interests.Query
@@ -24,7 +25,7 @@ namespace UserService.Application.Interests.Query
 
             if (interests is null || (interests is not null && interests.Count == 0))
             {
-                throw new InvalidOperationException("Interests were not found!");
+                throw new NotFoundException("Interests were not found!");
             }
 
             var interestsDto = interests.Select(x => _mapper.Map<InterestDto>(x));

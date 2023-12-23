@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands
@@ -21,7 +22,7 @@ namespace UserService.Application.Users.Commands
 
             if (user == null)
             {
-                throw new InvalidOperationException("User was not found!");
+                throw new NotFoundException("User was not found!");
             }
 
             await _unitOfWork.UserRepository.DeleteAsync(user.Id);
