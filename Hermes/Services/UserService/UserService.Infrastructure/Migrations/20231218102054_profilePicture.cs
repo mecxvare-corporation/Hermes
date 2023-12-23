@@ -4,6 +4,7 @@
 
 namespace UserService.Infrastructure.Migrations
 {
+    [ExcludeFromCodeCoverage]
     /// <inheritdoc />
     public partial class profilePicture : Migration
     {
