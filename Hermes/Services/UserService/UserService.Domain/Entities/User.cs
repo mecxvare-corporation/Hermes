@@ -7,6 +7,7 @@ namespace UserService.Domain.Entities
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public DateTime DateOfBirth { get; private set; }
+        public string ProfileImage { get; private set; }
 
         public List<Interest> Interests { get; set; } = new List<Interest>();
         public List<User> Friends { get; set; } = new List<User>();
@@ -23,6 +24,7 @@ namespace UserService.Domain.Entities
             FirstName = firstName;
             LastName = lastName;
             DateOfBirth = dateOfBirth;
+            ProfileImage = string.Empty;
         }
 
         public void Update(string firstName, string lastName, DateTime dateOfBirth)
@@ -90,6 +92,17 @@ namespace UserService.Domain.Entities
             var follower = Followers.FirstOrDefault(x => x.Id == followerId) ?? throw new NotFoundException("Follower was not found!");
 
             Followers.Remove(follower);
+            throw new AlreadyExistsException("Interest is not associated with current user.");
+        }
+
+        public void SetImageUri(string imageName)
+        {
+            ProfileImage = imageName;
+        }
+
+        public void RemoveImageUri()
+        {
+            ProfileImage = string.Empty;
         }
     }
 }

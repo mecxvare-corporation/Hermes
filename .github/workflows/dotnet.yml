@@ -34,7 +34,9 @@ jobs:
       run: dotnet test Hermes/Services/UserService/UserService.Tests.Unit/UserService.Tests.Unit.csproj --no-restore
     - name: Scan
       run: |
+        dotnet tool install --global dotnet-coverage
         dotnet tool install --global dotnet-sonarscanner
-        dotnet sonarscanner begin /k:${{ secrets.PROJECT_KEY }} /o:${{ secrets.ORGANIZATION_KEY }} /d:sonar.token=${{ secrets.SONAR_TOKEN }} /d:sonar.host.url="https://sonarcloud.io"
-        dotnet build Hermes/Hermes.sln
+        dotnet sonarscanner begin /k:${{ secrets.PROJECT_KEY }} /o:${{ secrets.ORGANIZATION_KEY }} /d:sonar.token=${{ secrets.SONAR_TOKEN }} /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+        dotnet build Hermes/Hermes.sln --no-incremental
+        dotnet-coverage collect "dotnet test Hermes/Services/UserService/UserService.Tests.Unit/UserService.Tests.Unit.csproj" -f xml -o "coverage.xml"
         dotnet sonarscanner end /d:sonar.token=${{ secrets.SONAR_TOKEN }}

@@ -8,6 +8,7 @@ namespace UserService.Infrastructure.Repositories
     [ExcludeFromCodeCoverage]
     public class UserRepository : Repository<User>, IUserRepository
     {
+
         public UserRepository(UserDbContext dbContext) : base(dbContext)
         {
         }

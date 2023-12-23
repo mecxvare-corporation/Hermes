@@ -1,0 +1,48 @@
+// Variables for colors and spacing
+$header-background-color: #3b5998;
+$text-color: #fff;
+$padding: 15px;
+
+header {
+  background-color: $header-background-color;
+  color: $text-color;
+  padding: $padding;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.logo {
+  height: 40px;
+  margin-right: $padding;
+}
+
+.search-bar {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f2f2f2;
+  margin-right: $padding;
+}
+
+.user-picture {
+  border-radius: 50%;
+  margin-left: $padding;
+  object-fit: cover;
+}
+
+.user-name {
+  margin-left: $padding;
+}
