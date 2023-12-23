@@ -92,7 +92,6 @@ namespace UserService.Domain.Entities
             var follower = Followers.FirstOrDefault(x => x.Id == followerId) ?? throw new NotFoundException("Follower was not found!");
 
             Followers.Remove(follower);
-            throw new AlreadyExistsException("Interest is not associated with current user.");
         }
 
         public void SetImageUri(string imageName)

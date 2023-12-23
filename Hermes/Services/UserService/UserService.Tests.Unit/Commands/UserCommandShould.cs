@@ -458,11 +458,15 @@ namespace UserService.Tests.Unit.Commands
             var handler = new UploadUserPictureCommandHandler(uowMock.Object, profileServiceMock.Object);
             var command = new UploadUserProfilePictureCommand(user.Id, stream, fileName);
 
-            // Act
-            async Task Result() => await handler.Handle(command, CancellationToken.None);
+            //Act
+            var response = await handler.Handle(command, CancellationToken.None);
+            var returnedString = response.Split("_");
+            Guid returnedGuid;
+            Guid.TryParse(returnedString[0], out returnedGuid);
 
-            // Assert
-            await Assert.ThrowsAsync<NotFoundException>(Result);
+            //Assert
+            Assert.Equal(fileName, returnedString[1]);
+            Assert.Equal(returnedGuid.ToString(), returnedString[0]);
         }
 
         [Fact]
