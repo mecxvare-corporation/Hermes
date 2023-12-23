@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
 #nullable disable
 
 namespace UserService.Infrastructure.Migrations
