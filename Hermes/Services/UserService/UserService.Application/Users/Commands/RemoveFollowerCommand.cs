@@ -5,18 +5,18 @@ using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands
 {
-    public record AddUserFriendCommand(UserFriendDto dto) : IRequest;
+    public record RemoveFollowerCommand(UserFriendDto dto) : IRequest;
 
-    public class AddUserFriendCommandHandler : IRequestHandler<AddUserFriendCommand>
+    public class RemoveFollowerCommandHandler : IRequestHandler<RemoveFollowerCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddUserFriendCommandHandler(IUnitOfWork unitOfWork)
+        public RemoveFollowerCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(AddUserFriendCommand request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveFollowerCommand request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.dto.userId, true, x => x.Friends);
 
@@ -25,19 +25,14 @@ namespace UserService.Application.Users.Commands
                 throw new NotFoundException("User not found!");
             }
 
-            var friend = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.dto.friendId, true, x => x.Friends);
+            var follower = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.dto.friendId, true, x => x.Friends);
 
-            if (friend is null)
+            if (follower is null)
             {
                 throw new NotFoundException("User not found!");
             }
 
-            if (user.Friends.Any(x => x.Id == friend.Id))
-            {
-                throw new AlreadyExistsException("User is already in friend list!");
-            }
-
-            user.AddFriend(friend);
+            user.RemoveFollower(follower.Id);
 
             await _unitOfWork.CompleteAsync();
         }

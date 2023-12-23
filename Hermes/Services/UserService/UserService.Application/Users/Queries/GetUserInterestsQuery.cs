@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using UserService.Application.Dtos;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Queries
@@ -24,12 +25,7 @@ namespace UserService.Application.Users.Queries
 
             if (user is null)
             {
-                throw new InvalidOperationException("User not found");
-            }
-
-            if (user.Interests.Count == 0)
-            {
-                throw new InvalidOperationException("User does not have interests associated.");
+                throw new NotFoundException("User not found!");
             }
 
             var result = new GetUserInterestsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<InterestDto>>(user.Interests));

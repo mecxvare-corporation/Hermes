@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using UserService.Application.Dtos;
 using UserService.Application.Users.Queries;
 using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Tests.Unit.Queries
@@ -67,7 +68,7 @@ namespace UserService.Tests.Unit.Queries
             var query = new GetUserQuery(Guid.NewGuid());
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => handler.Handle(query, CancellationToken.None));
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(query, CancellationToken.None));
         }
 
         [Fact]
@@ -137,30 +138,6 @@ namespace UserService.Tests.Unit.Queries
         }
 
         [Fact]
-        public async Task ThrowExceptionIfUserHasNoInterests()
-        {
-            // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
-
-            //Mock IUserRepository
-            var userRepoMock = new Mock<IUserRepository>();
-            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
-
-            //Mock IUnitOfWork
-            var uowMock = new Mock<IUnitOfWork>();
-            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
-
-            var handler = new GetUserInterestsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
-            var query = new GetUserInterestsQuery(user.Id);
-
-            // Act
-            async Task result() => await handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(result);
-        }
-
-        [Fact]
         public async Task ThrowExceptionIfUserWasNotFound()
         {
             // Arrange
@@ -180,11 +157,11 @@ namespace UserService.Tests.Unit.Queries
             async Task result() => await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(result);
+            await Assert.ThrowsAsync<NotFoundException>(result);
         }
 
         [Fact]
-        public async Task ThrowExceptionIfNoUserWasFoundDuringGetAllUsers()
+        public async Task ReturnEmptyListIfNoUserWasFound()
         {
             //Mock IUserRepository
             var userRepoMock = new Mock<IUserRepository>();
@@ -198,10 +175,12 @@ namespace UserService.Tests.Unit.Queries
             var query = new GetUsersQuery();
 
             // Act
-            async Task Result() => await handler.Handle(query, CancellationToken.None);
+            var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(Result);
+            Assert.NotNull(result);
+            Assert.IsType<List<UserDto>>(result);
+            Assert.Empty(result);
         }
     }
 }

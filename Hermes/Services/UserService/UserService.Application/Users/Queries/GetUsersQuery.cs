@@ -24,7 +24,7 @@ namespace UserService.Application.Users.Queries
 
             if (users.Count == 0)
             {
-                throw new InvalidOperationException("No users were found!");
+                return new List<UserDto>();
             }
 
             var userDtos = users.Select(u => _mapper.Map<UserDto>(u));

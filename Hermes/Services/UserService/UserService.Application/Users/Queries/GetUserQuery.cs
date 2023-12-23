@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using UserService.Application.Dtos;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Queries
@@ -24,7 +25,7 @@ namespace UserService.Application.Users.Queries
 
             if (user is null)
             {
-                throw new InvalidOperationException("User not found!");
+                throw new NotFoundException("User not found!");
             }
 
             return _mapper.Map<UserDto>(user);

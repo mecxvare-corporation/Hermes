@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using UserService.Application.Dtos;
 using UserService.Application.Interests.Command;
 using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Tests.Unit.Commands
@@ -65,7 +66,7 @@ namespace UserService.Tests.Unit.Commands
             uowMock.Verify(uow => uow.CompleteAsync(), Times.Never);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(Execute);
+            await Assert.ThrowsAsync<AlreadyExistsException>(Execute);
         }
 
         [Fact]
@@ -109,7 +110,7 @@ namespace UserService.Tests.Unit.Commands
             async Task result() => await handler.Handle(deleteInterestCommand, CancellationToken.None);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(result);
+            await Assert.ThrowsAsync<NotFoundException>(result);
         }
     }
 }

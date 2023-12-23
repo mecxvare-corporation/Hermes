@@ -5,18 +5,18 @@ using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands
 {
-    public record AddUserFriendCommand(UserFriendDto dto) : IRequest;
+    public record RemoveFriendCommand(UserFriendDto dto) : IRequest;
 
-    public class AddUserFriendCommandHandler : IRequestHandler<AddUserFriendCommand>
+    public class RemoveFriendCommandHandler : IRequestHandler<RemoveFriendCommand>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddUserFriendCommandHandler(IUnitOfWork unitOfWork)
+        public RemoveFriendCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(AddUserFriendCommand request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveFriendCommand request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.dto.userId, true, x => x.Friends);
 
@@ -32,12 +32,7 @@ namespace UserService.Application.Users.Commands
                 throw new NotFoundException("User not found!");
             }
 
-            if (user.Friends.Any(x => x.Id == friend.Id))
-            {
-                throw new AlreadyExistsException("User is already in friend list!");
-            }
-
-            user.AddFriend(friend);
+            user.RemoveFriend(friend.Id);
 
             await _unitOfWork.CompleteAsync();
         }
