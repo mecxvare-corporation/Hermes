@@ -179,12 +179,16 @@ namespace UserService.Tests.Unit.Queries
             var userRepoMock = new Mock<IUserRepository>();
             userRepoMock.Setup(repo => repo.GetAllAsync()).ReturnsAsync(new List<User>());
 
-        //    //Mock ProfilePictureService
-        //    var profileServiceMock = new Mock<IProfilePictureService>();
-        //    profileServiceMock.Setup(f => f.GetImageUrl(It.IsAny<string>())).ReturnsAsync(string.Empty);
+            //Mock ProfilePictureService
+            var profileServiceMock = new Mock<IProfilePictureService>();
+            profileServiceMock.Setup(f => f.GetImageUrl(It.IsAny<string>())).ReturnsAsync(string.Empty);
 
-        //    var handler = new GetUsersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>(), profileServiceMock.Object);
-        //    var query = new GetUsersQuery();
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUsersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>(), profileServiceMock.Object);
+            var query = new GetUsersQuery();
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
