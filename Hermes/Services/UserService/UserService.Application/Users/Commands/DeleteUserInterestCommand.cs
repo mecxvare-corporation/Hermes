@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using UserService.Application.Dtos;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands
@@ -21,14 +22,14 @@ namespace UserService.Application.Users.Commands
 
             if (user is null)
             {
-                throw new InvalidOperationException($"User with Id {request.Dto.UserId} not found");
+                throw new NotFoundException($"User with Id {request.Dto.UserId} not found");
             }
 
             var interest = await _uow.InterestRepository.GetFirstOrDefaultAsync(x => x.Id == request.Dto.InterestId, true, x => x.Users);
 
             if (interest is null)
             {
-                throw new InvalidOperationException($"Interest with Id {request.Dto.InterestId} not found");
+                throw new NotFoundException($"Interest with Id {request.Dto.InterestId} not found");
             }
 
             user.RemoveInterest(interest);

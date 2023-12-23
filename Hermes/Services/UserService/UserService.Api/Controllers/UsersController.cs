@@ -98,5 +98,49 @@ namespace UserService.Api.Controllers
             await _mediator.Send(new DeleteUserProfileImageCommand(userId));
             return Ok();
         }
+
+        [HttpPost("Friends", Name = nameof(AddUserFriend))]
+        public async Task<ActionResult> AddUserFriend([FromBody] AddUserFriendCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpDelete("Friends", Name = nameof(RemoveFriend))]
+        public async Task<ActionResult> RemoveFriend([FromBody] RemoveFriendCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPost("Followers", Name = nameof(AddUserFollower))]
+        public async Task<ActionResult> AddUserFollower([FromBody] AddUserFollowerCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpDelete("Followers", Name = nameof(RemoveFollower))]
+        public async Task<ActionResult> RemoveFollower([FromBody] RemoveFollowerCommand command)
+        {
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpGet("Friends", Name = nameof(GetUserFriends))]
+        public async Task<ActionResult<GetUserFriendsDto>> GetUserFriends(Guid id)
+        {
+            return Ok(await _mediator.Send(new GetUserFriendsQuery(id)));
+        }
+
+        [HttpGet("Followers", Name = nameof(GetUserFollowers))]
+        public async Task<ActionResult<GetUserFriendsDto>> GetUserFollowers(Guid id)
+        {
+            return Ok(await _mediator.Send(new GetUserFollowersQuery(id)));
+        }
     }
 }

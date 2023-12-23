@@ -8,5 +8,6 @@
     public record DeleteUserInterestDto(Guid UserId, Guid InterestId);
     public record UserInterestsDto(UserDto User, List<InterestDto> Interests);
     public record GetUserInterestsDto(UserDto User, List<InterestDto> Interests);
-    public record AddUserFriendDto(Guid userId, Guid friendId);
+    public record UserFriendDto(Guid userId, Guid friendId);
+    public record GetUserFriendsDto(UserDto user, List<UserDto> friends);
 }

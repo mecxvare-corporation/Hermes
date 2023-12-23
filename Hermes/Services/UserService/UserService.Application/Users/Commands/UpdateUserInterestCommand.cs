@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using UserService.Application.Dtos;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Users.Commands
@@ -22,14 +23,14 @@ namespace UserService.Application.Users.Commands
 
             if (user is null)
             {
-                throw new InvalidOperationException("User not found");
+                throw new NotFoundException("User not found");
             }
 
             var interests = await _unitOfWork.InterestRepository.GetRowsQueryable(x => request.Dto.InterestIds.Contains(x.Id), true, x => x.Users).ToListAsync(cancellationToken);
 
             if (interests.Count == 0)
             {
-                throw new InvalidOperationException("Interests not found");
+                throw new NotFoundException("Interests not found");
             }
 
             foreach (var interest in interests)

@@ -67,7 +67,6 @@ namespace UserService.Domain.Entities
             friend.Friends.Add(this);
 
             AddFollower(friend);
-            friend.AddFollower(this);
         }
 
         public void RemoveFriend(Guid friendId)
@@ -78,7 +77,6 @@ namespace UserService.Domain.Entities
             friend.Friends.Remove(this);
 
             RemoveFollower(friend.Id);
-            friend.RemoveFollower(Id);
         }
 
         public void AddFollower(User follower)

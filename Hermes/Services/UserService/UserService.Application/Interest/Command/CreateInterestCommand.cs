@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using UserService.Application.Dtos;
 using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Interests.Command
@@ -32,7 +33,7 @@ namespace UserService.Application.Interests.Command
             }
             else
             {
-                throw new InvalidOperationException($"Interest: '{interest.Name}' already exists!");
+                throw new AlreadyExistsException($"Interest: '{interest.Name}' already exists!");
             }
         }
     }
