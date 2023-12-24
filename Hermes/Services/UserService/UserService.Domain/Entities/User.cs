@@ -10,8 +10,8 @@ namespace UserService.Domain.Entities
         public string ProfileImage { get; private set; }
 
         public List<Interest> Interests { get; set; } = new List<Interest>();
-        public List<User> Friends { get; set; } = new List<User>();
-        public List<User> Followers { get; set; } = new List<User>();
+        public List<UserFriend> Friends { get; set; } = new List<UserFriend>();
+        public List<UserFollower> Followers { get; set; } = new List<UserFollower>();
 
         private User()
         {
@@ -60,38 +60,59 @@ namespace UserService.Domain.Entities
 
         public void AddFriend(User friend)
         {
-            if (Friends.Exists(x => x.Id == friend.Id))
+            if (Friends.Exists(x => x.FriendId == friend.Id))
                 throw new AlreadyExistsException("This user is already a friend!");
 
-            Friends.Add(friend);
-            friend.Friends.Add(this);
+            var newFriend = new UserFriend(this, friend);
+
+            Friends.Add(newFriend);
+
+            UserFriend thisUser = new(friend, this);
+
+            friend.Friends.Add(thisUser);
 
             AddFollower(friend);
         }
 
         public void RemoveFriend(Guid friendId)
         {
-            var friend = Friends.FirstOrDefault(x => x.Id == friendId) ?? throw new NotFoundException("Friend was not found!");
+            var friendToRemove = Friends.FirstOrDefault(z => z.FriendId == friendId);
 
-            Friends.Remove(friend);
-            friend.Friends.Remove(this);
+            Friends.Remove(friendToRemove);
 
-            RemoveFollower(friend.Id);
+            var thisUser = friendToRemove.User.Friends.FirstOrDefault(z => z.UserId == this.Id);
+
+            friendToRemove.User.Friends.Remove(thisUser);
+
+            RemoveFollower(friendId);
         }
 
         public void AddFollower(User follower)
         {
-            if (Followers.Exists(x => x.Id == follower.Id))
-                throw new AlreadyExistsException("This user is already a follower!");
+            if (!Followers.Exists(x => x.FollowerId == follower.Id))
+            {
+                var newFollower = new UserFollower(this, follower);
 
-            Followers.Add(follower);
+                Followers.Add(newFollower);
+            }
+            else
+            {
+                throw new AlreadyExistsException("This user is already a follower!");
+            }
         }
 
         public void RemoveFollower(Guid followerId)
         {
-            var follower = Followers.FirstOrDefault(x => x.Id == followerId) ?? throw new NotFoundException("Follower was not found!");
+            if (Followers.Exists(x => x.FollowerId == followerId))
+            {
+                var followerToRemove = Followers.FirstOrDefault(x => x.FollowerId == followerId);
 
-            Followers.Remove(follower);
+                Followers.Remove(followerToRemove);
+            }
+            else
+            {
+                throw new NotFoundException("Follower was not found!");
+            }
         }
 
         public void SetImageUri(string imageName)

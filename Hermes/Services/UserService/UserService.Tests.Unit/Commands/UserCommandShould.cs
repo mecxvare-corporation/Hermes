@@ -496,7 +496,7 @@ namespace UserService.Tests.Unit.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.Equal(friend.Id, user.Friends.Select(x => x.Id).First());
+            Assert.Equal(friend.Id, user.Friends.First().FriendId);
 
             uowMock.Verify(uow => uow.CompleteAsync(), Times.Once);
         }
@@ -530,7 +530,7 @@ namespace UserService.Tests.Unit.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.DoesNotContain(friend, user.Friends);
+            Assert.DoesNotContain(friend, user.Friends.Select(x => x.Friend));
 
             uowMock.Verify(uow => uow.CompleteAsync(), Times.Once);
         }
@@ -692,7 +692,7 @@ namespace UserService.Tests.Unit.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.Equal(follower.Id, user.Followers.Select(x => x.Id).First());
+            Assert.Equal(follower.Id, user.Followers.First().FollowerId);
 
             uowMock.Verify(uow => uow.CompleteAsync(), Times.Once);
         }
@@ -807,7 +807,7 @@ namespace UserService.Tests.Unit.Commands
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.DoesNotContain(follower, user.Followers);
+            Assert.DoesNotContain(follower, user.Followers.Select(x => x.Follower));
 
             uowMock.Verify(uow => uow.CompleteAsync(), Times.Once);
         }

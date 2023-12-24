@@ -156,7 +156,7 @@ namespace UserService.Tests.Unit.Models
             user.AddFriend(friend);
 
             // Assert
-            Assert.Contains(friend, user.Friends);
+            Assert.Contains(friend, user.Friends.Select(x => x.Friend));
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace UserService.Tests.Unit.Models
             user.RemoveFriend(friend.Id);
 
             // Assert
-            Assert.DoesNotContain(friend, user.Friends);
+            Assert.DoesNotContain(friend, user.Friends.Select(x => x.Friend));
         }
 
         [Fact]
@@ -202,7 +202,7 @@ namespace UserService.Tests.Unit.Models
             user.AddFollower(follower);
 
             // Assert
-            Assert.Contains(follower, user.Followers);
+            Assert.Contains(follower, user.Followers.Select(x => x.Follower));
         }
 
         [Fact]
@@ -234,7 +234,7 @@ namespace UserService.Tests.Unit.Models
             user.RemoveFollower(follower.Id);
 
             // Assert
-            Assert.DoesNotContain(follower, user.Followers);
+            Assert.DoesNotContain(follower, user.Followers.Select(x => x.Follower));
         }
     }
 }
