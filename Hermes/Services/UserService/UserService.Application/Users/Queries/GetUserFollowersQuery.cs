@@ -21,14 +21,14 @@ namespace UserService.Application.Users.Queries
 
         public async Task<GetUserFriendsDto> Handle(GetUserFollowersQuery request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.id, true, x => x.Friends);
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(x => x.Id == request.id, true, x => x.Followers);
 
             if (user is null)
             {
                 throw new NotFoundException("User not found!");
             }
 
-            var result = new GetUserFriendsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<UserDto>>(user.Friends));
+            var result = new GetUserFriendsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<UserDto>>(user.Followers.Select(x => x.Follower)));
 
             return result;
         }

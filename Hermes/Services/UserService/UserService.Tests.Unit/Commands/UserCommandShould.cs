@@ -860,5 +860,7 @@ namespace UserService.Tests.Unit.Commands
             // Assert
             await Assert.ThrowsAsync<NotFoundException>(Result);
         }
+
+
     }
 }

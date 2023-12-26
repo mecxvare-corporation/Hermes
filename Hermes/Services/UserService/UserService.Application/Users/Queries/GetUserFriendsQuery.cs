@@ -28,7 +28,7 @@ namespace UserService.Application.Users.Queries
                 throw new NotFoundException("User not found!");
             }
 
-            var result = new GetUserFriendsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<UserDto>>(user.Friends));
+            var result = new GetUserFriendsDto(_mapper.Map<UserDto>(user), _mapper.Map<List<UserDto>>(user.Friends.Select(x => x.Friend)));
 
             return result;
         }

@@ -32,7 +32,7 @@ namespace UserService.Application.Users.Commands
                 throw new NotFoundException("User not found!");
             }
 
-            if (user.Followers.Any(x => x.Id == follower.Id))
+            if (user.Followers.Any(x => x.Follower.Id == follower.Id))
             {
                 throw new AlreadyExistsException("User is already in followers list!");
             }

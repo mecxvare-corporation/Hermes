@@ -198,5 +198,103 @@ namespace UserService.Tests.Unit.Queries
             Assert.IsType<List<UserDto>>(result);
             Assert.Empty(result);
         }
+
+        [Fact]
+        public async Task ReturnAllUserFriends()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            user.AddFriend(new User("Takhma", "Gido", DateTime.Now));
+
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserFriendsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserFriendsQuery(user.Id);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<GetUserFriendsDto>(result);
+            Assert.Equal(user.Friends.Count, result.friends.Count);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfNoUserWasFoundDuringGetUserFriends()
+        {
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync((User)null);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserFriendsQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserFriendsQuery(Guid.NewGuid());
+
+            // Act
+            async Task Result() => await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<NotFoundException>(Result);
+        }
+
+        [Fact]
+        public async Task ReturnAllUserFollowers()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            user.AddFollower(new User("Takhma", "Gido", DateTime.Now));
+
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync(user);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserFollowersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserFollowersQuery(user.Id);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<GetUserFriendsDto>(result);
+            Assert.Equal(user.Followers.Count, result.friends.Count);
+        }
+
+        [Fact]
+        public async Task ThrowExceptionIfNoUserWasFoundDuringGetUserFollowers()
+        {
+            //Mock IUserRepository
+            var userRepoMock = new Mock<IUserRepository>();
+            userRepoMock.Setup(repo => repo.GetFirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), It.IsAny<Expression<Func<User, object>>[]>())).ReturnsAsync((User)null);
+
+            //Mock IUnitOfWork
+            var uowMock = new Mock<IUnitOfWork>();
+            uowMock.Setup(uow => uow.UserRepository).Returns(userRepoMock.Object);
+
+            var handler = new GetUserFollowersQueryHandler(uowMock.Object, _serviceProvider.GetRequiredService<IMapper>());
+            var query = new GetUserFollowersQuery(Guid.NewGuid());
+
+            // Act
+            async Task Result() => await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            await Assert.ThrowsAsync<NotFoundException>(Result);
+        }
     }
 }

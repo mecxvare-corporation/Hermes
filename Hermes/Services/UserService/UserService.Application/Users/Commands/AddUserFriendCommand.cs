@@ -32,7 +32,7 @@ namespace UserService.Application.Users.Commands
                 throw new NotFoundException("User not found!");
             }
 
-            if (user.Friends.Any(x => x.Id == friend.Id))
+            if (user.Friends.Any(x => x.Friend.Id == friend.Id))
             {
                 throw new AlreadyExistsException("User is already in friend list!");
             }

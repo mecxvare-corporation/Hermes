@@ -1,5 +1,8 @@
-﻿namespace UserService.Domain.Exceptions
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace UserService.Domain.Exceptions
 {
+    [ExcludeFromCodeCoverage]
     public class NotFoundException : Exception
     {
         public NotFoundException()
