@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using UserService.Infrastructure.Database;
@@ -11,9 +12,11 @@ using UserService.Infrastructure.Database;
 namespace UserService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    partial class UserDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231217190730_AddedFollowersAndFriendsMigration")]
+    partial class AddedFollowersAndFriendsMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,55 +72,24 @@ namespace UserService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ProfileImage")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UserService.Domain.Entities.UserFollower", b =>
+            modelBuilder.Entity("UserUser", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("FollowersId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("FollowerId")
+                    b.Property<Guid>("FriendsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.HasKey("FollowersId", "FriendsId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("FriendsId");
 
-                    b.HasIndex("FollowerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFollower");
-                });
-
-            modelBuilder.Entity("UserService.Domain.Entities.UserFriend", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("FriendId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FriendId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFriend");
+                    b.ToTable("UserUser");
                 });
 
             modelBuilder.Entity("InterestUser", b =>
@@ -135,49 +107,19 @@ namespace UserService.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserService.Domain.Entities.UserFollower", b =>
+            modelBuilder.Entity("UserUser", b =>
                 {
-                    b.HasOne("UserService.Domain.Entities.User", "Follower")
+                    b.HasOne("UserService.Domain.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("UserService.Domain.Entities.User", "User")
-                        .WithMany("Followers")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("FollowersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Follower");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UserService.Domain.Entities.UserFriend", b =>
-                {
-                    b.HasOne("UserService.Domain.Entities.User", "Friend")
+                    b.HasOne("UserService.Domain.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("FriendId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("UserService.Domain.Entities.User", "User")
-                        .WithMany("Friends")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("FriendsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Friend");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UserService.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Followers");
-
-                    b.Navigation("Friends");
                 });
 #pragma warning restore 612, 618
         }

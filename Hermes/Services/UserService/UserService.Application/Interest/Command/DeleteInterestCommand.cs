@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using UserService.Domain.Exceptions;
 using UserService.Domain.Interfaces;
 
 namespace UserService.Application.Interests.Command
@@ -20,7 +21,7 @@ namespace UserService.Application.Interests.Command
 
             if (interest is null)
             {
-                throw new InvalidOperationException("Interest not found");
+                throw new NotFoundException("Interest not found");
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using UserService.Domain.Entities;
+using UserService.Domain.Exceptions;
 
 namespace UserService.Tests.Unit.Models
 {
@@ -82,7 +83,7 @@ namespace UserService.Tests.Unit.Models
             user.AddInterest(existingInterest);
 
             // Assert
-            Assert.Throws<InvalidOperationException>(() => user.AddInterest(existingInterest));
+            Assert.Throws<AlreadyExistsException>(() => user.AddInterest(existingInterest));
         }
 
         [Fact]
@@ -111,7 +112,7 @@ namespace UserService.Tests.Unit.Models
             var nonExistingInterest = new Interest("Nonexisting Interest");
 
             // Act & Assert
-            Assert.Throws<InvalidOperationException>(() => user.RemoveInterest(nonExistingInterest));
+            Assert.Throws<AlreadyExistsException>(() => user.RemoveInterest(nonExistingInterest));
         }
 
         [Fact]
@@ -141,6 +142,99 @@ namespace UserService.Tests.Unit.Models
 
             //Assert
             Assert.Equal(string.Empty, user.ProfileImage);
+        }
+
+        [Fact]
+        public void AddUserIntoFriendList()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var friend = new User("Takhma", "Gido", DateTime.Now);
+
+            // Act
+            user.AddFriend(friend);
+
+            // Assert
+            Assert.Contains(friend, user.Friends.Select(x => x.Friend));
+        }
+
+        [Fact]
+        public void NotAddSameUserAgainIntoFollowers()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var friend = new User("Takhma", "Gido", DateTime.Now);
+
+            // Act
+            user.AddFriend(friend);
+
+            // Assert
+            Assert.Throws<AlreadyExistsException>(() => user.AddFriend(friend));
+        }
+
+        [Fact]
+        public void RemoveFriend()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var friend = new User("Takhma", "Gido", DateTime.Now);
+
+            user.AddFriend(friend);
+
+            // Act
+            user.RemoveFriend(friend.Id);
+
+            // Assert
+            Assert.DoesNotContain(friend, user.Friends.Select(x => x.Friend));
+        }
+
+        [Fact]
+        public void AddFollower()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var follower = new User("Takhma", "Gido", DateTime.Now);
+
+            user.AddFollower(follower);
+
+            // Assert
+            Assert.Contains(follower, user.Followers.Select(x => x.Follower));
+        }
+
+        [Fact]
+        public void NotAddSameUserAgainIntoFriends()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var follower = new User("Takhma", "Gido", DateTime.Now);
+
+            // Act
+            user.AddFollower(follower);
+
+            // Assert
+            Assert.Throws<AlreadyExistsException>(() => user.AddFriend(follower));
+        }
+
+        [Fact]
+        public void RemoveFollower()
+        {
+            // Arrange
+            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+
+            var follower = new User("Takhma", "Gido", DateTime.Now);
+
+            user.AddFollower(follower);
+
+            // Act
+            user.RemoveFollower(follower.Id);
+
+            // Assert
+            Assert.DoesNotContain(follower, user.Followers.Select(x => x.Follower));
         }
     }
 }
