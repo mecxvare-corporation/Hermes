@@ -1,3 +1,5 @@
+[assembly: System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
