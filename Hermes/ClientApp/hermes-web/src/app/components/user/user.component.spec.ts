@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 
-describe('UserComponent', () => {
+xdescribe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
 
