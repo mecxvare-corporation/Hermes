@@ -1,0 +1,171 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, img, input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Apply a box-sizing border-box to all elements */
+* {
+  box-sizing: border-box;
+  border: 1px solid black; 
+}
+
+/* Main container for the entire profile page */
+#profile-upper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px;
+  position: relative;
+}
+
+/* Container for profile details and buttons */
+#profile-d {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: #fff;
+}
+
+/* Profile picture styling */
+#profile-pic img {
+  border-radius: 100%;
+}
+
+/* User name styling */
+#u-name {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+/* Material buttons container */
+#m-btns {
+  display: flex;
+}
+
+/* Material button styling */
+.m-btn {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* Edit profile icon styling */
+#edit-profile {
+  cursor: pointer;
+}
+
+/* Black gradient overlay */
+#black-grd {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+  z-index: -1;
+}
+
+/* Main content container */
+#main-content {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Main column containing tabs, composer, etc. */
+#m-col {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+}
+
+/* Profile tabs styling */
+#p-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Profile tabs middle section styling */
+#p-tabs-m {
+  display: flex;
+  align-items: center;
+}
+
+/* Profile tabs individual tab styling */
+#p-tabs-m .td {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #555;
+}
+
+/* Active tab styling */
+#p-tabs-m .active {
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Composer section styling */
+#composer {
+  background-color: #fff;
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Composer tabs container */
+#c-tabs-cvr {
+  border-bottom: 1px solid #ccc;
+}
+
+/* Composer tabs styling */
+#c-tabs {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+/* Composer individual tab styling */
+#c-tabs .td {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #555;
+}
+
+/* Active tab styling */
+#c-tabs .active {
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Composer main content container */
+#c-c-main {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Composer profile picture styling */
+#p-c-i img {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Composer input styling */
+#c-inp input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
