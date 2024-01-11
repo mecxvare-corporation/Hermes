@@ -19,4 +19,8 @@
     <ProjectReference Include="..\PostService.Application\PostService.Application.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<SonarQubeExclude Include="..\PostService.Api\Program.cs" />
+	</ItemGroup>
+
 </Project>
