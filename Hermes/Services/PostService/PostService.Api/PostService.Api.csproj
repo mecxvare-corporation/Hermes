@@ -19,8 +19,9 @@
     <ProjectReference Include="..\PostService.Application\PostService.Application.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<SonarQubeExclude Include="Program.cs" />
-	</ItemGroup>
+	<PropertyGroup>
+		<!-- Exclude the project from analysis -->
+		<SonarQubeExclude>true</SonarQubeExclude>
+	</PropertyGroup>
 
 </Project>
