@@ -20,7 +20,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<SonarQubeExclude Include="..\PostService.Api\Program.cs" />
+		<SonarQubeExclude Include="Program.cs" />
 	</ItemGroup>
 
 </Project>
