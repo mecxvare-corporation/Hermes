@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Hermes.Common\Hermes.Common.csproj" />
     <ProjectReference Include="..\PostService.Application\PostService.Application.csproj" />
   </ItemGroup>
 
