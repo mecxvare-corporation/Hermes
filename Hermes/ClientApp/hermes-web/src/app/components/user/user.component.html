@@ -1,0 +1,66 @@
+@if (userInfo$ | async; as UserInfoModel) {
+    <div id="profile-upper">
+        <div id="profile-d">
+            <div id="profile-pic">
+                <img [ngSrc]="UserInfoModel.profileImage" alt="Profile pic" width="100" height="180">
+            </div>
+            <div id="u-name">{{UserInfoModel.firstName}} {{UserInfoModel.lastName}}</div>
+            <div id="edit-profile">
+                <i class="material-icons">camera_alt</i>
+            </div>
+        </div>
+        <div id="m-btns" class="tb">
+            <div class="td">
+                <div class="m-btn">
+                    <i class="material-icons">format_list_bulleted</i>
+                    <span>Activity log</span>
+                </div>
+            </div>
+            <div class="td">
+                <div class="m-btn">
+                    <i class="material-icons">lock</i>
+                    <span>Privacy</span>
+                </div>
+            </div>
+        </div>
+        <div id="black-grd"></div>
+    </div>
+    <div id="main-content">
+        <div class="tb">
+            <div id="m-col" class="td">
+                <div id="p-tabs" class="m-mrg">
+                    <div class="tb">
+                        <div class="td">
+                            <div id="p-tabs-m" class="tb">
+                                <div class="td active"><i class="material-icons">av_timer</i><span>TIMELINE</span></div>
+                                <div class="td"><i class="material-icons">people</i><span>FRIENDS</span></div>
+                                <div class="td"><i class="material-icons">people</i><span>FOLLOWERS</span></div>
+                                <div class="td"><i class="material-icons">explore</i><span>ABOUT</span></div>
+                                <div class="td"><i class="material-icons">archive</i><span>ARCHIVE</span></div>
+                            </div>
+                        </div>
+                        <div id="p-tab-m" class="td"><i class="material-icons">keyboard_arrow_down</i></div>
+                    </div>
+                </div>
+                <div id="composer" class="m-mrg">
+                    <div id="c-tabs-cvr">
+                        <div id="c-tabs" class="tb">
+                            <div class="td active"><i class="material-icons">subject</i><span>Make Post</span></div>
+                            <div class="td"><i class="material-icons">camera_enhance</i><span>Photo/Video</span></div>
+                            <div class="td"><i class="material-icons">videocam</i><span>Live Video</span></div>
+                            <div class="td"><i class="material-icons">event</i><span>Life Event</span></div>
+                        </div>
+                    </div>
+                    <div id="c-c-main" class="tb">
+                        <div id="p-c-i" class="td">
+                            <img [ngSrc]="UserInfoModel.profileImage" alt="Profile pic" width="60" height="70">
+                        </div>
+                        <div id="c-inp" class="td">
+                            <input type="text" placeholder="What's on your mind?">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
