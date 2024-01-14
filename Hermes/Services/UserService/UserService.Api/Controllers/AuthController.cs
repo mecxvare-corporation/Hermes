@@ -20,6 +20,35 @@ namespace UserService.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<UserMinimalInfoDto>> GetAuthorizedUserAsync()
         {
+            //// Testing
+            //// Getting token for client
+            //var client = new HttpClient();
+            //var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+            //if (disco.IsError)
+            //{
+            //    Console.WriteLine(disco.Error);
+
+            //    return BadRequest();
+            //}
+
+            //// request token
+            //var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            //{
+            //    Address = disco.TokenEndpoint,
+
+            //    ClientId = "userservice",
+            //    ClientSecret = "admin1234",
+            //    Scope = "identityprovider",
+            //});
+
+            //if (tokenResponse.IsError)
+            //{
+            //    Console.WriteLine(tokenResponse.Error);
+            //    return BadRequest();
+            //}
+
+            //Console.WriteLine(tokenResponse.AccessToken);
+
             return Ok(await _mediator.Send(new GetAuthorizedUserQuery()));
         }
     }

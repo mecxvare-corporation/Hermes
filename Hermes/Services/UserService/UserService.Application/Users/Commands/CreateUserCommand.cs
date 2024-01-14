@@ -29,5 +29,4 @@ namespace UserService.Application.Users.Commands
             return user.Id;
         }
     }
-
 }

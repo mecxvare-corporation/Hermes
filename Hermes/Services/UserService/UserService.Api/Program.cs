@@ -1,7 +1,10 @@
 using HealthChecks.UI.Client;
 using Hermes.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using System.Text.Json;
@@ -30,7 +33,41 @@ builder.Services.AddControllers()
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "User Service", Version = "v1" });
+
+    //// Include the XML comments (optional)
+    //var xmlPath = Path.Combine(AppContext.BaseDirectory, "YourApi.xml");
+    //c.IncludeXmlComments(xmlPath);
+
+    // Add JWT authentication
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter the JWT with Bearer into the field",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        BearerFormat = "JWT"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new List<string>()
+        }
+    });
+});
 
 builder.Services.AddDbContext<UserDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("UserServiceConnectionString")));
@@ -49,6 +86,17 @@ builder.Services.AddHealthChecks()
                 .AddNpgSql(builder.Configuration.GetConnectionString("UserServiceConnectionString")!);
 
 builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.Authority = builder.Configuration.GetValue<string>("IdentityServerOptions:Authority");
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = false
+        };
+    });
 
 builder.Configuration.AddEnvironmentVariables()
     .AddUserSecrets(Assembly.GetAssembly(typeof(ProfilePictureService))!, true);
@@ -86,6 +134,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
