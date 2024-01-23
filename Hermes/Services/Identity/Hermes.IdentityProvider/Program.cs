@@ -18,7 +18,7 @@ try
 
     var app = builder
     .ConfigureServices()
-    .ConfigurePipeline();
+    .ConfigurePipelineAsync();
 
 }
 catch (Exception ex)
