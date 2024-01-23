@@ -1,4 +1,6 @@
+using Hermes.IdentityProvider.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace Hermes.IdentityProvider;
@@ -30,25 +32,37 @@ internal static class HostingExtensions
             // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
             options.EmitStaticAudienceClaim = true;
         })
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            //.AddInMemoryIdentityResources(Config.IdentityResources)
+            //.AddInMemoryApiScopes(Config.ApiScopes)
+            //.AddInMemoryClients(Config.Clients)
+            .AddConfigurationStore(options => options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
+            .AddOperationalStore(options => options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
             .AddTestUsers(Config.TestUsers);
 
         builder.Services.AddControllers();
 
         builder.Services.AddRazorPages();
 
+        builder.Services.AddScoped<IdentityProviderDbContextFactory>();
+
         return builder.Build();
     }//moica vfiqrob sad davamato kontrolershi ar minda davamato imitom rom dagvrcheba mere
 
-    public static WebApplication ConfigurePipeline(this WebApplication app)
+    public static async Task<WebApplication> ConfigurePipelineAsync(this WebApplication app)
     {
         app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var initialiser = scope.ServiceProvider.GetRequiredService<IdentityDbInitializer>();
+
+                await initialiser.InitialiseAsync();
+                await initialiser.SeedAsync();
+            }
         }
 
         // uncomment if you want to add a UI

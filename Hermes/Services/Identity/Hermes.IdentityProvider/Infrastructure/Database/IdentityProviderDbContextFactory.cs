@@ -14,7 +14,7 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
                 .AddJsonFile("appsettings.json", optional: false)
                 .Build();
 
-            var connectionString = config.GetConnectionString("UserServiceConnectionString");
+            var connectionString = config.GetConnectionString("IdentityServiceConnectionString");
 
             var optionsBuilder = new DbContextOptionsBuilder<IdentityProviderDbContext>()
                 .UseNpgsql(connectionString);
