@@ -10,7 +10,7 @@ internal static class HostingExtensions
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         // uncomment if you want to add a UI
-        //builder.Services.AddRazorPages();
+        builder.Services.AddRazorPages();
 
         builder.Services.AddAuthorization();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -27,26 +27,25 @@ internal static class HostingExtensions
                 options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
             });
 
+        builder.Services.AddDbContext<IdentityProviderDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString")));
+
         builder.Services.AddIdentityServer(options =>
         {
             // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
             options.EmitStaticAudienceClaim = true;
         })
-            //.AddInMemoryIdentityResources(Config.IdentityResources)
-            //.AddInMemoryApiScopes(Config.ApiScopes)
-            //.AddInMemoryClients(Config.Clients)
             .AddConfigurationStore(options => options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
             .AddOperationalStore(options => options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
-            .AddTestUsers(Config.TestUsers);
+            /*.AddTestUsers(Config.TestUsers)*/;
 
         builder.Services.AddControllers();
 
-        builder.Services.AddRazorPages();
-
+        builder.Services.AddScoped<IdentityDbInitializer>();
         builder.Services.AddScoped<IdentityProviderDbContextFactory>();
 
         return builder.Build();
-    }//moica vfiqrob sad davamato kontrolershi ar minda davamato imitom rom dagvrcheba mere
+    }
 
     public static async Task<WebApplication> ConfigurePipelineAsync(this WebApplication app)
     {

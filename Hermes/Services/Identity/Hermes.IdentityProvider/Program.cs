@@ -17,8 +17,9 @@ try
         .ReadFrom.Configuration(ctx.Configuration));
 
     var app = builder
-    .ConfigureServices()
-    .ConfigurePipelineAsync();
+    .ConfigureServices();
+
+    await app.ConfigurePipelineAsync();
 
 }
 catch (Exception ex)
