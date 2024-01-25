@@ -56,13 +56,13 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
         {
             await SeedApiResources();
 
-            await SeedClients();
-
-            await SeedUsers();
-
             await SeedIdentityResources();
 
             await SeedApiScopes();
+
+            await SeedClients();
+
+            await SeedUsers();
         }
 
         private async Task SeedUsers()
