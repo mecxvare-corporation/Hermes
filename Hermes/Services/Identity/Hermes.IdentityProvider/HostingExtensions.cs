@@ -44,6 +44,18 @@ internal static class HostingExtensions
         builder.Services.AddScoped<IdentityDbInitializer>();
         builder.Services.AddScoped<IdentityProviderDbContextFactory>();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontendOrigin",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+        });
+
         return builder.Build();
     }
 
@@ -68,6 +80,7 @@ internal static class HostingExtensions
         app.UseStaticFiles();
         app.UseRouting();
 
+        app.UseCors("AllowFrontendOrigin");
         app.UseIdentityServer();
 
         // uncomment if you want to add a UI
