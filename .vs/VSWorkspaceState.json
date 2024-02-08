@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Hermes",
+    "\\Hermes\\Services",
+    "\\Hermes\\Services\\Identity",
+    "\\Hermes\\Services\\Identity\\Hermes.IdentityProvider"
   ],
-  "SelectedNode": "\\Hermes.sln",
   "PreviewInSolutionExplorer": false
 }

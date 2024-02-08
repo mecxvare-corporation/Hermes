@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.EntityFramework.DbContexts;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Duende.IdentityServer.Models;
 using Hermes.IdentityProvider.Entities;
@@ -96,42 +97,28 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
             {
                 var clients = new List<Client>
                 {
-                    //new Duende.IdentityServer.Models.Client
-                    //{
-                    //    ClientId = "userService",
-                    //    ClientName = "User Service",
-                    //    AllowedGrantTypes =
-                    //    {
-                    //        GrantType.Hybrid,
-                    //        GrantType.ResourceOwnerPassword,
-                    //        GrantType.ClientCredentials
-                    //    },
-                    //    AbsoluteRefreshTokenLifetime = 60 * 60 * 12, // 12 hrs
-                    //    AccessTokenLifetime = 60 * 60 * 12 * 2, // 24 hrs
-                    //    AccessTokenType = AccessTokenType.Jwt,
-                    //    UpdateAccessTokenClaimsOnRefresh = true,
-                    //    RefreshTokenExpiration = TokenExpiration.Sliding,
-                    //    RefreshTokenUsage = TokenUsage.ReUse,
-                    //    ClientSecrets =
-                    //    {
-                    //        new Secret(userServiceSecret.Sha256())
-                    //    },
-                    //    AllowedScopes =
-                    //    {
-                    //        "identityprovider"
-                    //    },
-                    //    RedirectUris =
-                    //    {
-                    //        "https://localhost:5001/signin-oidc",
-                    //        "https://localhost:5001/Account/LoginCallback",
-                    //    },
-                    //    PostLogoutRedirectUris =
-                    //    {
-                    //        "https://localhost:5001/signout-callback-oidc",
-                    //    }
-                    //}
-
                     // angular app
+                    new Client
+                    {
+                        ClientId = "angular-client",
+                        ClientName = "Angular Client",
+                        AllowedGrantTypes = GrantTypes.Implicit,
+                        RedirectUris = {"http://localhost:4200/"}, // we will manage this in front-end
+                        PostLogoutRedirectUris = {"http://localhost:4200/home"},
+                        AllowedCorsOrigins = {"http://localhost:4200"},
+                        AllowedScopes = {
+                            IdentityServerConstants.StandardScopes.OpenId,
+                            IdentityServerConstants.StandardScopes.Profile,
+                        },
+                        ClientSecrets =
+                        {
+                            new Secret("secret".Sha256())
+                        },
+
+                        //optionally
+                        AllowAccessTokensViaBrowser = true,
+                        RequireConsent = false,
+                    }
                 };
 
                 foreach (var client in clients)

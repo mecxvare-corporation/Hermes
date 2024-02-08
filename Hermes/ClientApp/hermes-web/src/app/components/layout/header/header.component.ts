@@ -19,4 +19,5 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userMinimalInfo$ = this._authService.getAuthorizedUser();
   }
+
 }

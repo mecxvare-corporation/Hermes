@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Test;
 using IdentityModel;
 using System.Security.Claims;
@@ -24,25 +25,6 @@ public static class Config
     public static IEnumerable<Client> Clients =>
         new List<Client>
         {
-            new Client
-            {
-                ClientId = "userservice",
-
-                // no interactive user, use the clientid/secret for authentication
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                // secret for authentication
-                ClientSecrets =
-                {
-                    new Secret("admin1234".Sha256())
-                },
-
-                // scopes that client has access to
-                AllowedScopes =
-                {
-                    "identityprovider"
-                }
-            }
         };
 
     public static List<TestUser> TestUsers =>

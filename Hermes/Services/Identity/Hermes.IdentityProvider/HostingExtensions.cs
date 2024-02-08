@@ -80,6 +80,12 @@ internal static class HostingExtensions
         app.UseStaticFiles();
         app.UseRouting();
 
+        app.Use(async (context, next) =>
+        {
+            context.Response.Headers.Add("Content-Security-Policy", "connect-src 'self' http://localhost:4200 http://localhost:49396;");
+            await next();
+        });
+
         app.UseCors("AllowFrontendOrigin");
         app.UseIdentityServer();
 
