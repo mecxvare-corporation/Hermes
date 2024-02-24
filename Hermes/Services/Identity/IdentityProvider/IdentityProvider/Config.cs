@@ -9,6 +9,14 @@ namespace IdentityProvider
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource(
+                    "roles",
+                    "Your role(s)",
+                    new List<string>() {"role"}),
+                 new IdentityResource(
+                    "username",
+                    "Your username",
+                    new List<string>() {"username"}),
             };
 
         public static IEnumerable<ApiResource> ApiResources =>

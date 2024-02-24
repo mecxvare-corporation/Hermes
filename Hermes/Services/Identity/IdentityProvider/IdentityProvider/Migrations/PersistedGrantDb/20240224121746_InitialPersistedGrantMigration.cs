@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IdentityProvider.Migrations.PersistedGrantDb
 {
     /// <inheritdoc />
-    public partial class InitialConfiguration : Migration
+    public partial class InitialPersistedGrantMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

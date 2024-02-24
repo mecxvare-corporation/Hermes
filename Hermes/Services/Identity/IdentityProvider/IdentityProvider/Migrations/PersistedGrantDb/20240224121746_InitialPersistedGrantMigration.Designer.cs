@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IdentityProvider.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20240221184353_InitialConfiguration")]
-    partial class InitialConfiguration
+    [Migration("20240224121746_InitialPersistedGrantMigration")]
+    partial class InitialPersistedGrantMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

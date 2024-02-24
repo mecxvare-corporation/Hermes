@@ -1,4 +1,5 @@
 using Duende.IdentityServer;
+using IdentityProvider.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -9,6 +10,11 @@ namespace IdentityProvider
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddRazorPages();
+
+            builder.Services.AddDbContext<IdentityDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString")));
+
+            builder.Services.AddScoped<IdentityDbContextInitializer>();
 
             var isBuilder = builder.Services.AddIdentityServer(options =>
                 {
@@ -25,8 +31,7 @@ namespace IdentityProvider
                     builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
                 .AddOperationalStore(options =>
                 options.ConfigureDbContext = b => b.UseNpgsql(
-                    builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
-                .AddTestUsers(TestUsers.Users);
+                    builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)));
 
 
             // if you want to use server-side sessions: https://blog.duendesoftware.com/posts/20220406_session_management/
@@ -57,13 +62,21 @@ namespace IdentityProvider
             return builder.Build();
         }
 
-        public static WebApplication ConfigurePipeline(this WebApplication app)
+        public static async Task<WebApplication> ConfigurePipelineAsync(this WebApplication app)
         {
             app.UseSerilogRequestLogging();
 
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                using (var scope = app.Services.CreateScope())
+                {
+                    var initialiser = scope.ServiceProvider.GetRequiredService<IdentityDbContextInitializer>();
+
+                    await initialiser.InitialiseAsync();
+                    await initialiser.SeedAsync();
+                }
             }
 
             app.UseStaticFiles();
