@@ -1,2 +1,12 @@
 <hermes-header></hermes-header>
-<router-outlet></router-outlet>
+@if (!isLoggedIn()) {
+    <div class="auth-buttons">
+        <h2>Welcome</h2>
+        <h4>You are not logged in, please login, or create an accaunt!</h4>
+        <button class="login-button" (click)="login()">Login</button>
+        <span class="spacer"></span> 
+        <button class="register-button" (click)="create()">Register</button>
+      </div>
+}@else {
+    <router-outlet></router-outlet>
+}

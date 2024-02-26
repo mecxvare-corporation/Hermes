@@ -3,10 +3,14 @@
     <img src="assets/logo.png" alt="Logo" class="logo">
     <input type="search" placeholder="Search" class="search-bar" matInput>
   </div>
-  @if (userMinimalInfo$ | async; as userMinimalInfo) {
-  <div class="header-right">
-    <img [ngSrc]="userMinimalInfo.profileImage" alt="User Picture" class="user-picture" width="40" height="40">
-    <span class="user-name">{{ userMinimalInfo.fullname }}</span>
-  </div>
+
+  @if(isLoggedIn()) {
+    @if (userMinimalInfo$ | async; as userMinimalInfo) {
+      <div class="header-right">
+        <img [ngSrc]="userMinimalInfo.profileImage" alt="User Picture" class="user-picture" width="40" height="40">
+        <span class="user-name">{{ userMinimalInfo.fullname }}</span>
+      </div>
+      <button class="dropdown-item" (click)="logOut()">Logout</button>
+    }
   }
 </header>

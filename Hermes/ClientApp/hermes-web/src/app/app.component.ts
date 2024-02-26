@@ -1,45 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { UserComponent } from './components/user/user.component';
-import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
-import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks'
-import { HomeComponent } from './components/home/home.component';
-
-const authConfig: AuthConfig = {
-  issuer: 'https://localhost:5001', // Write IdentityProvider here
-  clientId: 'angular-client',
-  dummyClientSecret: 'not-required',
-  responseType: 'id-token token',
-  logoutUrl: window.location.origin + '/home',
-  redirectUri: window.location.origin + '/',
-  scope: 'openid profile',
-  strictDiscoveryDocumentValidation: false,
-  showDebugInformation: true,
-
-  // set to true, to receive also an id_token via OpenId Connect (OIDC) in addition to the
-  // OAuth2-based access_token
-  oidc: true, // ID_Token
-};
+import { OAuthModule} from 'angular-oauth2-oidc';
+import { AuthService } from './services/auth.service';
+import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
+import { PostAuthCallbackComponent } from './components/post-auth-callback/post-auth-callback.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, UserComponent, OAuthModule, HomeComponent],
-  providers: [OAuthService],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, UserComponent, OAuthModule, 
+    AuthCallbackComponent, PostAuthCallbackComponent],
+  providers: [AuthService,
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptorService,
+    multi: true,
+    },
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  private readonly _oauthService: AuthService = inject(AuthService);
 
-  constructor(private oauthService: OAuthService) {
-    this.configure();
+  constructor() {
+    this._oauthService.configure();
   }
 
-  private configure() {
-    this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  ngOnInit(){
+    this.isLoggedIn();
+    this._oauthService.loadUser()
+  }
+
+  isLoggedIn(){
+    return this._oauthService.isLoggedIn();
+  }
+
+  login(){
+    this._oauthService.login();
+  }
+
+  create(){
+    this._oauthService.register();
   }
 }
