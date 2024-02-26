@@ -1,9 +1,9 @@
 using Duende.IdentityServer;
-using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
-using Duende.IdentityServer.Stores;
 using Duende.IdentityServer.Test;
+using IdentityProvider.Domain;
+using IdentityProvider.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +15,7 @@ namespace IdentityProvider.Pages.Create
     [AllowAnonymous]
     public class Index : PageModel
     {
+        private readonly IdentityDbContext _dbContext;
         private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
 
@@ -22,9 +23,11 @@ namespace IdentityProvider.Pages.Create
         public InputModel Input { get; set; }
 
         public Index(
+            IdentityDbContext dbContext,
             IIdentityServerInteractionService interaction,
             TestUserStore users = null)
         {
+            _dbContext = dbContext;
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
             _users = users ?? throw new Exception("Please call 'AddTestUsers(TestUsers.Users)' on the IIdentityServerBuilder in Startup or remove the TestUserStore from the AccountController.");
 
@@ -69,19 +72,19 @@ namespace IdentityProvider.Pages.Create
                 }
             }
 
-            if (_users.FindByUsername(Input.Username) != null)
-            {
-                ModelState.AddModelError("Input.Username", "Invalid username");
-            }
+            //if (_users.FindByUsername(Input.Username) != null)
+            //{
+            //    ModelState.AddModelError("Input.Username", "Invalid username");
+            //}
 
             if (ModelState.IsValid)
             {
-                var user = _users.CreateUser(Input.Username, Input.Password, Input.Name, Input.Email);
+                var user = /*_users.CreateUser(Input.Username, Input.Password, Input.Name, Input.Email);*/ await new RegisterUser(_dbContext).CreateUser(Input.Username, Input.Email, Input.Password);
 
                 // issue authentication cookie with subject ID and username
                 var isuser = new IdentityServerUser(user.SubjectId)
                 {
-                    DisplayName = user.Username
+                    DisplayName = user.UserName
                 };
 
                 await HttpContext.SignInAsync(isuser);

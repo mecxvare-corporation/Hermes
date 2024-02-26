@@ -1,4 +1,5 @@
 using Duende.IdentityServer;
+using IdentityProvider.Domain;
 using IdentityProvider.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -31,7 +32,8 @@ namespace IdentityProvider
                     builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
                 .AddOperationalStore(options =>
                 options.ConfigureDbContext = b => b.UseNpgsql(
-                    builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)));
+                    builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
+                .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
 
 
             // if you want to use server-side sessions: https://blog.duendesoftware.com/posts/20220406_session_management/
@@ -45,7 +47,6 @@ namespace IdentityProvider
             //   );
             //builder.Services.Configure<RazorPagesOptions>(options =>
             //    options.Conventions.AuthorizeFolder("/ServerSideSessions", "admin"));
-
 
             builder.Services.AddAuthentication()
                 .AddGoogle(options =>
