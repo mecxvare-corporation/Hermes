@@ -88,13 +88,17 @@ builder.Services.AddHealthChecks()
 builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    .AddJwtBearer(/*JwtBearerDefaults.AuthenticationScheme, */options =>
     {
-        options.Authority = builder.Configuration.GetValue<string>("IdentityServerOptions:Authority");
-
+        options.Authority = builder.Configuration.GetValue<string>("IdentityServerOptions:Authority"); ;
+        options.Audience = "userserviceapi";
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false
+            ValidTypes = new[]
+            {
+                "at+jwt"
+            },
+            ValidateAudience = true
         };
     });
 
