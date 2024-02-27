@@ -1,4 +1,4 @@
-using Duende.IdentityServer.AspNetIdentity;
+using Hermes.IdentityProvider.Domain;
 using Hermes.IdentityProvider.Entities;
 using Hermes.IdentityProvider.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +37,7 @@ internal static class HostingExtensions
         .AddOperationalStore(options =>
         options.ConfigureDbContext = b => b.UseNpgsql(
             builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(User).Assembly.GetName().Name)))
-        //.AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
+        .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
 
         builder.Services.AddControllers();
 
