@@ -1,4 +1,5 @@
 ﻿using Hermes.IdentityProvider.Infrastructure.Database;
+using IdentityModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.IdentityProvider.Domain

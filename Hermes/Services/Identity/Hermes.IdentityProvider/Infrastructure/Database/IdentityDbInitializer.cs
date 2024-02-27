@@ -75,5 +75,26 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
         }
     }
 
+    //public static IEnumerable<Client> Clients =>
+    //       new Client[]
+    //       {
+    //            new Client
+    //            {
+    //                ClientId = "SPA",
+    //                ClientName = "My Angular App",
+    //                AllowedGrantTypes = GrantTypes.Implicit,
+
+    //                RedirectUris = { "http://localhost:4200/signin-callback" },
+    //                FrontChannelLogoutUri = "https://localhost:4200/signout-callback",
+
+    //                AllowedCorsOrigins = {"http://localhost:4200"},
+
+    //                AllowAccessTokensViaBrowser = true,
+    //                RequireConsent = true,
+    //                AllowedScopes = { "openid", "profile" }
+
+    //            }
+    //       };
+
 }
 
