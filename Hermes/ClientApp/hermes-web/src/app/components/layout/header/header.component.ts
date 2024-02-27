@@ -23,11 +23,14 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userMinimalInfo$ = this.getAuthorizedUser();
+    
   }
 
-  getAuthorizedUser(): Observable<UserMinimalInfoModel> {
-    return this._httpClient.get<UserMinimalInfoModel>(this.baseUri);
+  getAuthorizedUser() {
+    const token = this._authService.access_token;
+    debugger
+    console.log(token)
+    this.userMinimalInfo$ = this._httpClient.get<UserMinimalInfoModel>(this.baseUri);
   }
 
   isLoggedIn(){

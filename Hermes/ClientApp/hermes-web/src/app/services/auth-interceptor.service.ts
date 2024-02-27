@@ -13,7 +13,7 @@ export class AuthInterceptorService {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this._authService.access_token;
-
+debugger
     // This will add headers to all requests, this is not a good idea,
     // we can add maybe if statment to check if URL starts with our api.
     if (token) {

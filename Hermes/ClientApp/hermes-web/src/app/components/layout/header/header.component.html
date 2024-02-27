@@ -2,6 +2,7 @@
   <div class="header-left">
     <img src="assets/logo.png" alt="Logo" class="logo">
     <input type="search" placeholder="Search" class="search-bar" matInput>
+    <button class="dropdown-item" (click)="getAuthorizedUser()">GetUser</button>
   </div>
 
   @if(isLoggedIn()) {

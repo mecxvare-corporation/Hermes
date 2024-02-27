@@ -70,7 +70,6 @@
                         AllowedScopes = { "openid", "profile" }
 
                     }
-
                 };
         }
     }

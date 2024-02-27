@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Hermes.IdentityProvider.Migrations.IdentityProviderDb
+namespace Hermes.IdentityProvider.Migrations
 {
     /// <inheritdoc />
-    public partial class initialUsersMigration : Migration
+    public partial class InitialIDPMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
