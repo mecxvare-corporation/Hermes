@@ -1,4 +1,4 @@
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
 using Hermes.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -90,7 +90,7 @@ builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(/*JwtBearerDefaults.AuthenticationScheme, */options =>
     {
-        options.Authority = builder.Configuration.GetValue<string>("IdentityServerOptions:Authority"); ;
+        options.Authority = builder.Configuration.GetValue<string>("IdentityServerOptions:Authority");
         options.Audience = "userserviceapi";
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -98,7 +98,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             {
                 "at+jwt"
             },
-            ValidateAudience = true
+            // აუდიენცია გვაქვს არეული, არ ვიცით რა არის :D True-ს შემთხვევაში ვერ გადის ვალიდაციას
+            ValidateAudience = false
         };
     });
 

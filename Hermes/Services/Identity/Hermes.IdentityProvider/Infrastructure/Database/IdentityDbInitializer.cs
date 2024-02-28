@@ -65,6 +65,7 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
             await SeedClients();
             await SeedIdentityResources();
             await SeedApiResources();
+            await SeedApiScopes();
         }
 
         private async Task SeedUsers()
@@ -90,6 +91,7 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
                 {
                     new Client
                     {
+
                         ClientId = "SPA",
                         ClientName = "My Angular App",
                         AllowedGrantTypes = new List<ClientGrantType>{ new ClientGrantType { GrantType = "implicit" } },
@@ -103,7 +105,8 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
                         RequireConsent = true,
                         AllowedScopes = new List<ClientScope>{
                             new ClientScope { Scope = "openid"},
-                            new ClientScope { Scope = "profile"}
+                            new ClientScope { Scope = "profile"},
+                            new ClientScope { Scope = "userserviceapi" }
                         },
                         AllowOfflineAccess = true,
                     }
@@ -162,6 +165,37 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
                 };
 
                 await _configurationDbContext.AddRangeAsync(apiResources);
+                await _configurationDbContext.SaveChangesAsync();
+            }
+        }
+
+        private async Task SeedApiScopes()
+        {
+            if (!_configurationDbContext.ApiScopes.Any())
+            {
+                var apiScopes = new List<ApiScope>
+                {
+                    new ApiScope
+                    {
+                        Name = "userservice.read",
+                        Description = "userservice.read",
+                        Enabled = true,
+                        Required = false,
+                        Emphasize = false,
+                        ShowInDiscoveryDocument = true
+                    },
+                    new ApiScope
+                    {
+                        Name = "userservice.write",
+                        Description = "userservice.write",
+                        Enabled = true,
+                        Required = false,
+                        Emphasize = false,
+                        ShowInDiscoveryDocument = true
+                    }
+                };
+
+                await _configurationDbContext.AddRangeAsync(apiScopes);
                 await _configurationDbContext.SaveChangesAsync();
             }
         }

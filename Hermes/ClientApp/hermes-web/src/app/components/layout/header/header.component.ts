@@ -41,6 +41,6 @@ export class HeaderComponent implements OnInit {
 
   testEndpoint(){
     this.isLoggedIn();
-    this._httpClient.get('https://localhost:7145/WeatherForecast').subscribe();
+    this._httpClient.get("https://localhost:7080/api/auth").subscribe();
   }
 }
