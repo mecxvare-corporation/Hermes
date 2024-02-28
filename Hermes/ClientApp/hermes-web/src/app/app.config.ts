@@ -3,9 +3,12 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideOAuthClient } from 'angular-oauth2-oidc';
+import { authInterceptorInterceptor } from './services/auth-interceptor.interceptor';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimations(), provideHttpClient(), provideOAuthClient()]
+  providers: [provideRouter(routes), provideAnimations(), 
+    provideHttpClient(withInterceptors([authInterceptorInterceptor])), 
+    provideOAuthClient()]
 };

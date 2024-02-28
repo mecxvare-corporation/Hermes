@@ -7,21 +7,13 @@ import { OAuthModule} from 'angular-oauth2-oidc';
 import { AuthService } from './services/auth.service';
 import { AuthCallbackComponent } from './components/auth-callback/auth-callback.component';
 import { PostAuthCallbackComponent } from './components/post-auth-callback/post-auth-callback.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, HeaderComponent, UserComponent, OAuthModule, 
     AuthCallbackComponent, PostAuthCallbackComponent],
-  providers: [AuthService,
-    {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptorService,
-    multi: true,
-    },
-  ],
+  providers: [AuthService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

@@ -23,13 +23,11 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {
-    
+    this.isLoggedIn();
   }
 
   getAuthorizedUser() {
-    const token = this._authService.access_token;
-    debugger
-    console.log(token)
+
     this.userMinimalInfo$ = this._httpClient.get<UserMinimalInfoModel>(this.baseUri);
   }
 
@@ -39,5 +37,10 @@ export class HeaderComponent implements OnInit {
 
   logOut(){
     this._authService.logOut();
+  }
+
+  testEndpoint(){
+    this.isLoggedIn();
+    this._httpClient.get('https://localhost:7145/WeatherForecast').subscribe();
   }
 }
