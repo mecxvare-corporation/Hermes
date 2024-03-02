@@ -2,11 +2,10 @@
   <div class="header-left">
     <img src="assets/logo.png" alt="Logo" class="logo">
     <input type="search" placeholder="Search" class="search-bar" matInput>
-    <button class="dropdown-item" (click)="testEndpoint()">test</button>
   </div>
 
-  @if(isLoggedIn()) {
-    @if (userMinimalInfo$ | async; as userMinimalInfo) {
+  @if(showLogOutOption) {
+    @if (userMinimalInfo) {
       <div class="header-right">
         <img [ngSrc]="userMinimalInfo.profileImage" alt="User Picture" class="user-picture" width="40" height="40">
         <span class="user-name">{{ userMinimalInfo.fullname }}</span>

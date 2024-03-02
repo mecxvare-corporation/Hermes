@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Observable } from 'rxjs';
 import { UserMinimalInfoModel } from '../../../models/user-minimal-info';
@@ -14,33 +14,15 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-  private readonly _authService: AuthService = inject(AuthService);
-  private readonly _httpClient: HttpClient = inject(HttpClient);
+  @Input() showLogOutOption: boolean | undefined;
+  @Input() userMinimalInfo: UserMinimalInfoModel | undefined;
 
-  private baseUri: string = "https://localhost:7080/api/auth";
-
-  userMinimalInfo$: Observable<UserMinimalInfoModel> | undefined;
-
+  @Output() logOutClicked: EventEmitter<void> = new EventEmitter<void>();
 
   ngOnInit() {
-    this.isLoggedIn();
   }
-
-  getAuthorizedUser() {
-
-    this.userMinimalInfo$ = this._httpClient.get<UserMinimalInfoModel>(this.baseUri);
-  }
-
-  isLoggedIn(){
-    return this._authService.isLoggedIn();
-  }
-
+  
   logOut(){
-    this._authService.logOut();
-  }
-
-  testEndpoint(){
-    this.isLoggedIn();
-    this._httpClient.get("https://localhost:7080/api/auth").subscribe();
+    this.logOutClicked.emit();
   }
 }

@@ -28,6 +28,7 @@ export class AuthCallbackComponent {
     }
 
     localStorage.setItem('acctoken', this._authService.access_token);
-    this._router.navigate(['/'], {replaceUrl: true});    
+    //let userId = this._authService.claims // we need to get Id here to redirect 
+    this._router.navigate(['/'], {replaceUrl: true});   //users/view/:id 
   }
 }

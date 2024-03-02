@@ -98,7 +98,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             {
                 "at+jwt"
             },
-            // აუდიენცია გვაქვს არეული, არ ვიცით რა არის :D True-ს შემთხვევაში ვერ გადის ვალიდაციას
+            
             ValidateAudience = false
         };
     });

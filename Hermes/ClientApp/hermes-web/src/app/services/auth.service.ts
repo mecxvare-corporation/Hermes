@@ -15,6 +15,7 @@ const authConfig: AuthConfig = {
   // set to true, to receive also an id_token via OpenId Connect (OIDC) in addition to the
   // OAuth2-based access_token
   oidc: true, // ID_Token
+  userinfoEndpoint: 'https://localhost:5001/connect/userinfo'
 };
 
 @Injectable({
@@ -39,7 +40,7 @@ export class AuthService {
     //need implementation
   }
 
-  isLoggedIn(): Boolean{
+  isLoggedIn(): boolean{
     return this._oauthService.hasValidIdToken();
   }
 
@@ -48,6 +49,7 @@ export class AuthService {
   }
 
   logOut(): void {
+    localStorage.clear();
     this._oauthService.logOut();
   }
 

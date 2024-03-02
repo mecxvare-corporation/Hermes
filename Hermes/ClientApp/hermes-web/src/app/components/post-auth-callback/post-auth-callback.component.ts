@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class PostAuthCallbackComponent {
   private readonly _router = inject(Router);
 
-  async ngOnInit() {
-    await this._router.navigate(['/'], {replaceUrl: true});    
+  ngOnInit() {
+    this._router.navigate(['/login'], {replaceUrl: true});    
   }
 }
