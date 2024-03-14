@@ -97,10 +97,11 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
                         AllowedGrantTypes = new List<ClientGrantType>{ new ClientGrantType { GrantType = "implicit" } },
 
                         RedirectUris = new List<ClientRedirectUri> { new ClientRedirectUri { RedirectUri = "http://localhost:4200/signin-callback" } },
-                        FrontChannelLogoutUri = "https://localhost:4200/signout-callback",
-
+                        PostLogoutRedirectUris = new List<ClientPostLogoutRedirectUri>
+                        {
+                            new ClientPostLogoutRedirectUri{ PostLogoutRedirectUri = "http://localhost:4200/signout-callback" }
+                        },
                         AllowedCorsOrigins = new List<ClientCorsOrigin>{ new ClientCorsOrigin { Origin = "http://localhost:4200" } },
-
                         AllowAccessTokensViaBrowser = true,
                         RequireConsent = true,
                         AllowedScopes = new List<ClientScope>{
