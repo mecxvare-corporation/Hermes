@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hermes.IdentityProvider.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20240121145017_InitialIdentityServerMigration")]
-    partial class InitialIdentityServerMigration
+    [Migration("20240227184806_InitialGrantsMigration")]
+    partial class InitialGrantsMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

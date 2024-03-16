@@ -50,6 +50,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - HealthChecksUI__HealthChecks__0__Name=User Service Health Check
-      - HealthChecksUI__HealthChecks__0__Uri=http://host.docker.internal:5157/hc 
+      - HealthChecksUI__HealthChecks__0__Uri=http://host.docker.internal:5157/hc
+      - HealthChecksUI__HealthChecks__1__Name=Post Service Health Check
+      - HealthChecksUI__HealthChecks__1__Uri=http://host.docker.internal:5240/hc
+
     ports:
       - "8007:80"

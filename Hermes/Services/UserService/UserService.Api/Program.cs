@@ -1,4 +1,4 @@
-using HealthChecks.UI.Client;
+﻿using HealthChecks.UI.Client;
 using Hermes.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -88,12 +88,17 @@ builder.Services.AddHealthChecks()
 builder.Services.AddSingleton<IProfilePictureService, ProfilePictureService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    .AddJwtBearer(/*JwtBearerDefaults.AuthenticationScheme, */options =>
     {
         options.Authority = builder.Configuration.GetValue<string>("IdentityServerOptions:Authority");
-
+        options.Audience = "userserviceapi";
         options.TokenValidationParameters = new TokenValidationParameters
         {
+            ValidTypes = new[]
+            {
+                "at+jwt"
+            },
+            
             ValidateAudience = false
         };
     });

@@ -1,74 +1,77 @@
-﻿using Duende.IdentityServer.Models;
-using Duende.IdentityServer.Test;
-using IdentityModel;
-using System.Security.Claims;
-
-namespace Hermes.IdentityProvider;
-
-public static class Config
+﻿namespace Hermes.IdentityProvider
 {
-    public static IEnumerable<IdentityResource> IdentityResources =>
-        new IdentityResource[]
+    using Duende.IdentityServer.Models;
+
+    namespace IdentityProvider
+    {
+        public static class Config
         {
-            new IdentityResources.OpenId(),
-            new IdentityResources.Profile()
-        };
-
-    public static IEnumerable<ApiScope> ApiScopes =>
-        new List<ApiScope>
-        {
-            new ApiScope("userservice", "User Service"),
-            new ApiScope("identityprovider", "Identity Provider")
-        };
-
-    public static IEnumerable<Client> Clients =>
-        new List<Client>
-        {
-            new Client
-            {
-                ClientId = "userservice",
-
-                // no interactive user, use the clientid/secret for authentication
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                // secret for authentication
-                ClientSecrets =
+            public static IEnumerable<IdentityResource> IdentityResources =>
+                new IdentityResource[]
                 {
-                    new Secret("admin1234".Sha256())
-                },
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResource(
+                    "roles",
+                    "Your role(s)",
+                    new List<string>() {"role"}),
+                 new IdentityResource(
+                    "username",
+                    "Your username",
+                    new List<string>() {"username"}),
+                };
 
-                // scopes that client has access to
-                AllowedScopes =
+            public static IEnumerable<ApiResource> ApiResources =>
+                new ApiResource[]
                 {
-                    "identityprovider"
+                new ApiResource
+                {
+                    Name = "userservice",
+                    DisplayName = "User Service",
+                    Scopes = { "userservice.read", "userservice.write"}
                 }
-            }
-        };
+                };
 
-    public static List<TestUser> TestUsers =>
-        new List<TestUser>
-        {
-            new TestUser
-            {
-                SubjectId = "1c9857e4-620d-402d-9a3f-6f7973b3801a",
-                Username = "Zoro",
-                Password = "password",
-                Claims = new List<Claim>
+            public static IEnumerable<ApiScope> ApiScopes =>
+                new ApiScope[]
                 {
-                    new Claim(JwtClaimTypes.GivenName, "Zoro"),
-                    new Claim(JwtClaimTypes.Role, "Admin")
-                }
-            },
-            new TestUser
-            {
-                SubjectId = "568c7523-11fb-4d9b-9acb-7f53c1101ace",
-                Username = "Esgeso",
-                Password = "password",
-                Claims = new List<Claim>
+                new ApiScope("userservice.read"),
+                new ApiScope("userservice.write"),
+                };
+
+            public static IEnumerable<Client> Clients =>
+                new Client[]
                 {
-                    new Claim(JwtClaimTypes.GivenName, "Esgeso"),
-                    new Claim(JwtClaimTypes.Role, "User")
-                }
-            }
-        };
+                    //m2m client credentials flow client
+                    new Client
+                    {
+                        ClientId = "userserviceapi",
+                        ClientName = "User Service Api",
+
+                        AllowedGrantTypes = GrantTypes.ClientCredentials,
+                        ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+
+                        AllowedScopes = { "userservice.read", "userservice.write" }
+                    },
+
+                    new Client
+                    {
+                        ClientId = "SPA",
+                        ClientName = "My Angular App",
+                        AllowedGrantTypes = GrantTypes.Implicit,
+
+                        RedirectUris = { "http://localhost:4200/signin-callback" },
+                        FrontChannelLogoutUri = "https://localhost:4200/signout-callback",
+
+                        AllowedCorsOrigins = {"http://localhost:4200"},
+
+                        AllowAccessTokensViaBrowser = true,
+                        RequireConsent = true,
+                        AllowedScopes = { "openid", "profile" }
+
+                    }
+                };
+        }
+    }
+
 }

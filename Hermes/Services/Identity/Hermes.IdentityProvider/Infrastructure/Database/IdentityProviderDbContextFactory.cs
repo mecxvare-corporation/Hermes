@@ -21,5 +21,6 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
 
             return new IdentityProviderDbContext(optionsBuilder.Options);
         }
+
     }
 }

@@ -1,5 +1,6 @@
+using Hermes.IdentityProvider.Domain;
+using Hermes.IdentityProvider.Entities;
 using Hermes.IdentityProvider.Infrastructure.Database;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -12,37 +13,45 @@ internal static class HostingExtensions
         // uncomment if you want to add a UI
         builder.Services.AddRazorPages();
 
-        builder.Services.AddAuthorization();
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                // base-address of your identityserver
-                options.Authority = "https://localhost:5001";
-
-                // audience is optional, make sure you read the following paragraphs
-                // to understand your options
-                options.TokenValidationParameters.ValidateAudience = false;
-
-                // it's recommended to check the type header to avoid "JWT confusion" attacks
-                options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
-            });
-
         builder.Services.AddDbContext<IdentityProviderDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString")));
-
-        builder.Services.AddIdentityServer(options =>
-        {
-            // https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/api_scopes#authorization-based-on-scopes
-            options.EmitStaticAudienceClaim = true;
-        })
-            .AddConfigurationStore(options => options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
-            .AddOperationalStore(options => options.ConfigureDbContext = b => b.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(Config).Assembly.GetName().Name)))
-            /*.AddTestUsers(Config.TestUsers)*/;
-
-        builder.Services.AddControllers();
+        options.UseNpgsql(builder.Configuration.GetConnectionString("IdentityServiceConnectionString")));
 
         builder.Services.AddScoped<IdentityDbInitializer>();
         builder.Services.AddScoped<IdentityProviderDbContextFactory>();
+
+        builder.Services.AddAuthorization();
+
+        var isBuilder = builder.Services.AddIdentityServer(options =>
+        {
+            options.Events.RaiseErrorEvents = true;
+            options.Events.RaiseInformationEvents = true;
+            options.Events.RaiseFailureEvents = true;
+            options.Events.RaiseSuccessEvents = true;
+
+            // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
+            options.EmitStaticAudienceClaim = true;
+        })
+        .AddConfigurationStore(options =>
+        options.ConfigureDbContext = b => b.UseNpgsql(
+            builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(User).Assembly.GetName().Name)))
+        .AddOperationalStore(options =>
+        options.ConfigureDbContext = b => b.UseNpgsql(
+            builder.Configuration.GetConnectionString("IdentityServiceConnectionString"), opts => opts.MigrationsAssembly(typeof(User).Assembly.GetName().Name)))
+        .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
+
+        builder.Services.AddControllers();
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontendOrigin",
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+        });
 
         return builder.Build();
     }
@@ -68,18 +77,12 @@ internal static class HostingExtensions
         app.UseStaticFiles();
         app.UseRouting();
 
+        app.UseCors("AllowFrontendOrigin");
         app.UseIdentityServer();
 
-        // uncomment if you want to add a UI
-        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapRazorPages().RequireAuthorization();
-
-        //app.UseEndpoints(endpoints =>
-        //{
-        //    endpoints.MapDefaultControllerRoute();
-        //});
 
         app.Run();
 
