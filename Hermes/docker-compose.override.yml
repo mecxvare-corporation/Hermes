@@ -50,6 +50,21 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - HealthChecksUI__HealthChecks__0__Name=User Service Health Check
-      - HealthChecksUI__HealthChecks__0__Uri=http://host.docker.internal:5157/hc 
+      - HealthChecksUI__HealthChecks__0__Uri=http://host.docker.internal:5157/hc
+      - HealthChecksUI__HealthChecks__1__Name=Post Service Health Check
+      - HealthChecksUI__HealthChecks__1__Uri=http://host.docker.internal:5240/hc
+
     ports:
       - "8007:80"
+
+  ravendb:
+    container_name: ravendb
+    environment:
+      - RAVENDB_URL=http://ravendb:8080
+      - RAVEN_Setup_Mode=None
+      - RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork
+      - RAVEN_License_Eula_Accepted=true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ravendb-data:/var/lib/ravendb/data

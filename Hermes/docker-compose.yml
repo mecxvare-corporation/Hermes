@@ -19,8 +19,15 @@ services:
       context: .
       dockerfile: WebApps/Hermes.WebStatus/Dockerfile
 
+  ravendb:
+    image: ravendb/ravendb
+    build:
+      context: .
+      dockerfile: Dockerfile.ravendb
+
 volumes:
   postgres_data:
   pgadmin_data:
   elasticsearch-data:
+  ravendb-data:
 
