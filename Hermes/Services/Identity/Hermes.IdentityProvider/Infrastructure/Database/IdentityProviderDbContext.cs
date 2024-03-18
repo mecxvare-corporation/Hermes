@@ -9,6 +9,16 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserClaim> UserClaims { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.UserClaims)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

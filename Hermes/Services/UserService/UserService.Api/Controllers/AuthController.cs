@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Application.Auth.Queries;
 using UserService.Application.Dtos;
@@ -18,6 +19,7 @@ namespace UserService.Api.Controllers
 
         //TODO will be removed in future
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<UserMinimalInfoDto>> GetAuthorizedUserAsync()
         {
             //// Testing
