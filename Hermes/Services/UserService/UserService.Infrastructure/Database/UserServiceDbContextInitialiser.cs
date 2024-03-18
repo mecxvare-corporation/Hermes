@@ -91,25 +91,28 @@ namespace UserService.Infrastructure.Database
         {
             if (!_context.Users.Any())
             {
-                var esgeso = new User("Esgeso", "Namoradze", DateTime.UtcNow);
-                var takhmaGido = new User("Takhma", "Gido", DateTime.UtcNow);
-                var zoro = new User("Zoro", "", DateTime.UtcNow);
-                var madona = new User("Madona", "", DateTime.UtcNow);
-                var mchedeliVano = new User("Mchedeli", "Vano", DateTime.UtcNow);
+                var admin = new User("Admin", "Admin", DateTime.UtcNow);
+                var dato = new User("Dato", "Abesalashvili", DateTime.UtcNow);
+                var gvantsa = new User("Gvantsa", "Maisuradze", DateTime.UtcNow);
+                var bacho = new User("Bacho", "Gigineishvili", DateTime.UtcNow);
+                var dama = new User("Giorgi", "Didebulidze", DateTime.UtcNow);
 
                 var userList = new List<User>
                 {
-                    esgeso,
-                    takhmaGido,
-                    zoro,
-                    madona,
-                    mchedeliVano
+                    admin,
+                    dato,
+                    gvantsa,
+                    bacho,
+                    dama
                 };
 
-                zoro.AddFriend(madona);
+                dato.AddFriend(gvantsa);
 
-                esgeso.AddFriend(mchedeliVano);
-                esgeso.AddFriend(takhmaGido);
+                dato.AddFriend(bacho);
+
+                bacho.AddFriend(dama);
+
+                dama.AddFriend(dato);
 
                 await _context.AddRangeAsync(userList);
 
