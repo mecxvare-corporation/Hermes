@@ -74,8 +74,11 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
             {
                 var users = new List<User>
                 {
-                    new User { UserName = "admin", Email = "admin@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Hermes.IdentityProvider.Entities.UserClaim ("role", "admin")),
-                    new User { UserName = "dev", Email = "dev@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Hermes.IdentityProvider.Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "admin", Email = "admin@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "admin")),
+                    new User { UserName = "dato", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "gvantsa", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "bacho", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "giorgi", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
                 };
 
                 await _context.AddRangeAsync(users);
