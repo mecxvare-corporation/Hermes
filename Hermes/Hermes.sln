@@ -48,6 +48,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{80
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hermes.IdentityProvider", "Services\Identity\Hermes.IdentityProvider\Hermes.IdentityProvider.csproj", "{4901295D-068C-4B06-A463-612685BF45FD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessagingService", "MessagingService", "{A2BBC98A-DD83-4ECA-8EAB-3245CDC86ABE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService.Api", "Services\MessagingService\MessagingService.Api\MessagingService.Api.csproj", "{820C3588-ECE4-4D8D-B23D-A54D158ABFA3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{06D4190E-410B-48EF-A6B6-F628CFF0C488} = {06D4190E-410B-48EF-A6B6-F628CFF0C488}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService.Domain", "Services\MessagingService\MessagingService.Domain\MessagingService.Domain.csproj", "{9BC662C5-FEF3-42C9-B583-5340E8D551B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService.Infrastructure", "Services\MessagingService\MessagingService.Infrastructure\MessagingService.Infrastructure.csproj", "{5F1894C4-030A-4760-8A3D-17AC5DDB69A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9BC662C5-FEF3-42C9-B583-5340E8D551B3} = {9BC662C5-FEF3-42C9-B583-5340E8D551B3}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService.Application", "Services\MessagingService\MessagingService.Application\MessagingService.Application.csproj", "{06D4190E-410B-48EF-A6B6-F628CFF0C488}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F1894C4-030A-4760-8A3D-17AC5DDB69A9} = {5F1894C4-030A-4760-8A3D-17AC5DDB69A9}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +129,22 @@ Global
 		{4901295D-068C-4B06-A463-612685BF45FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4901295D-068C-4B06-A463-612685BF45FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4901295D-068C-4B06-A463-612685BF45FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{820C3588-ECE4-4D8D-B23D-A54D158ABFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820C3588-ECE4-4D8D-B23D-A54D158ABFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820C3588-ECE4-4D8D-B23D-A54D158ABFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820C3588-ECE4-4D8D-B23D-A54D158ABFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BC662C5-FEF3-42C9-B583-5340E8D551B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BC662C5-FEF3-42C9-B583-5340E8D551B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BC662C5-FEF3-42C9-B583-5340E8D551B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BC662C5-FEF3-42C9-B583-5340E8D551B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F1894C4-030A-4760-8A3D-17AC5DDB69A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F1894C4-030A-4760-8A3D-17AC5DDB69A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F1894C4-030A-4760-8A3D-17AC5DDB69A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F1894C4-030A-4760-8A3D-17AC5DDB69A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06D4190E-410B-48EF-A6B6-F628CFF0C488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D4190E-410B-48EF-A6B6-F628CFF0C488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D4190E-410B-48EF-A6B6-F628CFF0C488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D4190E-410B-48EF-A6B6-F628CFF0C488}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +166,11 @@ Global
 		{A78FEE2D-CFE4-4B5D-B4E0-2CC7C13933F7} = {FC3A50C1-27C1-4F7D-B9FE-83D0388F2DEE}
 		{80F2CBF3-D2C2-472D-99FB-B61046F7011D} = {FC3A50C1-27C1-4F7D-B9FE-83D0388F2DEE}
 		{4901295D-068C-4B06-A463-612685BF45FD} = {80F2CBF3-D2C2-472D-99FB-B61046F7011D}
+		{A2BBC98A-DD83-4ECA-8EAB-3245CDC86ABE} = {FC3A50C1-27C1-4F7D-B9FE-83D0388F2DEE}
+		{820C3588-ECE4-4D8D-B23D-A54D158ABFA3} = {A2BBC98A-DD83-4ECA-8EAB-3245CDC86ABE}
+		{9BC662C5-FEF3-42C9-B583-5340E8D551B3} = {A2BBC98A-DD83-4ECA-8EAB-3245CDC86ABE}
+		{5F1894C4-030A-4760-8A3D-17AC5DDB69A9} = {A2BBC98A-DD83-4ECA-8EAB-3245CDC86ABE}
+		{06D4190E-410B-48EF-A6B6-F628CFF0C488} = {A2BBC98A-DD83-4ECA-8EAB-3245CDC86ABE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B36AF581-69BE-47FE-9F91-9D6C606F709A}
