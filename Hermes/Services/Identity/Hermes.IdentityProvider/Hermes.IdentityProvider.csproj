@@ -26,6 +26,10 @@
 		<PackageReference Include="Serilog.AspNetCore" Version="6.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Shared\Messages\Messages.csproj" />
+	</ItemGroup>
+
   <PropertyGroup>
     <!-- Exclude the project from analysis -->
     <SonarQubeExclude>true</SonarQubeExclude>
