@@ -19,6 +19,9 @@ services:
       context: .
       dockerfile: WebApps/Hermes.WebStatus/Dockerfile
 
+  rabbitmq:
+    image: rabbitmq:3.11-management
+
 volumes:
   postgres_data:
   pgadmin_data:
