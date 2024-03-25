@@ -1,5 +1,6 @@
 ﻿using HealthChecks.UI.Client;
 using Hermes.Common;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -117,6 +118,8 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         });
 });
+
+builder.Services.AddMassTransit(); // end this.
 
 var app = builder.Build();
 

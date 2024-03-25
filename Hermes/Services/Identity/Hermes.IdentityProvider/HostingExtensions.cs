@@ -53,7 +53,7 @@ internal static class HostingExtensions
                         .AllowCredentials();
                 });
         });
-
+        
         builder.Services.AddMassTransit(x =>
         {
             x.UsingRabbitMq((context, cfg) =>
