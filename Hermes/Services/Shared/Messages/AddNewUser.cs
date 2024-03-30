@@ -7,6 +7,10 @@
         public string FirstName { get; init; }
         public string LastName { get; init; }
         public DateTime DateOfBirth { get; init; }
+        public AddNewUser()
+        {
+            
+        }
 
         public AddNewUser(Guid userId, string firstName, string lastName, DateTime dateOfBirth)
         {

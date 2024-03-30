@@ -85,16 +85,17 @@ public class Index : PageModel
 
         if (ModelState.IsValid)
         {
-            var user = await new RegisterUser(_context).CreateUser(Input.Username, Input.Email, Input.Password);
+            var user = await new RegisterUser(_context).CreateUser(Input.Username, Input.Email, Input.Password, Input.Name,
+                Input.Surname, Input.DateOfBirth.ToUniversalTime());
 
             //Sending Command to UserService
             await _broker.Publish<AddNewUser>(new
             {
                 UserId = user.SubjectId,
                 CommandId = Guid.NewGuid(),
-                //FirstName 
-                //LastName
-                //DateOfBirth
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth
             });
 
             // issue authentication cookie with subject ID and username
