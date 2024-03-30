@@ -34,13 +34,13 @@ namespace UserService.Api.Controllers
             return Ok(await _mediator.Send(new GetUserQuery(id)));
         }
 
-        [HttpPost(Name = nameof(Create))]
-        public async Task<ActionResult> Create([FromBody] CreateUserCommand command)
-        {
-            var newUserId = await _mediator.Send(command);
+        //[HttpPost(Name = nameof(Create))]
+        //public async Task<ActionResult> Create([FromBody] CreateUserCommand command)
+        //{
+        //    var newUserId = await _mediator.Send(command);
 
-            return Ok(newUserId);
-        }
+        //    return Ok(newUserId);
+        //}
 
         [HttpPut(Name = nameof(Update))]
         public async Task<ActionResult> Update([FromBody] UpdateUserCommand command)

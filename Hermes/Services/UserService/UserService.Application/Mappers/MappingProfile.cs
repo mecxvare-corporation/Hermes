@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messages;
 using UserService.Application.Dtos;
 using UserService.Domain.Entities;
 
@@ -18,6 +19,8 @@ namespace UserService.Application.Mappers
 
             CreateMap<User, UserMinimalInfoDto>()
                 .ConstructUsing((source, context) => new UserMinimalInfoDto(source.Id, $"{source.FirstName}, {source.LastName}", source.ProfileImage));
+
+            CreateMap<AddNewUser, User>();
         }
     }
 }

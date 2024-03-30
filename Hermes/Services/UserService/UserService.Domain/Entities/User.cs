@@ -18,9 +18,9 @@ namespace UserService.Domain.Entities
 
         }
 
-        public User(string firstName, string lastName, DateTime dateOfBirth)
+        public User(Guid UserId, string firstName, string lastName, DateTime dateOfBirth)
         {
-            Id = Guid.NewGuid();
+            Id = UserId;
             FirstName = firstName;
             LastName = lastName;
             DateOfBirth = dateOfBirth;

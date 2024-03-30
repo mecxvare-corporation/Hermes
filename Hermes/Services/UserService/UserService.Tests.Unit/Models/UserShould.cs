@@ -19,10 +19,11 @@ namespace UserService.Tests.Unit.Models
             // Arrange
             string name = "test1";
             string lastName = "testTest";
+            Guid userId = Guid.NewGuid();
             DateTime birthDay = DateTime.Now;
 
             // Act
-            var newUser = new User(name, lastName, birthDay);
+            var newUser = new User(userId, name, lastName, birthDay);
 
             // Assert
             Assert.Equal(name, newUser.FirstName);
@@ -36,9 +37,10 @@ namespace UserService.Tests.Unit.Models
             // Arrange
             string name = "test1";
             string lastName = "testTest";
+            Guid userId = Guid.NewGuid();
             DateTime birthDay = DateTime.Now;
 
-            var newUser = new User(name, lastName, birthDay);
+            var newUser = new User(userId, name, lastName, birthDay);
 
             string updatedName = "test2";
             string updatedLastName = "testTest";
@@ -59,9 +61,10 @@ namespace UserService.Tests.Unit.Models
             // Arrange
             string name = "test1";
             string lastName = "testTest";
+            Guid userId = Guid.NewGuid();
             DateTime birthDay = DateTime.Now;
 
-            var newUser = new User(name, lastName, birthDay);
+            var newUser = new User(userId, name, lastName, birthDay);
             var newInterest = new Interest("Test");
 
             // Act
@@ -75,7 +78,7 @@ namespace UserService.Tests.Unit.Models
         public void NotAddSameInterestIntoItself()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
             var existingInterest = new Interest("Existing Interest");
 
@@ -90,7 +93,7 @@ namespace UserService.Tests.Unit.Models
         public void RemoveInterestFromItself()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
             var existingInterest = new Interest("Existing Interest");
 
@@ -107,7 +110,7 @@ namespace UserService.Tests.Unit.Models
         public void NotRemoveAbsentInterestFromItself()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
             var nonExistingInterest = new Interest("Nonexisting Interest");
 
@@ -119,7 +122,7 @@ namespace UserService.Tests.Unit.Models
         public void SetImage()
         {
             //Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
             string imageName = "ram dam dam";
 
             //Act
@@ -133,7 +136,7 @@ namespace UserService.Tests.Unit.Models
         public void RemoveImage()
         {
             //Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
             string imageName = "ram dam dam";
 
             //Act
@@ -148,9 +151,9 @@ namespace UserService.Tests.Unit.Models
         public void AddUserIntoFriendList()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            var friend = new User("Takhma", "Gido", DateTime.Now);
+            var friend = new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now);
 
             // Act
             user.AddFriend(friend);
@@ -163,9 +166,9 @@ namespace UserService.Tests.Unit.Models
         public void NotAddSameUserAgainIntoFollowers()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            var friend = new User("Takhma", "Gido", DateTime.Now);
+            var friend = new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now);
 
             // Act
             user.AddFriend(friend);
@@ -178,9 +181,9 @@ namespace UserService.Tests.Unit.Models
         public void RemoveFriend()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            var friend = new User("Takhma", "Gido", DateTime.Now);
+            var friend = new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now);
 
             user.AddFriend(friend);
 
@@ -195,9 +198,9 @@ namespace UserService.Tests.Unit.Models
         public void AddFollower()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            var follower = new User("Takhma", "Gido", DateTime.Now);
+            var follower = new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now);
 
             user.AddFollower(follower);
 
@@ -209,9 +212,9 @@ namespace UserService.Tests.Unit.Models
         public void NotAddSameUserAgainIntoFriends()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            var follower = new User("Takhma", "Gido", DateTime.Now);
+            var follower = new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now);
 
             // Act
             user.AddFollower(follower);
@@ -224,9 +227,9 @@ namespace UserService.Tests.Unit.Models
         public void RemoveFollower()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            var follower = new User("Takhma", "Gido", DateTime.Now);
+            var follower = new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now);
 
             user.AddFollower(follower);
 

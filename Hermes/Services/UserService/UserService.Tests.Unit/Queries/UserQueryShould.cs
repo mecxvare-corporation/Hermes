@@ -27,9 +27,9 @@ namespace UserService.Tests.Unit.Queries
             //Arrange
             string userName = "User";
             string userLastName = "Testadze";
+            Guid userId = Guid.NewGuid();
             DateTime birthDay = DateTime.Now;
-            var userEntity = new User(userName, userLastName, birthDay);
-            Guid userId = userEntity.Id;
+            var userEntity = new User(userId, userName, userLastName, birthDay);
 
             var userDto = new UserDto(userId, userName, userLastName, birthDay, "image.jpg");
 
@@ -85,9 +85,9 @@ namespace UserService.Tests.Unit.Queries
             //Arrange
             List<User> users = new List<User>()
             {
-                new User("test1", "test1", DateTime.Now),
-                new User("test2", "test2", DateTime.Now),
-                new User("test3", "test3", DateTime.Now),
+                new User(Guid.NewGuid(), "test1", "test1", DateTime.Now),
+                new User(Guid.NewGuid(), "test2", "test2", DateTime.Now),
+                new User(Guid.NewGuid(), "test3", "test3", DateTime.Now),
             };
 
             List<UserDto> usersDto = new List<UserDto>()
@@ -125,7 +125,7 @@ namespace UserService.Tests.Unit.Queries
         public async Task GetAllUserInterests()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
             user.AddInterest(new Interest("Interest1"));
             user.AddInterest(new Interest("Interest2"));
 
@@ -203,9 +203,9 @@ namespace UserService.Tests.Unit.Queries
         public async Task ReturnAllUserFriends()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            user.AddFriend(new User("Takhma", "Gido", DateTime.Now));
+            user.AddFriend(new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now));
 
             //Mock IUserRepository
             var userRepoMock = new Mock<IUserRepository>();
@@ -252,9 +252,9 @@ namespace UserService.Tests.Unit.Queries
         public async Task ReturnAllUserFollowers()
         {
             // Arrange
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
-            user.AddFollower(new User("Takhma", "Gido", DateTime.Now));
+            user.AddFollower(new User(Guid.NewGuid(), "Takhma", "Gido", DateTime.Now));
 
             //Mock IUserRepository
             var userRepoMock = new Mock<IUserRepository>();
