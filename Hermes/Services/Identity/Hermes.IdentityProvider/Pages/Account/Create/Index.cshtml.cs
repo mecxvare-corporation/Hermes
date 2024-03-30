@@ -92,6 +92,9 @@ public class Index : PageModel
             {
                 UserId = user.SubjectId,
                 CommandId = Guid.NewGuid(),
+                //FirstName 
+                //LastName
+                //DateOfBirth
             });
 
             // issue authentication cookie with subject ID and username

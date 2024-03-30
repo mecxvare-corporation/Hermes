@@ -81,7 +81,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(CreateUserCommand))!));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(DeleteUserCommand))!));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
 builder.Services.AddHealthChecks()

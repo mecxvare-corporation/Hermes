@@ -79,7 +79,7 @@ namespace UserService.Infrastructure.Database
             {
                 var defaultImage = "8A16EDA0-C093-4346-B313-335F83C0B02E_default.jpg";
 
-                var user = new User("John", "Doe", DateTime.UtcNow.AddYears(-25));
+                var user = new User(Guid.NewGuid(), "John", "Doe", DateTime.UtcNow.AddYears(-25));
                 user.SetImageUri(defaultImage);
 
                 _context.Add(user);
@@ -91,11 +91,11 @@ namespace UserService.Infrastructure.Database
         {
             if (!_context.Users.Any())
             {
-                var admin = new User("Admin", "Admin", DateTime.UtcNow);
-                var dato = new User("Dato", "Abesalashvili", DateTime.UtcNow);
-                var gvantsa = new User("Gvantsa", "Maisuradze", DateTime.UtcNow);
-                var bacho = new User("Bacho", "Gigineishvili", DateTime.UtcNow);
-                var dama = new User("Giorgi", "Didebulidze", DateTime.UtcNow);
+                var admin = new User(Guid.NewGuid(), "Admin", "Admin", DateTime.UtcNow);
+                var dato = new User(Guid.NewGuid(), "Dato", "Abesalashvili", DateTime.UtcNow);
+                var gvantsa = new User(Guid.NewGuid(), "Gvantsa", "Maisuradze", DateTime.UtcNow);
+                var bacho = new User(Guid.NewGuid(), "Bacho", "Gigineishvili", DateTime.UtcNow);
+                var dama = new User(Guid.NewGuid(), "Giorgi", "Didebulidze", DateTime.UtcNow);
 
                 var userList = new List<User>
                 {
