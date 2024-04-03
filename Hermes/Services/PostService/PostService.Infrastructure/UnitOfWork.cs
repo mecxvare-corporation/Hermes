@@ -1,7 +1,27 @@
-﻿namespace PostService.Infrastructure
+﻿using PostService.Domain.Interfaces;
+using PostService.Infrastructure.Database;
+
+namespace PostService.Infrastructure
 {
-    internal class UnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        // TODO: Implement
+        private readonly PostDbContext _context;
+        public IPostRepository PostRepository { get; init; }
+
+        public UnitOfWork(PostDbContext context, IPostRepository postRepository)
+        {
+            _context = context;
+            PostRepository = postRepository;
+        }
+
+        public Task<int> CompleteAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
