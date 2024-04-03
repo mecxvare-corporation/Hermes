@@ -1,5 +1,6 @@
 ﻿using HealthChecks.UI.Client;
 using Hermes.Common;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Serilog;
 using System.Reflection;
 using System.Text.Json;
 using UserService.Api.Infrastructure.Middlewares;
+using UserService.Application.Consumers;
 using UserService.Application.Mappers;
 using UserService.Application.Users.Commands;
 using UserService.Domain.Interfaces;
@@ -79,7 +81,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(CreateUserCommand))!));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(DeleteUserCommand))!));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
 builder.Services.AddHealthChecks()
@@ -116,6 +118,21 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod()
                 .AllowCredentials();
         });
+});
+
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+
+    x.AddConsumer<AddNewUserConsumer, AddNewUserConsumerDefinition>();
+
+    x.UsingRabbitMq((context, cfg) => 
+    {
+        cfg.Host("", _ => { });
+        cfg.UseMessageRetry(r => r.Immediate(3));
+        cfg.ConfigureEndpoints(context);
+    });
+
 });
 
 var app = builder.Build();

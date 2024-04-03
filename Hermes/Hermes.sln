@@ -48,6 +48,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{80
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hermes.IdentityProvider", "Services\Identity\Hermes.IdentityProvider\Hermes.IdentityProvider.csproj", "{4901295D-068C-4B06-A463-612685BF45FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Services\Shared\Messages\Messages.csproj", "{7B092430-3309-4DCB-B03D-C6B98930F9D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{0E844119-7A58-4F87-B979-CD982DEDBD0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +114,10 @@ Global
 		{4901295D-068C-4B06-A463-612685BF45FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4901295D-068C-4B06-A463-612685BF45FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4901295D-068C-4B06-A463-612685BF45FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B092430-3309-4DCB-B03D-C6B98930F9D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B092430-3309-4DCB-B03D-C6B98930F9D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B092430-3309-4DCB-B03D-C6B98930F9D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B092430-3309-4DCB-B03D-C6B98930F9D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +139,8 @@ Global
 		{A78FEE2D-CFE4-4B5D-B4E0-2CC7C13933F7} = {FC3A50C1-27C1-4F7D-B9FE-83D0388F2DEE}
 		{80F2CBF3-D2C2-472D-99FB-B61046F7011D} = {FC3A50C1-27C1-4F7D-B9FE-83D0388F2DEE}
 		{4901295D-068C-4B06-A463-612685BF45FD} = {80F2CBF3-D2C2-472D-99FB-B61046F7011D}
+		{7B092430-3309-4DCB-B03D-C6B98930F9D1} = {0E844119-7A58-4F87-B979-CD982DEDBD0F}
+		{0E844119-7A58-4F87-B979-CD982DEDBD0F} = {FC3A50C1-27C1-4F7D-B9FE-83D0388F2DEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B36AF581-69BE-47FE-9F91-9D6C606F709A}

@@ -22,6 +22,15 @@ namespace Hermes.IdentityProvider.Entities
         public string Password { get; set; }
         public DateTime CreateDate { get; private set; }
 
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        public DateTime DateOfBirth { get; set; }
+
         public virtual ICollection<UserClaim> UserClaims { get; private set; }
 
         public User AddUserClaims(params UserClaim[] userClaims)

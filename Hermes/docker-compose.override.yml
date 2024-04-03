@@ -33,6 +33,16 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
+  rabbitmq:
+    container_name: RabbitMQ
+    environment:
+    - RabbitMQ_USER=guest
+    - RabbitMQ_PASSWORD=guest
+    ports:
+    - "5672:5672"
+    - "15672:15672"
+
+
   pgadmin:
     container_name: pgadmin
     environment:
@@ -56,3 +66,4 @@ services:
 
     ports:
       - "8007:80"
+

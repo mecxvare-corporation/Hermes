@@ -6,11 +6,15 @@ using Duende.IdentityServer.Stores;
 using Duende.IdentityServer.Test;
 using Hermes.IdentityProvider.Domain;
 using Hermes.IdentityProvider.Infrastructure.Database;
+using MassTransit;
+using MassTransit.Transports;
+using Messages;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
 
 namespace Hermes.IdentityProvider.Pages.Create;
 
@@ -19,8 +23,8 @@ namespace Hermes.IdentityProvider.Pages.Create;
 public class Index : PageModel
 {
     private readonly IdentityProviderDbContext _context;
-    private readonly TestUserStore _users;
     private readonly IIdentityServerInteractionService _interaction;
+    private readonly IBus _broker;
 
     [BindProperty]
     public InputModel Input { get; set; }
@@ -28,12 +32,12 @@ public class Index : PageModel
     public Index(
         IdentityProviderDbContext context,
         IIdentityServerInteractionService interaction,
-        TestUserStore users = null)
+        IBus broker)
     {
         // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-        _users = users ?? throw new Exception("Please call 'AddTestUsers(TestUsers.Users)' on the IIdentityServerBuilder in Startup or remove the TestUserStore from the AccountController.");
         _context = context;
         _interaction = interaction;
+        _broker = broker;
     }
 
     public IActionResult OnGet(string returnUrl)
@@ -81,7 +85,18 @@ public class Index : PageModel
 
         if (ModelState.IsValid)
         {
-            var user = await new RegisterUser(_context).CreateUser(Input.Username, Input.Email, Input.Password);
+            var user = await new RegisterUser(_context).CreateUser(Input.Username, Input.Email, Input.Password, Input.Name,
+                Input.Surname, Input.DateOfBirth.ToUniversalTime());
+
+            //Sending Command to UserService
+            await _broker.Publish<AddNewUser>(new
+            {
+                UserId = user.SubjectId,
+                CommandId = Guid.NewGuid(),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DateOfBirth = user.DateOfBirth
+            });
 
             // issue authentication cookie with subject ID and username
             var isuser = new IdentityServerUser(user.SubjectId)

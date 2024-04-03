@@ -36,7 +36,7 @@ namespace UserService.Tests.Unit.Models
             DateTime birthDay = DateTime.Now;
 
             var newInterest = new Interest(interestName);
-            var newUser = new User(name, lastName, birthDay);
+            var newUser = new User(Guid.NewGuid(), name, lastName, birthDay);
 
             //Act
             newInterest.AddUser(newUser);
@@ -51,7 +51,7 @@ namespace UserService.Tests.Unit.Models
             // Arrange
             var interest = new Interest("Interest");
 
-            var user = new User("Esgeso", "Namoradze", DateTime.Now);
+            var user = new User(Guid.NewGuid(), "Esgeso", "Namoradze", DateTime.Now);
 
             // Act
             interest.AddUser(user);
