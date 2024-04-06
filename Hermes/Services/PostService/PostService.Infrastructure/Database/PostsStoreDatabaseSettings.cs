@@ -2,7 +2,7 @@
 
 namespace PostService.Api.Infrastructure.MongoDbSettings
 {
-    public class PostsStoreDatabaseSettings : IPostsStoreDatabaseSettings
+    public class PostsStoreDatabaseSettings
     {
         public string ConnectionString { get; set; } = null!;
         public string DatabaseName { get; set; } = null!;

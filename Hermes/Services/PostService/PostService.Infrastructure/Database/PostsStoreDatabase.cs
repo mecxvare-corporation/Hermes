@@ -2,13 +2,8 @@
 
 using MongoDB.Driver;
 
+using PostService.Api.Infrastructure.MongoDbSettings;
 using PostService.Domain.Entities;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PostService.Infrastructure.Database
 {
@@ -16,9 +11,8 @@ namespace PostService.Infrastructure.Database
     {
         private readonly IMongoCollection<Post> _postsCollection;
 
-        public PostsStoreDatabase(IOptions<IPostsStoreDatabaseSettings> settings, IMongoClient mongoClient)
+        public PostsStoreDatabase(IOptions<PostsStoreDatabaseSettings> settings, IMongoClient mongoClient)
         {
-
             var mongoDatabase = mongoClient.GetDatabase(settings.Value.DatabaseName);
 
             _postsCollection = mongoDatabase.GetCollection<Post>(settings.Value.PostsCollectionName);
