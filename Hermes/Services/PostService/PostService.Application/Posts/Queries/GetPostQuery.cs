@@ -21,14 +21,22 @@ namespace PostService.Application.Posts.Queries
         }
         public async Task<PostDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
         {
-            var post = await _postRepository.GetByIdAsync(request.Id);
+            var post = await _postRepository.GetFirstOrDefaultAsync(p=>p.Id == request.Id);
 
             if (post == null)
             {
                 throw new Exception("Post Was Not Found!");
             }
 
-            var postDto = _mapper.Map<PostDto>(post);
+            var postDto = new PostDto(
+                    post.Id,
+                    post.UserId,
+                    post.Title,
+                    post.Content,
+                    post.Image,
+                    post.CreatedAt,
+                    post.UpdatedAt
+                    );
 
             return postDto;
         }

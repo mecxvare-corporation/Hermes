@@ -17,22 +17,46 @@ namespace PostService.Infrastructure.Repositories
             _context = context;
         }
 
-        public virtual void Create(Post entity)
+        public async Task<Post> GetFirstOrDefaultAsync(Expression<Func<Post, bool>> filter)
         {
-            if (entity == null) 
+            var post = await _context.PostsCollection.Find(filter).FirstOrDefaultAsync();
+
+            if (post == null)
+            {
+                throw new ArgumentException("Not Found!");
+            }
+
+            return post;
+        }
+
+        public async Task<Post> CreateAsync(Post entity)
+        {
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            _context.PostsCollection.InsertOne(entity);
+            await _context.PostsCollection.InsertOneAsync(entity);
+
+            return entity;
         }
 
-        public async Task<Post> GetFirstOrDefaultAsync(Expression<Func<Post, bool>> where, params Expression<Func<Post, object>>[] includes)
+        public async Task<bool> UpdateAsync(Post entity)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Post>.Filter.Eq(x => x.Id, entity.Id);
+            var result = await _context.PostsCollection.Find(filter).FirstOrDefaultAsync();
+
+            if (result == null)
+            {
+                throw new ArgumentException("Not Found!");
+            }
+
+            await _context.PostsCollection.ReplaceOneAsync(filter, entity);
+
+            return true;
         }
 
-        public async Task<Post> GetByIdAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             var filter = Builders<Post>.Filter.Eq(x => x.Id, id);
             var result = await _context.PostsCollection.Find(filter).FirstOrDefaultAsync();
@@ -41,7 +65,24 @@ namespace PostService.Infrastructure.Repositories
             {
                 throw new ArgumentException("Not Found!");
             }
-            return result;
+
+            await _context.PostsCollection.DeleteOneAsync(filter);
+
+            return true;
+        }
+
+        public async Task<List<Post>> GetAllAsync()
+        {
+            var allPosts = await _context.PostsCollection.Find(Builders<Post>.Filter.Empty).ToListAsync();
+            return allPosts;
+        }
+
+        public async Task<List<Post>> GetAllAsync(Guid userId)
+        {
+            var filter = Builders<Post>.Filter.Eq(x => x.UserId, userId);
+            var allPosts = await _context.PostsCollection.Find(filter).ToListAsync();
+
+            return allPosts;
         }
     }
 }

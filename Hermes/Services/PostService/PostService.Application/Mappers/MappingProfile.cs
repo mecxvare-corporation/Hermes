@@ -11,6 +11,7 @@ namespace PostService.Application.Mappers
         {
             CreateMap<Post, PostDto>().ReverseMap();
             CreateMap<CreatePostDto, Post>();
+            CreateMap<UpdatePostDto, Post>();
         }
     }
 }

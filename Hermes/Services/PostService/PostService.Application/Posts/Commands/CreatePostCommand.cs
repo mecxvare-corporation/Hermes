@@ -22,11 +22,11 @@ namespace PostService.Application.Posts.Commands
         }
         public async Task<Guid> Handle(CreatePostCommand request, CancellationToken cancellationToken)
         {
-            var post = _mapper.Map<Post>(request.Dto);
+            var postEntity = _mapper.Map<Post>(request.Dto);
 
-            _postRepository.Create(post);
+            await _postRepository.CreateAsync(postEntity);
 
-            return post.Id;
+            return postEntity.Id;
         }
     }
 }
