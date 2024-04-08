@@ -1,7 +1,10 @@
 ﻿using MediatR;
 
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
+using PostService.Api.Extensions;
+using PostService.Api.Models;
 using PostService.Application.Dtos;
 using PostService.Application.Posts.Commands;
 using PostService.Application.Posts.Queries;
@@ -38,15 +41,41 @@ namespace PostService.Api.Controllers
         }
 
         [HttpPost("create", Name = nameof(CreatePostAsync))]
-        public async Task<ActionResult> CreatePostAsync([FromBody] CreatePostCommand command)
+        public async Task<ActionResult> CreatePostAsync([FromForm] CreatePostRequest request)
         {
-            return Ok(await _mediator.Send(command));
+            if (request.Image != null && request.Image.Length > 0)
+            {
+                using (Stream fileStream = request.Image.ConvertToStream())
+                {
+                    string fileName = request.Image.FileName;
+
+                    await _mediator.Send(new CreatePostCommand(request.Post, fileStream, fileName));
+                }
+            }
+            else
+            {
+                await _mediator.Send(new CreatePostCommand(request.Post, null, null));
+            }
+            
+            return Ok();
         }
 
         [HttpPut("update",Name = nameof(Update))]
-        public async Task<ActionResult> Update([FromBody] UpdatePostCommand command)
+        public async Task<ActionResult> Update([FromForm] UpdatePostRequest request)
         {
-            await _mediator.Send(command);
+            if (request.Image != null && request.Image.Length > 0)
+            {
+                using (Stream fileStream = request.Image.ConvertToStream())
+                {
+                    string fileName = request.Image.FileName;
+
+                    await _mediator.Send(new UpdatePostCommand(request.Post, fileStream, fileName));
+                }
+            }
+            else
+            {
+                await _mediator.Send(new UpdatePostCommand(request.Post, null, null));
+            }
 
             return NoContent();
         }

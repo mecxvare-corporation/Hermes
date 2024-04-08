@@ -20,6 +20,7 @@
 	<PropertyGroup>
 		<!-- Exclude the project from analysis -->
 		<SonarQubeExclude>true</SonarQubeExclude>
+		<UserSecretsId>fa033f16-c05f-4017-bc93-a427ab6ab774</UserSecretsId>
 	</PropertyGroup>
 
 </Project>

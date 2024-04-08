@@ -13,6 +13,7 @@ using PostService.Application.Posts.Commands;
 using PostService.Domain.Interfaces;
 using PostService.Infrastructure.Database;
 using PostService.Infrastructure.Repositories;
+using PostService.Infrastructure.Services;
 
 using Serilog;
 
@@ -34,6 +35,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddSingleton<PostsStoreDatabase>();
+builder.Services.AddSingleton<IPictureService, PictureService>();
 
 builder.Services.Configure<PostsStoreDatabaseSettings>(
     builder.Configuration.GetSection("PostStoreDatabase"));
@@ -44,6 +46,9 @@ builder.Services.AddSingleton<IMongoClient>(
 builder.Services.AddMediatR(
     config => config.RegisterServicesFromAssembly(Assembly.GetAssembly(typeof(CreatePostCommand))!));
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
+
+builder.Configuration.AddEnvironmentVariables()
+    .AddUserSecrets(Assembly.GetAssembly(typeof(PictureService))!, true);
 
 var app = builder.Build();
 

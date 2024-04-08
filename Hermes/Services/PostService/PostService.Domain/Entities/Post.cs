@@ -14,27 +14,26 @@
             
         }
 
-        public Post(Guid userId, string title, string content, string? image = null)
+        public Post(Guid userId, string title, string content)
         {
             Id = Guid.NewGuid();
             UserId = userId;
             Title = title;
             Content = content;
-            Image = image;
+            Image = null;
             CreatedAt = DateTime.Now;
             UpdatedAt = null;
         }
 
-        public void Update(string title, string content, string? image=null)
+        public void Update(string title, string content)
         {
-            if (image!=null)
-            {
-                Image = image;
-            }
-
             Title = title;
             Content = content;
             UpdatedAt = DateTime.Now;
         }
-    }
+
+        public void SetImage(string image) => Image = image;
+
+        public void RemoveImage() => Image = null;
+}
 }
