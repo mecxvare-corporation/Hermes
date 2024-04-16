@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Hermes.Common\Hermes.Common.csproj" />
     <ProjectReference Include="..\PostService.Application\PostService.Application.csproj" />
   </ItemGroup>
@@ -24,6 +20,7 @@
 	<PropertyGroup>
 		<!-- Exclude the project from analysis -->
 		<SonarQubeExclude>true</SonarQubeExclude>
+		<UserSecretsId>fa033f16-c05f-4017-bc93-a427ab6ab774</UserSecretsId>
 	</PropertyGroup>
 
 </Project>

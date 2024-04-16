@@ -13,13 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PostService.Domain\PostService.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Posts\Commands\" />
-    <Folder Include="Posts\Queries\" />
+    <ProjectReference Include="..\PostService.Infrastructure\PostService.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

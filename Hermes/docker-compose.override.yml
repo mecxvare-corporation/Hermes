@@ -42,6 +42,28 @@ services:
     - "5672:5672"
     - "15672:15672"
 
+  mongoDb:
+    container_name: MongoDb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mongoExpressUi:
+    container_name: MongoUI
+    restart: always
+    ports:
+      - "8081:8081"
+      - "8443:8443"
+    depends_on: 
+      - mongoDb
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      # ME_CONFIG_MONGODB_ENABLE_ADMIN: false
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: pass
+    volumes:
+      - mongo_data:/data/db
 
   pgadmin:
     container_name: pgadmin

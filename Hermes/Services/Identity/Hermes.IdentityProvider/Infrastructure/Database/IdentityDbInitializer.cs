@@ -74,11 +74,11 @@ namespace Hermes.IdentityProvider.Infrastructure.Database
             {
                 var users = new List<User>
                 {
-                    new User { UserName = "admin", Email = "admin@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "admin")),
-                    new User { UserName = "dato", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
-                    new User { UserName = "gvantsa", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
-                    new User { UserName = "bacho", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
-                    new User { UserName = "giorgi", Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "admin", FirstName = "jora", LastName = "joradze", DateOfBirth = new DateTime(1990, 1, 15, 0, 0, 0, DateTimeKind.Utc), Email = "admin@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "admin")),
+                    new User { UserName = "dato", FirstName = "ramazi", LastName = "bluyunadze", DateOfBirth = new DateTime(1985, 6, 20, 0, 0, 0, DateTimeKind.Utc), Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "gvantsa", FirstName = "taxmagido", LastName = "zoroshvili", DateOfBirth = new DateTime(1978, 9, 5, 0, 0, 0, DateTimeKind.Utc), Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "bacho",FirstName = "dundula", LastName = "trakadze", DateOfBirth = new DateTime(2000, 3, 10, 0, 0, 0, DateTimeKind.Utc), Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
+                    new User { UserName = "giorgi", FirstName = "guja", LastName = "notariusi", DateOfBirth = new DateTime(1995, 11, 30, 0, 0, 0, DateTimeKind.Utc), Email = "dato@hermes.ge", Password = "password".ToSha256() }.AddUserClaims(new Entities.UserClaim ("role", "dev")),
                 };
 
                 await _context.AddRangeAsync(users);

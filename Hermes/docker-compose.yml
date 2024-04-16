@@ -22,8 +22,15 @@ services:
   rabbitmq:
     image: rabbitmq:3.11-management
 
+  mongoDb:
+    image: mongo
+
+  mongoExpressUi:
+    image: mongo-express
+
 volumes:
   postgres_data:
   pgadmin_data:
   elasticsearch-data:
+  mongo_data:
 
