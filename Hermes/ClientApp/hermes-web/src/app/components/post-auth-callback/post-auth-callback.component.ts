@@ -12,6 +12,7 @@ export class PostAuthCallbackComponent {
   private readonly _router = inject(Router);
 
   ngOnInit() {
+    localStorage.clear();
     this._router.navigate(['/login'], {replaceUrl: true});    
   }
 }

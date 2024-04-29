@@ -1,16 +1,64 @@
 <header>
-  <div class="header-left">
-    <img src="assets/logo.png" alt="Logo" class="logo">
-    <input type="search" placeholder="Search" class="search-bar" matInput>
-  </div>
-
-  @if(showLogOutOption) {
-    @if (userMinimalInfo) {
-      <div class="header-right">
-        <img [ngSrc]="userMinimalInfo.profileImage" alt="User Picture" class="user-picture" width="40" height="40">
-        <span class="user-name">{{ userMinimalInfo.fullname }}</span>
+  <div class="header">
+    <div class="header_left">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+      <input type="search" placeholder="Search" class="search-bar" matInput>
+      <mat-icon>search</mat-icon>
+    </div>
+    <div class="header_middle">
+      <div class="active">
+        <mat-icon>home</mat-icon>
       </div>
-    }
-    <button class="dropdown-item" (click)="logOut()">Logout</button>
-  }
+      <div>
+        <mat-icon>ondemand_video</mat-icon>
+      </div>
+      <div>
+        <mat-icon>store</mat-icon>
+      </div>
+      <div>
+        <mat-icon>group</mat-icon>
+      </div>
+      <div>
+        <mat-icon>flag</mat-icon>
+      </div>
+    </div>
+    <div class="header_right">
+      <div>
+        @if (userMinimalInfo){
+          <img [src]="userMinimalInfo.profileImage" alt="avatar" mat-card-avatar class="user-picture">
+          <span class="full_name">{{userMinimalInfo.fullname}}</span>
+        }
+      </div>
+  
+      <div>
+          <mat-icon>add</mat-icon>
+      </div>
+  
+      <div>
+          <mat-icon matBadge="4"
+          matBadgeColor="primary"
+          matBadgeOverlap="false"
+          matBadgePosition="above after"
+          aria-hidden="false">forum</mat-icon>
+      </div>
+  
+      <div>
+          <mat-icon matBadge="3"
+          matBadgeColor="primary"
+          matBadgeOverlap="false"
+          matBadgePosition="above after"
+          aria-hidden="false">notifications</mat-icon>
+      </div>
+  
+      <div>
+  
+          <mat-icon [matMenuTriggerFor]="menu">expand_more</mat-icon>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logOut()">
+              <mat-icon>exit_to_app</mat-icon> Logout
+            </button>
+          </mat-menu>
+        </div>
+    </div>
+  </div>
 </header>

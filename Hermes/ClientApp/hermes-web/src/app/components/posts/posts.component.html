@@ -1,0 +1,8 @@
+<app-create-post (postSubmitted)="onPostSubmitted()"></app-create-post>
+@for (post of reversedPosts(); track $index) {
+    <mat-card class="posts">
+        <app-post [post]="post"></app-post>
+    </mat-card>
+}@empty {
+    <p>There is no Posts!</p>
+}

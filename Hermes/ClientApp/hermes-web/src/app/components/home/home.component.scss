@@ -1,0 +1,122 @@
+@import "../../../styles.scss";
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: $body-color;
+}
+
+/*BODY SECTION */
+
+.home_body {
+  margin-top: 100px;
+  background-color: $body-color;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  align-items: flex-start;
+
+  //BODY SIDEBAR
+  &_sidebarLeft {
+    position: relative;
+  }
+
+  // BODY CONTENT
+  &_contentMiddle {
+    padding: 10px;
+    margin-left: 420px;
+    flex: 0.4;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+
+    &_top {
+      flex: 0.5;
+      display: flex;
+      gap: 10px;
+      justify-content: space-around;
+      align-items: center;
+
+      .image-card {
+        width: 120px;
+        height: 200px;
+        border-radius: 20px;
+        position: relative;
+        z-index: 0;
+
+        &:hover {
+          img.bg {
+            transform: scale(1.06);
+          }
+        }
+
+        span {
+          font-size: 15px;
+          font-family: "Segoe UI Historic", "Segoe UI", Helvetica, Arial, sans-serif;
+          line-height: 1.2;
+          position: absolute;
+          bottom: 10px;
+          left: 5px;
+          color: white;
+          font-weight: 600;
+          padding: 5px;
+        }
+
+        img.bg {
+          max-width: 100%;
+          object-fit: cover;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          border-radius: 20px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+
+        img.avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          color: white;
+          z-index: 99;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+        }
+
+      }
+    }
+
+    &_center {
+      padding: 0 10px;
+      min-height: 20px;
+      width: 100%;
+      align-self: center;
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap:20px;
+    }
+  }
+
+  // BODY FEED
+  &_feedRight {
+    flex: 0.4;
+    position: relative;
+    align-self: flex-start;
+
+    .inside {
+      display: flex;
+      //flex-direction: column;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+  }
+}

@@ -1,113 +1,110 @@
-body {
+@import "../../../styles.scss";
+
+.login-container {
+  background-color: #F0F2F5;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #111;
-  width: 100%;
-  overflow: hidden;
-}
-.ring {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    top: 50%;
-    left: 50%;
-    margin-top: -250px; 
-    margin-left: -250px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.ring i {
-    position: absolute;
-    inset: 0;
-    max-width: 470px;  
-    max-height: 500px; 
-    border: 1px solid #3b5998;
-    transition: 0.5s;
-}
-.ring i:nth-child(1) {
-  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-  animation: animate 6s linear infinite;
-}
-.ring i:nth-child(2) {
-  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
-  animation: animate 4s linear infinite;
-}
-.ring i:nth-child(3) {
-  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
-  animation: animate2 10s linear infinite;
-}
-.ring:hover i {
-  border: 6px solid var(--clr);
-  filter: drop-shadow(0 0 20px var(--clr));
-}
-@keyframes animate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@keyframes animate2 {
-  0% {
-    transform: rotate(360deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-.login {
-  position: absolute;
-  width: 300px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  gap: 20px;
 }
-.login h2 {
-  font-size: 2em;
-  color: #09064b;
-}
-.login .login-button {
-  position: relative;
-  width: 100%;
-}
-.login .login-button button {
-  position: relative;
-  width: 100%;
-  padding: 12px 20px;
-  background: transparent;
-  border: 2px solid #fff;
-  border-radius: 40px;
-  font-size: 1.2em;
-  color: #fff;
-  box-shadow: none;
-  outline: none;
-}
-.login .login-button button[type="submit"] {
-  width: 100%;
-  background: #0078ff;
-  background: linear-gradient(45deg, #2c2c7b, #11b7ca);
-  border: none;
-  cursor: pointer;
-}
-.login .links{
-  position: relative;
+
+.login_header {
+  height: 70vh;
   width: 100%;
   display: flex;
+  gap: 20px;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
+  justify-self: center;
+
+  &_left{
+    width: 580px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    img {
+      height: 56px;
+      margin-right: 32px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: normal;
+      line-height: 32px;
+      width: 500px;
+    }
+  } // left Ends Here
+
+  &_right {
+    &_card {
+      height: 380px;
+      width: 400px;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+
+      &_content {
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+
+        .login-button {
+          background-color: $primary-button-color;
+          padding: 15px;
+          outline: none;
+          border: none;
+          border-radius: 7px;
+          color: white;
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 20px;
+          margin-top: 70px;
+          cursor: pointer;
+        }
+
+        a {
+          text-decoration: none;
+          color: $primary-button-color;
+          text-align: center;
+          border-bottom: 1px solid lightgray;
+          margin-bottom: 20px;
+          padding-bottom: 20px;
+          cursor: pointer;
+        }
+
+        .create-account {
+          background-color: $success-button-color;
+          display: inline-block;
+          align-self: center;
+          outline: none;
+          border: none;
+          border-radius: 7px;
+          padding: 15px 30px;
+          color: white;
+          font-size: 18px;
+          font-weight: bold;
+          cursor: pointer;
+          text-decoration: none; 
+        }
+      }
+    } // card Ends Here
+
+    .tagline {
+      text-align: center;
+      letter-spacing: 0.7px;
+    }
+  }
 }
-.login .links button {
-  color: #060894;
-  text-decoration: none;
-  background: linear-gradient(45deg, #4ee8aa, #c411ca);
-  border: none;
-  cursor: pointer;
+
+.login_footer {
+  height: 30vh;
+  align-self: flex-end;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

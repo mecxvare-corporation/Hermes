@@ -4,6 +4,7 @@ using MediatR;
 
 using PostService.Application.Dtos;
 using PostService.Domain.Interfaces;
+using PostService.Infrastructure.Services;
 
 namespace PostService.Application.Posts.Queries
 {
@@ -12,11 +13,13 @@ namespace PostService.Application.Posts.Queries
     public class GetPostQueryHandler : IRequestHandler<GetPostQuery, PostDto>
     {
         private readonly IPostRepository _postRepository;
+        private readonly IPictureService _pictureService;
         private readonly IMapper _mapper;
 
-        public GetPostQueryHandler(IPostRepository postRepository, IMapper mapper)
+        public GetPostQueryHandler(IPostRepository postRepository, IMapper mapper, IPictureService pictureService)
         {
             _postRepository = postRepository;
+            _pictureService = pictureService;
             _mapper = mapper;
         }
         public async Task<PostDto> Handle(GetPostQuery request, CancellationToken cancellationToken)
@@ -33,7 +36,7 @@ namespace PostService.Application.Posts.Queries
                     post.UserId,
                     post.Title,
                     post.Content,
-                    post.Image,
+                    await _pictureService.GetImageUrl(post.Image),
                     post.CreatedAt,
                     post.UpdatedAt
                     );

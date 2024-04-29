@@ -1,0 +1,37 @@
+@if(post){
+  <div id="wrapper">
+    <header>
+      <mat-icon class="arrow">keyboard_arrow_down</mat-icon>
+      <a href=#><img [src]="postUserInfo?.profileImage" class="profile-pic" alt=""></a>
+      <h1 class="name">
+                    <a href="#">{{postUserInfo?.fullname}}</a>
+                </h1>
+      <p class="date">{{post.updatedAt | date}} here should be date</p>
+    </header>
+    <p class="post_content">{{ post.content }}</p>
+    <img class="post-img-content" [src]="post.image" />
+    <div class="action">
+      <div class="like">
+        <a href="#">
+          <mat-icon>thumb_up</mat-icon>
+          <p>Like</p>
+        </a>
+      </div>
+      <div class="comment">
+        <a href="#">
+          <mat-icon>chat</mat-icon>
+          <p>Comment</p>
+        </a>
+      </div>
+      <div class="share">
+        <a href="#">
+          <mat-icon>share</mat-icon>
+          <p>
+            Share
+          </p>
+        </a>
+      </div>
+  
+    </div>
+  </div>
+}

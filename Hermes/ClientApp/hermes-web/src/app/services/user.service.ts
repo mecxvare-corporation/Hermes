@@ -1,16 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
-import { UserInfoModel } from '../models/user-info';
+import { Observable, map } from 'rxjs';
+import { UserModel } from '../models/user-info';
+import { UserMinimalInfoModel } from '../models/user-minimal-info';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private baseUri: string = "https://localhost:7080/api/Users";
+  private _baseUsersUri: string = "https://localhost:7080/api/Users";
   private readonly _httpClient: HttpClient = inject(HttpClient);
 
-  getUserById(id: string): Observable<UserInfoModel>{
-    return this._httpClient.get<UserInfoModel>(`${this.baseUri}/${id}`);
+  constructor(){
+  }
+
+  getAllUsers(): Observable<UserModel[]>{
+    return this._httpClient.get<UserModel[]>(`${this._baseUsersUri}`);
+  }
+
+  getUserById(userId: string): Observable<UserModel>{
+    return this._httpClient.get<UserModel>(`${this._baseUsersUri}/${userId}`);
+  }
+
+  getCurrentUsersMinimalInfo(userId: string): Observable<UserMinimalInfoModel>{
+    return this._httpClient.get<UserModel>(`${this._baseUsersUri}/${userId}`).pipe(
+      map(user => ({...user, fullname: `${user.firstName}${user.lastName}`})));
   }
 }

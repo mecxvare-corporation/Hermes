@@ -1,15 +1,21 @@
-<div class="ring">
-    <i style="--clr:#00ff0a;"></i>
-    <i style="--clr:#e9de16;"></i>
-    <i style="--clr:#1a2abf;"></i>
-    <div class="login">
-      <h2>Please Login!</h2>
-      <div class="login-button">
-        <button type="submit" (click)="login()">Sign in</button>
+  <div class="login-container">
+    <header class="login_header">
+      <div class="login_header_left">
+        <img src="../../../assets/hermes_logo.png" alt="hermes_logo">
+        <h2>Hermes helps you connect and share with the people in your life.</h2>
       </div>
-      <div class="links">
-        <button href="#">Forget Password?</button>
-        <button href="#" (click)="create()">Signup</button>
+      <div class="login_header_right">
+        <mat-card class="login_header_right_card">
+          <mat-card-content class="login_header_right_card_content">
+            <button class="login-button" (click)="login()">Sign in</button>
+            <a href="#">Forget Password?</a>
+            <a href="https://localhost:5001/Account/Create" class="create-account">Sign up</a>
+          </mat-card-content>
+        </mat-card>
+        <p class="tagline"><strong>Create A Page</strong> for a celebrity, band or business</p>
       </div>
-    </div>
+    </header>
+    <footer class="login_footer">
+      <img src="../../../assets/footer_crop.jpg" alt="footer">
+    </footer>
   </div>

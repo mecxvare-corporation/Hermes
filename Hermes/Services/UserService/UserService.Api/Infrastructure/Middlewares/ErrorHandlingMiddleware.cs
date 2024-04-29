@@ -19,7 +19,7 @@ public class ErrorHandlingMiddleware
         {
             await _next(context);
         }
-        catch (Exception ex)
+        catch (Exception ex) // aqa
         {
             Exception exception = GetInnermostExceptionMessage(ex);
             Log.Fatal(exception, exception.Message);

@@ -1,0 +1,56 @@
+.inside {
+    position: fixed;
+    padding: 15px;
+    margin-top: 5px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  
+    .user-picture {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      img {
+        border-radius: 30%;
+        margin-left: 10px;
+        object-fit: cover;
+        width: 250px;
+        height: 250px;
+      }
+
+  
+      span.name {
+        font-size: 16px;
+      }
+    }
+  
+    div {
+      display: flex;
+      gap: 20px;
+      font-size: 16px;
+      align-items: center;
+  
+      mat-icon {
+        color: #1877F2;
+        font-size: xx-large;
+        width: fit-content;
+        height: fit-content;
+      }
+  
+      mat-icon.see-more {
+        color: #828890 !important;
+        padding: 5px;
+        border-radius: 50%;
+        background-color: #E4E6EB;
+      }
+  
+      &:last-of-type {
+        border-bottom: 1px solid lightgray;
+        padding-bottom: 20px;
+      }
+  
+    }
+  }
+  

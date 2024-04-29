@@ -1,0 +1,38 @@
+<div class="home-container">
+    <hermes-header></hermes-header>
+    <div class="home_body">
+        <div class="home_body_sidebarLeft">
+            <app-home-user></app-home-user>
+        </div>
+
+        <div class="home_body_contentMiddle">
+
+            <div class="home_body_contentMiddle_top">
+              <!--IMAGE CARDS-->
+              @for (image of images; track $index) {
+                <mat-card class="image-card">
+                    <img alt="bg"
+                         class="bg" src="{{ image }}">
+                    <mat-card-content>
+                      <img
+                        alt="avatar"
+                        class="avatar" src="">
+                      <span class="card-name">Dunda Dunda</span>
+                    </mat-card-content>
+                </mat-card>
+              }
+            </div>
+      
+            <div class="home_body_contentMiddle_center">
+              <app-posts></app-posts>
+            </div>
+
+        </div>
+
+        <div class="home_body_feedRight">
+            <div class="inside">
+                <img alt="feed" src="../../../assets/feed.jpg">
+            </div>
+        </div>
+    </div>
+</div>

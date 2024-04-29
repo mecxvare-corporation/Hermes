@@ -1,0 +1,26 @@
+<mat-card class="post-message">
+    <mat-card-header class="post-message-header"
+                     style="padding-bottom: 20px; border-bottom: 1px solid lightgray;">
+      <img
+        alt=""
+        mat-card-avatar
+        [src]="postUserInfo?.profileImage">
+      <input class="on-your-mind" name="message" [placeholder]="'What`s On Your Mind?'" type="text" (focus)="openPopup()">
+    </mat-card-header>
+    <mat-card-content class="card-body">
+      <div>
+        <mat-icon color="accent">videocam</mat-icon>
+        <span>Live Video</span>
+      </div>
+  
+      <div>
+        <mat-icon color="primary">photo_album</mat-icon>
+        <span>Photo/Video</span>
+      </div>
+  
+      <div>
+        <mat-icon color="warn">mood</mat-icon>
+        <span>Feeling/Activity</span>
+      </div>
+    </mat-card-content>
+</mat-card>

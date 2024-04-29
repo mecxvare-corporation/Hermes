@@ -48,7 +48,7 @@ namespace PostService.Infrastructure.Services
 
         public async Task<string> GetImageUrl(string fileName)
         {
-            if (fileName == string.Empty)
+            if (fileName == string.Empty || fileName == null)
             {
                 return string.Empty;
             }

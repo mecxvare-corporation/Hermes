@@ -1,0 +1,92 @@
+#wrapper {
+  background-color: #fff;
+  margin: 10px auto 0;
+  border: 1px solid #D0D1D5;
+  border-top: 0;
+  border-radius: 2px;
+  padding: 12px;
+}
+
+header {
+  padding: 0;
+  position: relative;
+
+  .arrow {
+    position: absolute;
+    width: 30px;
+    border: none;
+    height: auto;
+    right: 0px;
+  }
+
+  .profile-pic {
+    width: 40px;
+    height: auto;
+    float: left;
+    margin-right: 8px;
+  }
+
+  .name {
+    color: #385A97;
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin: 0;
+  }
+  
+  .date {
+    font-size: 12px;
+    color: #90949C;
+    margin: 0;
+  }
+
+}
+
+a {
+  text-decoration: none;
+  color: #385A97;
+}
+
+.post_content {
+  margin: 11px 0;
+}
+
+.post-img-content {
+  width: 100%;
+  margin-bottom: 11px;
+  border: 1px solid rgba(0, 0, 0, .1);
+}
+
+
+.action a {
+  color: #7F7F7F;
+}
+
+.action div {
+  display: inline-block;
+}
+
+.action div p:hover {
+  text-decoration: underline;
+}
+
+.action div:nth-child(n + 2) {
+  margin-left: 20px;
+}
+
+.like mat-icon,
+.comment mat-icon,
+.share mat-icon {
+  display: inline-block;
+  width: 30px;
+  vertical-align: text-bottom;
+}
+
+.like p {
+  color: #1787FA;
+}
+
+.like p,
+.comment p,
+.share p {
+  display: inline-block;
+}
