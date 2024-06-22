@@ -24,7 +24,7 @@ public class Index : PageModel
 {
     private readonly IdentityProviderDbContext _context;
     private readonly IIdentityServerInteractionService _interaction;
-    private readonly IBus _broker;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     [BindProperty]
     public InputModel Input { get; set; }
@@ -32,12 +32,12 @@ public class Index : PageModel
     public Index(
         IdentityProviderDbContext context,
         IIdentityServerInteractionService interaction,
-        IBus broker)
+        IPublishEndpoint publishEndpoint)
     {
         // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
         _context = context;
         _interaction = interaction;
-        _broker = broker;
+        _publishEndpoint = publishEndpoint;
     }
 
     public IActionResult OnGet(string returnUrl)
@@ -85,18 +85,8 @@ public class Index : PageModel
 
         if (ModelState.IsValid)
         {
-            var user = await new RegisterUser(_context).CreateUser(Input.Username, Input.Email, Input.Password, Input.Name,
+            var user = await new RegisterUser(_context, _publishEndpoint).CreateUser(Input.Username, Input.Email, Input.Password, Input.Name,
                 Input.Surname, Input.DateOfBirth.ToUniversalTime());
-
-            //Sending Command to UserService
-            await _broker.Publish<AddNewUser>(new
-            {
-                UserId = user.SubjectId,
-                CommandId = Guid.NewGuid(),
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                DateOfBirth = user.DateOfBirth
-            });
 
             // issue authentication cookie with subject ID and username
             var isuser = new IdentityServerUser(user.SubjectId)

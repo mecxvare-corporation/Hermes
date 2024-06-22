@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MassTransit;
 using Messages;
-using Microsoft.Extensions.Logging;
 using UserService.Domain.Entities;
 using UserService.Domain.Interfaces;
 
@@ -24,7 +23,16 @@ namespace UserService.Application.Consumers
 
             _unitOfWork.UserRepository.Create(user);
 
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (Exception)
+            {
+                await context.Publish(new AddNewUserFailed { UserId = context.Message.UserId });
+                //TODO logging
+                throw;
+            }
         }
     }
 }
