@@ -1,0 +1,3 @@
+﻿1. Add migration/Update database -context ConfigurationDbContext
+2. Add migration/Update database -context PersistedGrantDbContext
+3. Add migration/Update database -context IdentityProviderDbContext

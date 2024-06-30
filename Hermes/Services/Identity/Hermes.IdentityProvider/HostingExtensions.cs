@@ -1,9 +1,12 @@
+using Hermes.IdentityProvider.Consumers;
 using Hermes.IdentityProvider.Domain;
 using Hermes.IdentityProvider.Entities;
 using Hermes.IdentityProvider.Infrastructure.Database;
+using Hermes.IdentityProvider.Sagas;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System;
 
 namespace Hermes.IdentityProvider;
 
@@ -54,11 +57,33 @@ internal static class HostingExtensions
                 });
         });
         
-        builder.Services.AddMassTransit(x =>
+        builder.Services.AddMassTransit(busRegistrationConfigurator =>
         {
-            x.SetKebabCaseEndpointNameFormatter();
+            busRegistrationConfigurator.AddEntityFrameworkOutbox<IdentityProviderDbContext>(o =>
+            {
+                o.UsePostgres();
 
-            x.UsingRabbitMq((context, cfg) =>
+                o.UseBusOutbox();
+            });
+
+            busRegistrationConfigurator.AddConfigureEndpointsCallback((context, name, cfg) =>
+            {
+                cfg.UseEntityFrameworkOutbox<IdentityProviderDbContext>(context);
+            });
+
+            busRegistrationConfigurator.AddSagaStateMachine<RegisterUserSaga, RegisterUserSagaData>()
+            .EntityFrameworkRepository(r =>
+            {
+                r.ExistingDbContext<IdentityProviderDbContext>();
+
+                r.UsePostgres();
+            });
+
+            busRegistrationConfigurator.AddConsumer<RegistrationCanceledConsumer, RegistrationCanceledConsumerDefinition>();
+
+            busRegistrationConfigurator.SetKebabCaseEndpointNameFormatter();
+
+            busRegistrationConfigurator.UsingRabbitMq((context, cfg) =>
             {
                 cfg.Host("localhost", "/", h =>
                 {

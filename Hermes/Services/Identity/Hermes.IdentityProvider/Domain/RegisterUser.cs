@@ -1,6 +1,8 @@
 ﻿using Hermes.IdentityProvider.Entities;
 using Hermes.IdentityProvider.Infrastructure.Database;
 using IdentityModel;
+using MassTransit;
+using Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.IdentityProvider.Domain
@@ -8,10 +10,12 @@ namespace Hermes.IdentityProvider.Domain
     public class RegisterUser
     {
         private readonly IdentityProviderDbContext _dbContext;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public RegisterUser(IdentityProviderDbContext dbContext)
+        public RegisterUser(IdentityProviderDbContext dbContext, IPublishEndpoint publishEndpoint)
         {
             _dbContext = dbContext;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<User> CreateUser(string userName, string email, string Password, string firstName, string lastName, DateTime dateOfBirth)
@@ -33,6 +37,15 @@ namespace Hermes.IdentityProvider.Domain
                 newUser.AddUserClaims(new UserClaim { ClaimType = "role", ClaimValue = "dev", User = newUser });
 
                 _dbContext.Users.Add(newUser);
+
+                await _publishEndpoint.Publish(new UserRegistered
+                {
+                    UserId = Guid.Parse(newUser.SubjectId),
+                    FirstName = newUser.FirstName,
+                    LastName = newUser.LastName,
+                    DateOfBirth = newUser.DateOfBirth
+                });
+
                 _dbContext.SaveChanges();
 
                 return newUser;

@@ -3,6 +3,7 @@ using System;
 using Hermes.IdentityProvider.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hermes.IdentityProvider.Migrations
 {
     [DbContext(typeof(IdentityProviderDbContext))]
-    partial class IdentityProviderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240622131236_AddedTransactionalOutboxTablesMigration")]
+    partial class AddedTransactionalOutboxTablesMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,29 +80,6 @@ namespace Hermes.IdentityProvider.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("UserClaims");
-                });
-
-            modelBuilder.Entity("Hermes.IdentityProvider.Sagas.RegisterUserSagaData", b =>
-                {
-                    b.Property<Guid>("CorrelationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CurrentState")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("UserProfileCreated")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("UserRegistered")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("CorrelationId");
-
-                    b.ToTable("RegisterUserSagaData");
                 });
 
             modelBuilder.Entity("MassTransit.EntityFrameworkCoreIntegration.InboxState", b =>
